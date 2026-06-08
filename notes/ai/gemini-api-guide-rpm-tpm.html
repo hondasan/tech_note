@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini APIの基本解説：RPM・TPMなどの制限値と活用法 | Tech Notebook</title>
+  <meta name="description" content="Googleの最先端AI「Gemini API」の基本概念から、API制限の重要用語であるRPM（1分あたりのリクエスト数）、TPM、RPDの意味まで徹底解説。制限回避の実践的な実装コードや対策も紹介します。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="Gemini APIの基本解説：RPM・TPMなどの制限値と活用法 | Tech Notebook">
+  <meta property="og:description" content="Googleの最先端AI「Gemini API」の基本概念から、API制限の重要用語であるRPM（1分あたりのリクエスト数）、TPM、RPDの意味まで徹底解説。制限回避の実践的な実装コードや対策も紹介します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hondasan.github.io/tech_note/notes/ai/gemini-api-guide-rpm-tpm.html">
+  <meta property="og:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta property="og:site_name" content="Tech Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gemini APIの基本解説：RPM・TPMなどの制限値と活用法 | Tech Notebook">
+  <meta name="twitter:description" content="Googleの最先端AI「Gemini API」の基本概念から、API制限の重要用語であるRPM（1分あたりのリクエスト数）、TPM、RPDの意味まで徹底解説。制限回避の実践的な実装コードや対策も紹介します。">
+  <meta name="twitter:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) - TechArticle -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Gemini APIの基本解説：RPM・TPMなどの制限値と活用法",
+    "description": "Googleの最先端AI「Gemini API」の基本概念から、API制限の重要用語であるRPM（1分あたりのリクエスト数）、TPM、RPDの意味まで徹底解説。制限回避の実践的な実装コードや対策も紹介します。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-08",
+    "dateModified": "2026-06-08",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Tech Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hondasan.github.io/tech_note/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Tech Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">ai</span>
+          <span class="note-date">2026年06月08日</span>
+        </div>
+        <h1 class="article-title">Gemini APIの基本解説：RPM・TPMなどの制限値と活用法</h1>
+      </div>
+
+      <div class="article-content">
+        <h2>Gemini APIとは</h2><p>Googleの「Gemini API」は、最先端のマルチモーダルAIモデルであるGeminiを、独自のアプリケーションやWebサービスに統合するための開発者向けAPIです。テキスト生成だけでなく、画像、音声、動画、コードなどの多様な入力を高度に処理できる点が特徴です。</p><p>個人開発からエンタープライズ向けのシステム構築まで幅広く活用されていますが、APIを安定して運用するためには、Googleが設けている「レートリミット（利用制限）」の仕組みを正しく理解することが不可欠です。</p><h2>API制限を理解する最重要用語：RPM・TPM・RPDとは？</h2><p>Gemini APIの利用料金プラン（無料枠および従量課金制）やシステム設計において、以下の3つの単位が頻繁に登場します。これらはAPIの過剰な呼び出しを防ぎ、サービスの公平な利用を担保するために設定されています。</p><h3>1. RPM (Requests Per Minute)</h3><p><strong>RPM</strong>は「Requests Per Minute」の略で、<strong>「1分間あたりに実行できるAPIリクエストの最大回数」</strong>を指します。例えば、無料枠のGemini 1.5 Flashで「15 RPM」と設定されている場合、1分間に15回までしかAPIを呼び出すことができません。これを1秒あたりに換算すると4秒に1回のペースとなるため、短時間に連続してリクエストを送ると、即座に制限に達しエラーが発生します。</p><h3>2. TPM (Tokens Per Minute)</h3><p><strong>TPM</strong>は「Tokens Per Minute」の略で、<strong>「1分間あたりに処理できるトークンの最大数」</strong>を表します。トークンとは、AIがテキストを処理する際の最小単位（単語や文字の構成要素）です。リクエスト回数（RPM）が上限以下であっても、1回あたりのプロンプトが非常に長文であったり、AIからの出力が膨大であったりする場合、このTPMの制限に引っかかることがあります。</p><h3>3. RPD (Requests Per Day)</h3><p><strong>RPD</strong>は「Requests Per Day」の略で、<strong>「1日（24時間）あたりに実行できるAPIリクエストの最大回数」</strong>を指します。主に無料枠（Free Tier）における1日の合計利用上限として設定されており、これを超えると翌日までAPIの利用ができなくなります。</p><h2>Gemini APIの基本的な呼び出し方法</h2><p>Pythonを使用してGemini API（Google GenAI SDK）を呼び出す基本的なコード例は以下の通りです。APIキーは事前にGoogle AI Studioで取得しておく必要があります。</p><pre><code class="language-python">import os
+from google import genai
+
+# APIクライアントの初期化（環境変数 GEMINI_API_KEY が自動で参照されます）
+client = genai.Client()
+
+response = client.models.generate_content(
+    model="gemini-2.5-flash",
+    contents="Gemini APIのRPM制限を回避するためのベストプラクティスを3つ教えてください。",
+)
+
+print(response.text)</code></pre><h2>レートリミット（429 Too Many Requests）への対策</h2><p>APIの制限値（RPMやTPM）を超えると、ステータスコード <code>429 Too Many Requests</code> エラーが返されます。本番環境でこのエラーによるサービス停止を防ぐためには、以下の対策を実装することが推奨されます。</p><ul><li><strong>エクスポネンシャル・バックオフ（指数バックオフ）：</strong> エラーを検知した際、再試行までの待機時間を「1秒、2秒、4秒、8秒...」のように段階的に増やしていくアルゴリズムです。これにより、APIサーバーへの負荷集中を避けつつ自動復旧を図れます。</li><li><strong>セマンティックキャッシュの利用：</strong> 過去に送信された類似の質問と回答のペアをデータベース（Redisなど）にキャッシュしておくことで、同一のリクエストに対してAPIを再度呼び出す必要性を減らし、RPMを節約します。</li><li><strong>キューイングとレートリミッターの実装：</strong> アプリケーション側にキュー（Queue）を導入し、APIへのリクエスト送信ペースをプログラムで能動的に「最大毎秒○回」のように制御します。</li></ul><h2>まとめ</h2><p>Gemini APIは強力なAI処理能力を提供しますが、そのポテンシャルを最大限に活かすためにはRPMやTPM、RPDといった制限値を考慮した設計が不可欠です。構築するアプリケーションの規模に応じて、適切なプランを選択し、エラーハンドリングを強固に実装しましょう。</p><h2>参考URL</h2><ul><li><a href="https://ai.google.dev/gemini-api/docs" target="_blank" rel="noopener noreferrer">Gemini API Documentation | Google AI for Developers</a></li><li><a href="https://ai.google.dev/pricing" target="_blank" rel="noopener noreferrer">Gemini API Pricing and Rate Limits | Google AI for Developers</a></li></ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Tech Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Tech Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+</body>
+</html>
