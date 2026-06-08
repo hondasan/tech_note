@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadMoreContainer = document.getElementById('loadMoreContainer');
   const loadMoreBtn = document.getElementById('loadMoreBtn');
 
-  const ITEMS_PER_PAGE = 2; // 1ページあたりの初期表示件数 (動作確認のため2件に設定。記事が増えたら 12 などに増やしてください)
+  const ITEMS_PER_PAGE = 12; // 1ページあたりの初期表示件数
   let displayedCount = ITEMS_PER_PAGE;
 
   let allNotes = [];
