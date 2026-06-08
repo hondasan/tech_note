@@ -5,5 +5,12 @@
     "category": "git",
     "date": "2026-06-08",
     "path": "notes/git/git-cherry-pick.html"
+  },
+  {
+    "title": "SQL Server の下位互換性：できること・できないことまとめ",
+    "excerpt": "SQL Serverにおけるエンジンバージョンと互換性レベルの違い、バックアップ・リストアにおける下位互換性の制限、および異なるバージョン間でのデータ移行の回避策についてまとめました。",
+    "category": "db",
+    "date": "2026-06-08",
+    "path": "notes/db/sql-server-backward-compatibility.html"
   }
 ]

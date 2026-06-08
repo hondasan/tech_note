@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SQL Server の下位互換性：できること・できないことまとめ | Tech Notebook</title>
+  <meta name="description" content="SQL Serverにおけるエンジンバージョンと互換性レベルの違い、バックアップ・リストアにおける下位互換性の制限、および異なるバージョン間でのデータ移行の回避策についてまとめました。">
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Tech Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">db</span>
+          <span class="note-date">2026年06月08日</span>
+        </div>
+        <h1 class="article-title">SQL Server の下位互換性：できること・できないことまとめ</h1>
+      </div>
+
+      <div class="article-content">
+        <p>SQL Serverの運用において、バージョンのアップグレードやダウングレードに伴う「データベースの互換性」は非常に重要なテーマです。特に、「新しいバージョンで作成したバックアップを古いバージョンに戻せるか」といった下位互換性の制限について整理します。</p>
+
+        <h2>1. 理解の前提：「エンジンバージョン」と「互換性レベル」の違い</h2>
+        <p>SQL Serverには、混同しやすい2つの概念があります。</p>
+        <ul>
+          <li><strong>SQL Server エンジンのバージョン:</strong> インスタンス自体の製品バージョン（例：SQL Server 2017, 2019, 2022など）。物理的なデータベースファイルの構造や内部メタデータを決定します。</li>
+          <li><strong>データベース互換性レベル (Compatibility Level):</strong> データベースごとの設定値（例：140, 150, 160など）。T-SQLの構文解釈やクエリ最適化の動作について、特定の古いバージョンの動作をエミュレートします。</li>
+        </ul>
+        <blockquote>
+          <p><strong>重要：</strong> 互換性レベルを古いバージョン（例：2016相当の130）に設定していても、そのデータベースを実行しているエンジン自体が新しいバージョン（例：2022）であれば、物理的な下位互換性があるわけではありません。</p>
+        </blockquote>
+
+        <h2>2. できること・できないこと（比較一覧）</h2>
+        <p>バージョン互換性に関する主な操作のサポート状況です。</p>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--glass-border); text-align: left;">
+              <th style="padding: 0.75rem;">操作</th>
+              <th style="padding: 0.75rem;">サポート可否</th>
+              <th style="padding: 0.75rem;">詳細</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--glass-border);">
+              <td style="padding: 0.75rem; font-weight: bold;">古い → 新しいバージョンへのリストア / アタッチ</td>
+              <td style="padding: 0.75rem; color: var(--success); font-weight: bold;">〇 可能（前方互換）</td>
+              <td style="padding: 0.75rem;">古いSQL Serverのバックアップ（.bak）を新しいSQL Serverにリストアできます。</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--glass-border);">
+              <td style="padding: 0.75rem; font-weight: bold;">新しい → 古いバージョンへのリストア / アタッチ</td>
+              <td style="padding: 0.75rem; color: var(--danger); font-weight: bold;">✕ 不可（下位互換なし）</td>
+              <td style="padding: 0.75rem;">新しいSQL Serverのバックアップを古いSQL Serverにリストアすることは物理的にできません。アタッチも同様です。</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--glass-border);">
+              <td style="padding: 0.75rem; font-weight: bold;">リストア後の互換性レベルの維持</td>
+              <td style="padding: 0.75rem; color: var(--success); font-weight: bold;">〇 原則可能</td>
+              <td style="padding: 0.75rem;">移行後も互換性レベルは維持されます。ただし、移行先エンジンがサポートする最小レベル未満の場合は、自動的に最小サポートレベルに引き上げられます。</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--glass-border);">
+              <td style="padding: 0.75rem; font-weight: bold;">新バージョンにアタッチしたDBの旧バージョンへの差し戻し</td>
+              <td style="padding: 0.75rem; color: var(--danger); font-weight: bold;">✕ 不可</td>
+              <td style="padding: 0.75rem;">一度新しいエンジンにアタッチされたデータベースは、内部メタデータが更新されるため、互換性レベルが古い状態であっても、古いエンジンに戻すことはできません。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>3. なぜ「新しい → 古い」へのリストアはできないのか？</h2>
+        <p>SQL Serverはデータベースを起動、あるいはアタッチする際、データベースの内部メタデータやストレージ構造を最新バージョンのフォーマットに自動的にアップグレードします。このアップグレード処理は一方向であり、古いバージョンには存在しない新機能のメタデータやストレージ構造（インデックスやシステムテーブルの変更）が追加されるため、古いエンジンではこれを解釈・認識できません。</p>
+
+        <h2>4. 新しいバージョンから古いバージョンへ移行する回避策</h2>
+        <p>ネイティブのバックアップとリストアが使用できないため、どうしてもダウングレードや旧環境へのデータ移行が必要な場合は、以下の方法を検討します。</p>
+
+        <h3>方法 A: スクリプトの生成 (Generate Scripts)</h3>
+        <p>SQL Server Management Studio (SSMS) を使用して、スキーマとデータをSQLスクリプトファイルとして出力し、移行先で実行します。</p>
+        <ol>
+          <li>対象のデータベースを右クリック ＞ <strong>[タスク]</strong> ＞ <strong>[スクリプトの生成]</strong> を選択。</li>
+          <li>詳細設定のオプションで「スクリプトを作成するデータベースエンジンの版」に <strong>[移行先の古いSQL Serverのバージョン]</strong> を指定。</li>
+          <li>「スクリプトを作成するデータの種類」で <strong>[スキーマとデータ]</strong> または <strong>[データのみ]</strong> を指定。</li>
+          <li>生成されたSQLファイルを移行先の古いSQL Serverインスタンスで実行する。</li>
+        </ol>
+
+        <h3>方法 B: BACPAC ファイルのエクスポート / インポート</h3>
+        <p>スキーマ定義とデータをまとめてパッケージングする Data-tier Application (DACPAC / BACPAC) を利用します。</p>
+        <ul>
+          <li>SSMS等で <strong>[データ層アプリケーションのエクスポート]</strong> を行い、<code>.bacpac</code> ファイルを作成します。</li>
+          <li>移行先の古いSQL Serverで <strong>[データ層アプリケーションのインポート]</strong> を行い、データベースを再構築します。</li>
+        </ul>
+
+        <h2>5. まとめ</h2>
+        <p>SQL Serverでは、古いバージョンから新しいバージョンへの移行（前方互換）は柔軟に行える一方で、新しいバージョンから古いバージョンへのリストア（下位互換）は一切サポートされていません。移行計画や検証の際は、バックアップファイルからの切り戻しができない点に十分注意する必要があります。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://learn.microsoft.com/ja-jp/sql/relational-databases/databases/compatibility-certification-and-database-compatibility-level-sql-server" target="_blank" rel="noopener noreferrer">Microsoft Learn: データベース互換性認定と互換性レベル</a></li>
+          <li><a href="https://learn.microsoft.com/ja-jp/sql/relational-databases/backup-restore/quickstart-backup-restore-database" target="_blank" rel="noopener noreferrer">Microsoft Learn: データベースのバックアップと復元</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Tech Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Tech Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+</body>
+</html>
