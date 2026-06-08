@@ -13,6 +13,8 @@ jobs:
     # ユーザーが 'hondasan' の場合のみ実行するセキュリティ制限
     if: github.event.issue.user.login == 'hondasan'
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
@@ -21,7 +23,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Generate Article via Gemini API
         env:

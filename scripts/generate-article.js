@@ -39,8 +39,8 @@ Theme: "${issueTitle}"
 
   console.log('Sending request to Gemini API...');
   
-  // REST APIの呼び出し (モデルは高性能かつ高速な gemini-3.5-flash を使用します)
-  const model = 'gemini-3.5-flash';
+  // REST APIの呼び出し (モデルは高性能かつ高速な gemini-2.5-flash を使用します)
+  const model = 'gemini-2.5-flash';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   const requestBody = {
