@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>git cherry-pick の使い方と競合回避策 | Tech Notebook</title>
+  <meta name="description" content="他のブランチの特定のコミットを取り込む git cherry-pick コマンドの基本的な使い方と、競合が発生した際の解決・回避方法について解説します。">
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Tech Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">git</span>
+          <span class="note-date">2026年06月08日</span>
+        </div>
+        <h1 class="article-title">git cherry-pick の使い方と競合回避策</h1>
+      </div>
+
+      <div class="article-content">
+        <p>開発中に、別のブランチで行われた特定のバグ修正や機能追加コミットだけを、現在のブランチに取り込みたいことがあります。そのような場合に役立つのが <code>git cherry-pick</code> コマンドです。</p>
+
+        <h2>1. 基本的な使い方</h2>
+        <p>取り込みたいコミットのハッシュ値を指定して実行します。ハッシュ値は <code>git log</code> などで確認できます。</p>
+        
+        <pre><code class="language-bash"># 特定のコミットを取り込む
+git cherry-pick &lt;commit-hash&gt;</code></pre>
+
+        <p>複数のコミットを順番に取り込みたい場合は、スペース区切りで並べるか、範囲指定が可能です。</p>
+        <pre><code class="language-bash"># 複数のコミットを取り込む
+git cherry-pick &lt;commit-A&gt; &lt;commit-B&gt;
+
+# AからBまでのコミット（Aは含まない）を取り込む
+git cherry-pick &lt;commit-A&gt;..&lt;commit-B&gt;</code></pre>
+
+        <h2>2. 競合（コンフリクト）が発生した場合</h2>
+        <p>cherry-pickした変更が現在のブランチのファイルと衝突すると、競合が発生します。その場合は以下の手順で解決します。</p>
+        
+        <ol>
+          <li>競合が発生したファイルを手動で修正します。</li>
+          <li>修正したファイルをステージングエリアに追加します： <code>git add &lt;file&gt;</code></li>
+          <li>cherry-pickプロセスを続行します： <code>git cherry-pick --continue</code></li>
+        </ol>
+
+        <blockquote>
+          <p>途中でcherry-pickを取り消して元の状態に戻したい場合は、 <code>git cherry-pick --abort</code> を実行します。</p>
+        </blockquote>
+
+        <h2>3. まとめ</h2>
+        <p><code>git cherry-pick</code> は強力ですが、多用すると歴史（履歴）が複雑になり、後のマージでコンフリクトを引き起こす原因になることがあります。原則として、ホットフィックスの適用など必要な場面に限定して使用することが推奨されます。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://git-scm.com/docs/git-cherry-pick" target="_blank" rel="noopener noreferrer">Git - git-cherry-pick Documentation</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Tech Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Tech Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+</body>
+</html>

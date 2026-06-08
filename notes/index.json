@@ -1,0 +1,9 @@
+[
+  {
+    "title": "git cherry-pick の使い方と競合回避策",
+    "excerpt": "他のブランチの特定のコミットを取り込む git cherry-pick コマンドの基本的な使い方と、競合が発生した際の解決・回避方法について解説します。",
+    "category": "git",
+    "date": "2026-06-08",
+    "path": "notes/git/git-cherry-pick.html"
+  }
+]

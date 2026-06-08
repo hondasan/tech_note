@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Notebook | 技術ノート</title>
+  <meta name="description" content="AIと育てる日々の技術調査ノート。学んだこと、調べたことを記録するナレッジベース。">
+  <link rel="stylesheet" href="styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="index.html" class="logo-link">
+        <div class="logo-icon">
+          <!-- Book/Notebook SVG icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Tech Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link" id="githubLink">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>AIと育てる <span>技術ノート</span></h1>
+      <p>日々の学びや疑問をAIが調査し、ナレッジ資産として蓄積していくノートスペースです。</p>
+    </section>
+
+    <section class="search-filter-section">
+      <div class="search-wrapper">
+        <input type="text" id="searchInput" class="search-input" placeholder="記事を検索...">
+        <div class="search-icon">
+          <!-- Search SVG icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+      </div>
+
+      <div class="filter-categories" id="filterCategories">
+        <button class="filter-btn active" data-category="all">すべて</button>
+      </div>
+    </section>
+
+    <section class="notes-grid" id="notesGrid">
+      <div class="loading" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 3rem;">
+        ノートを読み込んでいます...
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Tech Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Tech Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+</body>
+</html>
