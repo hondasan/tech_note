@@ -30,8 +30,19 @@
      }
      ```
 
-4. **Gitへの追加・コミット**:
-   - 追加したファイルと `notes/index.json` をGitに追加します。
+4. **`sitemap.xml` の更新**:
+   - ルートにある `sitemap.xml` の `</urlset>` の直前に、新しく追加した記事のURLブロックを追記します。
+     ```xml
+     <url>
+       <loc>https://hondasan.github.io/tech_note/notes/[カテゴリ名]/[記事スラッグ].html</loc>
+       <lastmod>YYYY-MM-DD</lastmod>
+       <changefreq>monthly</changefreq>
+       <priority>0.8</priority>
+     </url>
+     ```
+
+5. **Gitへの追加・コミット**:
+   - 追加・変更したすべてのファイル（記事HTML、`notes/index.json`、`sitemap.xml`）をGitに追加します。
    - 日本語のコミットメッセージでコミットを作成します（例: `feat: [カテゴリ] [タイトル] の調査ノートを追加`）。
 
 ## 2. 記事（HTML）の品質ガイドライン
@@ -40,6 +51,10 @@
 - **読みやすさ**: `p`, `ul`, `ol`, `blockquote` をバランスよく使用し、重要な箇所は太字（`<strong>`）にします。
 - **コードブロック**: ソースコードを記載する場合は `<pre><code>` で囲み、適切なマークアップを行います。
 - **参考リンク**: 記事の最後には、必ず調査の参考にした一次情報（URL）を「参考URL」としてリンク付き（`target="_blank" rel="noopener noreferrer"`）で記載します。
+- **SEO対策の徹底**:
+  - **タイトルタグ & 説明文**: `<title>` に適切な検索キーワードを含め、`<meta name="description">` に120〜160文字程度の魅力的な記事概要を設定します。
+  - **OGP設定**: `og:title`, `og:description`, `og:url` 等のメタタグを適切に設定します。`og:url` は公開用URL（例: `https://hondasan.github.io/tech_note/notes/[カテゴリ名]/[記事スラッグ].html`）に置き換えます。
+  - **構造化データ (JSON-LD)**: 検索エンジンに記事構造を伝えるため、`<head>` 内に `TechArticle` スキーマのJSON-LDを必ず埋め込みます。`headline` (タイトル), `description` (概要), `datePublished` (作成日), `dateModified` (更新日) は実際の値で埋め、`author.name` は `hondasan` に設定します。
 
 ## 3. セキュリティと注意点
 
