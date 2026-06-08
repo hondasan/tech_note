@@ -36,8 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       allNotes = await response.json();
       
-      // 日付の降順にソート
-      allNotes.sort((a, b) => new Date(b.date) - new Date(a.date));
+      // 元のインデックス（追加順）を保持し、日付の降順にソート（同日付の場合は追加順の降順＝新しいものが上）
+      const notesWithIndex = allNotes.map((note, index) => ({ ...note, index }));
+      notesWithIndex.sort((a, b) => {
+        const dateDiff = new Date(b.date) - new Date(a.date);
+        if (dateDiff !== 0) return dateDiff;
+        return b.index - a.index;
+      });
+      allNotes = notesWithIndex;
 
       renderCategories();
       renderNotes();
