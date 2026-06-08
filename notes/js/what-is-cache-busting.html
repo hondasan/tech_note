@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>キャッシュバスター（Cache Busting）の仕組みと実装方法 | Tech Notebook</title>
+  <meta name="description" content="ブラウザの古いキャッシュを強制的に更新させ、常に最新のファイル（JS/CSS/JSON等）を読み込ませる「キャッシュバスター」の概念と実装方法について解説します。">
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Tech Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">js</span>
+          <span class="note-date">2026年06月08日</span>
+        </div>
+        <h1 class="article-title">キャッシュバスター（Cache Busting）の仕組みと実装方法</h1>
+      </div>
+
+      <div class="article-content">
+        <p>ウェブサイトを更新した際、「CSSやJavaScriptを変更したのに、ブラウザをリロードしても表示が変わらない」「スーパーリロード（Ctrl + F5 / Cmd + Shift + R）やキャッシュクリアをしないと新機能が動かない」という現象が起きることがあります。これを解決する技術が<strong>キャッシュバスター (Cache Busting)</strong> です。</p>
+
+        <h2>1. なぜ古いファイルが読み込まれ続けるのか？</h2>
+        <p>ブラウザには、一度読み込んだ画像、CSS、JavaScript、JSONなどのファイルをPCやスマホに一時保存（キャッシュ）する強力な仕組みがあります。これは、2回目以降のページ表示を高速化し、通信量を削減するための重要な機能です。</p>
+        <p>しかし、サーバー側でファイルを更新しても、ブラウザが「まだ古いキャッシュのままで大丈夫」と判断してしまうと、ユーザーの画面には古いファイルが適用されたままになってしまいます。</p>
+
+        <h2>2. キャッシュバスターの基本的な仕組み</h2>
+        <p>キャッシュバスターは、<strong>「URLの一部を変更することで、ブラウザに別のファイルであると認識させ、強制的にサーバーから再ダウンロードさせる」</strong>仕組みです。ブラウザは、URLが1文字でも異なればキャッシュを使わずに新しいファイルを要求する仕様を利用しています。</p>
+
+        <h2>3. 主な実装方法</h2>
+        <p>キャッシュバスターの実装には、いくつかのパターンがあります。</p>
+
+        <h3>方法 A: クエリパラメータにタイムスタンプを付与する（動的制御）</h3>
+        <p>JavaScriptなどで外部のJSONデータやスクリプトを動的にフェッチ（読み込み）する際に有効な方法です。URLの末尾に <code>?t=[タイムスタンプ]</code> を付加します。</p>
+        <pre><code class="language-javascript">// 常に現在時刻（ミリ秒）をパラメータに加えることで、毎アクセスURLが変わる
+const timestamp = Date.now();
+fetch(`notes/index.json?t=${timestamp}`)
+  .then(response => response.json())
+  .then(data => console.log(data));</code></pre>
+        <blockquote>
+          <p><strong>注意：</strong> 毎アクセスURLが異なるため、ブラウザキャッシュは100%効かなくなります。更新頻度が非常に高いJSONデータなどには最適ですが、静的なJSやCSSでこれをやると毎回ダウンロードが発生し、パフォーマンス低下に繋がります。</p>
+        </blockquote>
+
+        <h3>方法 B: クエリパラメータにバージョン番号を付与する（静的制御）</h3>
+        <p>HTMLに直接書き込むCSSやJavaScriptリンクでよく使われます。リリースごとに <code>?v=[バージョン番号]</code> を手動またはビルド時に付加します。</p>
+        <pre><code class="language-html">&lt;!-- バージョンが変わった時だけブラウザは再読み込みする --&gt;
+&lt;link rel="stylesheet" href="styles/site.css?v=1.0.2"&gt;
+&lt;script src="scripts/main.js?v=1.0.2"&gt;&lt;/script&gt;</code></pre>
+
+        <h3>方法 C: ファイル名にハッシュ値を埋め込む（モダン開発）</h3>
+        <p>WebpackやViteなどの近代的なビルドツールを使用する場合、ファイルの内容から算出された固有のハッシュ値をファイル名に自動で付与します（例：<code>main.a8f3c2.js</code>）。ファイルの内容が書き換わった時だけハッシュ値が変化するため、完璧なキャッシュ制御が可能です。</p>
+
+        <h2>4. まとめ</h2>
+        <p>今回の技術ノートシステムでは、記事一覧データベースである <code>index.json</code> のキャッシュによる「新しい記事がトップに表示されない問題」を解決するため、**方法 A（タイムスタンプの付与）**を採用しました。これにより、トップページを開くたびに最新の記事リストが確実に取得・レンダリングされるようになっています。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://developer.mozilla.org/ja/docs/Web/HTTP/Caching" target="_blank" rel="noopener noreferrer">MDN Web Docs: HTTP キャッシュ</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Tech Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Tech Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+</body>
+</html>
