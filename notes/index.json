@@ -19,5 +19,12 @@
     "category": "js",
     "date": "2026-06-08",
     "path": "notes/js/what-is-cache-busting.html"
+  },
+  {
+    "title": "AIアシスタント「Antigravity」の使い方と自動化で得られるメリット",
+    "excerpt": "Google DeepMindが開発したAIコーディングアシスタント「Antigravity」でできること、自動化の事例、および導入による開発のメリットについて詳しく解説します。",
+    "category": "tool",
+    "date": "2026-06-08",
+    "path": "notes/tool/how-to-use-antigravity.html"
   }
 ]

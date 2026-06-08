@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIアシスタント「Antigravity」の使い方と自動化で得られるメリット | Tech Notebook</title>
+  <meta name="description" content="Google DeepMindが開発したAIコーディングアシスタント「Antigravity」でできること、自動化の事例、および導入による開発のメリットについて詳しく解説します。">
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Tech Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">tool</span>
+          <span class="note-date">2026年06月08日</span>
+        </div>
+        <h1 class="article-title">AIアシスタント「Antigravity」の使い方と自動化で得られるメリット</h1>
+      </div>
+
+      <div class="article-content">
+        <p><strong>Antigravity</strong> は、Google DeepMind チームが開発した、自律的かつ高度なコーディング・開発支援に特化したAIコーディングアシスタント（エージェント）です。一般的な対話型AIとは異なり、ローカルファイルの操作、コマンドの提案・実行、Web検索などを駆使して、人間とシームレスにペアプログラミングを行うことができます。</p>
+
+        <h2>1. Antigravityで「できること」</h2>
+        <p>Antigravity は、コードの生成だけでなく、以下のような開発全体の泥臭いタスクを肩代わりすることができます。</p>
+
+        <ul>
+          <li><strong>コードの直接編集・作成:</strong> 新しいファイルの追加から、既存ファイルへのピンポイントな部分置換（差分編集）まで正確に行います。インデントの崩れや構文エラーを最小限に抑えます。</li>
+          <li><strong>コマンドの提案と代行実行:</strong> パッケージのインストール、ビルド、テスト、ローカルサーバーの起動、Gitのステージング・コミット・プッシュなどを実行します（セキュリティのため、実行前に人間が承認するガードレールがあります）。</li>
+          <li><strong>自律的な技術調査:</strong> 内蔵されたWeb検索エンジンや特定のWebドキュメントの読み込みを活用し、信頼できる一次情報をベースに技術的な課題への回答やまとめを作成します。</li>
+          <li><strong>エラーのトラブルシューティング:</strong> コマンド実行時のエラーログを分析し、何が問題だったかを突き止めて自動的に修正コードを書き直します（例: キャッシュバスターの二重キャッシュ問題の自己解決など）。</li>
+        </ul>
+
+        <h2>2. 自動化の具体事例</h2>
+        <p>本プロジェクト（Tech Notebook）は、Antigravityによるタスク自動化の典型的な実例です。以下の一連のワークフローがすべて自動化されています。</p>
+
+        <pre><code class="language-text">[ユーザー] 「〇〇について調べて」とチャットで指示
+  ↓
+[Antigravity] Web検索で正確な情報を調査
+  ↓
+[Antigravity] notes/template.html をベースに新しい記事HTMLを作成
+  ↓
+[Antigravity] notes/index.json（記事データベース）にメタデータを追加
+  ↓
+[Antigravity] Gitに日本語でコミットを作成し、リモートにプッシュ
+  ↓
+[GitHub Actions] 自動でデプロイが走り、数分でGitHub Pagesが更新</code></pre>
+        <p>人間が行うのは「何について知りたいか」を指示することと、最後の「プッシュして」というコマンド実行ボタンを押す（または指示する）ことだけです。</p>
+
+        <h2>3. 導入して嬉しいメリット</h2>
+        <p>Antigravity を開発プロセスに組み込むことで、以下のような「嬉しさ」を実感できます。</p>
+
+        <h3>① 開発スピードの爆発的な向上</h3>
+        <p>仕様設計、テンプレートコードのコピペ、ファイル保存、ビルド確認、コミットメッセージの記述など、これまで手作業で行っていたルーティンが一瞬で終わります。</p>
+
+        <h3>② 認知的負荷の低減</h3>
+        <p>「このコマンドの引数は何だっけ？」「CSSのクラス名はどう定義してたっけ？」といった細かいことを調べる必要がなくなります。人間は「どのような設計にするか」「次に何を解決するか」というクリエイティブな意思決定に集中できます。</p>
+
+        <h3>③ スマホや出先からの開発の実現</h3>
+        <p>スマートフォンなどの音声入力やテキストから大雑把な「質問・依頼」を投げるだけで、裏側でAIが精密なコードや記事を作成し、自動的に本番デプロイまで進めてくれます。パソコンの前に張り付く必要はありません。</p>
+
+        <h3>④ 堅牢なプロジェクト設計ルール（AGENTS.md）</h3>
+        <p>リポジトリのルートに <code>AGENTS.md</code> という指示書を置いておくことで、<strong>別のチャットセッションを開始しても、新しいAIがそのルールを読み取って過去と同じ水準・フォーマットで開発を継続</strong>できます。AIごとのブレがありません。</p>
+
+        <h2>4. まとめ</h2>
+        <p>Antigravity は単なる「コードを書くチャットボット」ではなく、開発者の環境と対話しながら自律的にタスクを完了させる「バーチャルな開発パートナー」です。ルールを与えれば与えるほどプロジェクトに適応し、あなたの開発や学習の効率を何倍にも引き上げてくれます。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub - リポジトリの管理</a></li>
+          <li><a href="https://deepmind.google/" target="_blank" rel="noopener noreferrer">Google DeepMind</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Tech Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Tech Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+</body>
+</html>
