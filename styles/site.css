@@ -607,3 +607,65 @@ footer {
     font-size: 2rem;
   }
 }
+
+
+/* テーブルの折り返し・レスポンシブ改善 */
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  table-layout: auto;
+  word-break: break-all;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.article-content th,
+.article-content td {
+  padding: 0.75rem;
+  border: 1px solid var(--glass-border);
+  text-align: left;
+  white-space: normal;
+}
+
+.article-content th {
+  background: rgba(255, 255, 255, 0.05);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .article-content table:has(td[data-label]) thead {
+    display: none;
+  }
+  
+  .article-content table:has(td[data-label]) tr {
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    display: block;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.02);
+  }
+  
+  .article-content table:has(td[data-label]) td {
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0.5rem;
+    text-align: right;
+  }
+  
+  .article-content table:has(td[data-label]) td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    float: left;
+    text-align: left;
+    color: var(--text-muted);
+    margin-right: 1rem;
+  }
+  
+  .article-content table:has(td[data-label]) td:last-child {
+    border-bottom: 0;
+  }
+}

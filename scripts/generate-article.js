@@ -32,7 +32,7 @@ JSON Schema:
   "title": "A compelling, search-optimized title in Japanese (around 30 characters).",
   "excerpt": "A short, engaging summary of the article in Japanese (120-160 characters).",
   "articleType": "Choose the most appropriate schema type from [TechArticle, NewsArticle, Article] based on the theme.",
-  "htmlContent": "The main content of the article in semantic HTML. Do not include <h1>, <html>, <head>, or <body> tags. Use <h2> and <h3> for structuring headings. Balance the use of <p>, <ul>, <ol>, <table>, <blockquote>, and <strong> for readability. For code blocks (if applicable), use <pre><code class=\\"language-xxx\\">...</code></pre> with appropriate syntax highlighting class. At the very end of the content, ALWAYS include a '参考URL' (Reference URLs) section with bulleted links pointing to official documentation or primary sources (using target=\\"_blank\\" rel=\\"noopener noreferrer\\")."
+  "htmlContent": "The main content of the article in semantic HTML. Do not include <h1>, <html>, <head>, or <body> tags. Use <h2> and <h3> for structuring headings. Balance the use of <p>, <ul>, <ol>, <table>, <blockquote>, and <strong> for readability. If using a <table>, ALWAYS add a 'data-label' attribute to each <td> matching its corresponding <th> header text (e.g., <td data-label=\\\"ヘッダー名\\\">値</td>) to make it mobile-friendly. For code blocks (if applicable), use <pre><code class=\\"language-xxx\\">...</code></pre> with appropriate syntax highlighting class. At the very end of the content, ALWAYS include a '参考URL' (Reference URLs) section with bulleted links pointing to official documentation or primary sources (using target=\\"_blank\\" rel=\\"noopener noreferrer\\")."
 }
 
 Theme: "${issueTitle}"
