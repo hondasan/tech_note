@@ -6,6 +6,12 @@ on:
   push:
     branches: ["main"]
 
+  # Issueからの自動生成ワークフロー完了時にもトリガーする (GITHUB_TOKEN経由のpush制限回避)
+  workflow_run:
+    workflows: ["Generate Auto Article from Issue"]
+    types:
+      - completed
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
