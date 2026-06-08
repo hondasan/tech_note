@@ -84,28 +84,47 @@
       </div>
 
       <div class="article-content">
-        <p>本プロジェクト<strong>「Tech Notebook」</strong>は、AI（Gemini）と開発者が共同で育てる技術ノートです。スマートフォンやパソコンのブラウザ、または開発チャットから投げる技術的な疑問をAIが自動的に調査・解説記事化し、GitHub Pagesで瞬時に全世界へパブリッシュ（公開）するモダンな自動化システムを採用しています。そのアーキテクチャについて詳しく解説します。</p>
+        <p>本プロジェクト<strong>「Tech Notebook」</strong>は、AI（Gemini）を活用して開発プロセスにおける疑問や調査結果を自動的にドキュメント化する技術ノートシステムです。本システムは、ローカル開発環境から直接指示を出す「Antigravity（AIアシスタント）ルート」と、スマートフォンなど外出先から手軽に起票できる「GitHub Issues（サーバーレス）ルート」の2つのワークフローで運用されており、いつでもシームレスに記事を追加・公開できます。</p>
 
-        <h2>1. 全体アーキテクチャ・フロー</h2>
-        <p>Tech Notebookは、パソコンの前にいる時の「チャット（ローカル開発）ルート」と、外出先での「GitHub Issues（サーバーレス）ルート」という2つのアプローチで自動的に記事が蓄積されます。</p>
+        <h2>1. 2つの投稿ルートと全体フロー</h2>
+        <p>Tech Notebookは、状況に合わせて使い分けられる2つの投稿ルートを用意しています。</p>
 
-        <pre><code class="language-text">【1. チャットルート (ローカルPC)】
-[開発チャット] 指示「〇〇について調べて」 ➔ [AIアシスタント] 調査、HTML生成 ➔ 自動コミット・プッシュ
+        <pre><code class="language-text">【1. チャット（Antigravity）ルート (PCローカル)】
+[開発チャット] 「〇〇について調べて」と指示 ➔ [Antigravity] 調査、HTMLファイル生成 ➔ 自動コミット・プッシュ
 
-【2. Issuesルート (スマホ/外出先 - サーバーレス)】
-[スマホ] GitHub Issuesで起票 (タイトルにテーマ)
+【2. GitHub Issuesルート (スマホ/外出先)】
+[スマートフォン] GitHubのIssueを作成（タイトルに調査テーマ）
   ↓
-[GitHub Actions] 起票ユーザー(hondasan)を検知して起動 (Node.js 24)
+[GitHub Actions] 許可された起票ユーザーを検知してワークフロー起動
   ↓
 [generate-article.js] Gemini 3.5 Flash APIを呼び出し、構造化された記事データを取得
   ↓
 [generate-article.js] HTMLファイル生成、index.json更新、sitemap.xml更新
   ↓
-[GitHub Actions] 自動コミット＆GitHubへプッシュ、Issueに完了コメント＆自動クローズ
+[GitHub Actions] 自動コミット＆プッシュ、Issueに完了コメントを追加して自動クローズ
   ↓
-[GitHub Actions] Pagesデプロイ (workflow_runによるトリガー) ➔ 本番公開</code></pre>
+[GitHub Actions] サイトデプロイ（GitHub Pages）➔ 記事が公開される</code></pre>
 
-        <h2>2. 採用された主要な機能と技術的特徴</h2>
+        <h2>2. AIコーディングアシスタント「Antigravity」によるローカル自動化</h2>
+        <p>PCで作業している際は、AIコーディングアシスタント<strong>「Antigravity」</strong>を活用して技術調査と記事のパブリッシュを自動化できます。開発チャットで指示を出すだけで、Antigravityは以下のタスクを自律的に完了させます。</p>
+        <ul>
+          <li><strong>技術調査の実施:</strong> Web検索や関連ドキュメントの参照により、信頼性の高い情報を収集します。</li>
+          <li><strong>HTMLファイルの生成:</strong> 定義された共通テンプレート（<code>template.html</code>）を基に、意味の通ったセマンティックなHTML構造の記事ファイルを作成します。</li>
+          <li><strong>インデックス登録:</strong> 記事一覧データベースである <code>index.json</code> に新規記事のメタデータ（タイトル、概要、カテゴリ、日付）を追記します。</li>
+          <li><strong>コミットとプッシュ:</strong> Gitのステージング、コミットメッセージ作成、リモートリポジトリへのプッシュを代行します。</li>
+        </ul>
+
+        <h2>3. 外出先からの投稿を実現する GitHub Issues ルート</h2>
+        <p>開発PCが手元にない外出先やスマートフォンからでも、GitHubのIssueを作成することで自動的に記事を追加できます。GitHub ActionsとGemini API（`gemini-3.5-flash` モデル）がバックエンドで連携し、サーバーレス環境で動作します。</p>
+        <ul>
+          <li><strong>安全な実行制限:</strong> スパムや無駄なAPI呼び出しを防ぐため、特定の許可されたGitHubアカウントからの起票のみを処理対象とするトリガー制限を設けています。</li>
+          <li><strong>自動パブリッシュパイプライン:</strong> Actionsが完了すると自動的にIssueへ完了コメントが書き込まれてクローズされ、デプロイ用ワークフローが連携して数分でサイトが更新されます。</li>
+        </ul>
+
+        <h2>4. 競合（コンフリクト）の自動回避</h2>
+        <p>ローカル（Antigravity）とリモート（GitHub Issues）の2つのルートから非同期に記事が追加されるため、データの競合を防止する仕組みを設けています。Antigravityがローカルで作業を開始する直前に、必ず自動で <code>git pull</code> を実行してリモートの変更を取得する運用ルールをAIに設定しています。これにより、Gitコンフリクトを回避してシームレスに記事を追加し続けることができます。</p>
+
+        <h2>5. 静的サイトにおける技術的工夫とUX設計</h2>
         <p>静的サイトとしてのパフォーマンスを極限まで保ちながら、SEO効果を高め、快適な表示速度を両立するための様々な仕組みが導入されています。</p>
 
         <h3>① クライアントサイドでの動的カード描画 (main.js)</h3>
@@ -127,10 +146,7 @@
           <li><strong>クローラー最適化:</strong> 検索エンジンのクローラーを適切に誘導する <code>robots.txt</code> および <code>sitemap.xml</code> を配備し、新しい記事が追加されるたびにAIが自動でXMLサイトマップにURLブロックを追記するフローを構築しています。</li>
         </ul>
 
-        <h2>3. 競合（コンフリクト）の自動回避</h2>
-        <p>クラウド側（Issueから追加）とローカル側（チャットから追加）でデータが競合し、Gitでエラーになるのを防ぐため、ローカルAI（私）がチャットから記事を作成する際、<strong>「執筆を開始する直前に必ず自動で <code>git pull</code> を実行して同期をとる」</strong>ルールを <code>AGENTS.md</code> に組み込んでいます。これにより、コンフリクトを完全に気にせず、いつでもシームレスに開発と執筆が行えます。</p>
-
-        <h2>4. まとめ</h2>
+        <h2>6. まとめ</h2>
         <p>本システムは、最新のAIモデル（Gemini 3.5 Flash）とGitHubの自動化パイプライン（Actions）を組み合わせることで、「疑問の発生」から「学習成果のパブリッシュ」までの時間と手間を限りなくゼロに近づけた、究極の個人向けナレッジ蓄積ツールです。</p>
 
         <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
