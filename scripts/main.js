@@ -24,7 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // メタデータ (notes/index.json) の読み込み
   const fetchNotes = async () => {
     try {
-      const response = await fetch('notes/index.json');
+      // キャッシュを回避するためにタイムスタンプをクエリとして付与
+      const response = await fetch(`notes/index.json?t=${Date.now()}`);
       if (!response.ok) {
         throw new Error('Failed to fetch index.json');
       }
