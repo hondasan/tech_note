@@ -1,0 +1,51 @@
+name: Generate Auto Article from Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  build:
+    # ユーザーが 'hondasan' の場合のみ実行するセキュリティ制限
+    if: github.event.issue.user.login == 'hondasan'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate Article via Gemini API
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: node scripts/generate-article.js
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          
+          # 変更がある場合のみコミット＆プッシュ
+          if ! git diff --cached --quiet; then
+            git commit -m "feat: 自動記事生成 (Issue #${{ github.event.issue.number }}): ${{ github.event.issue.title }}"
+            git push origin main
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Comment and Close Issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} --body "🤖 AIによる記事の自動生成とデプロイが完了しました！数分後にGitHub Pagesに反映されます。 🎉"
+          gh issue close ${{ github.event.issue.number }}
