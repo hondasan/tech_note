@@ -26,5 +26,12 @@
     "category": "tool",
     "date": "2026-06-08",
     "path": "notes/tool/how-to-use-antigravity.html"
+  },
+  {
+    "title": "【初心者向け】Git基本コマンドの使い方を徹底解説",
+    "excerpt": "Gitをマスターするための基本コマンド（init, clone, add, commit, push, pull）の役割と具体的な使い方を、初心者向けに分かりやすく解説します。チーム開発や個人開発で必須となるバージョン管理の第一歩を体系的に学び、日々の開発効率を向上させましょう。",
+    "category": "git",
+    "date": "2026-06-08",
+    "path": "notes/git/git-basic-commands-guide.html"
   }
 ]

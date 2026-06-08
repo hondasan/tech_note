@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【初心者向け】Git基本コマンドの使い方を徹底解説 | Tech Notebook</title>
+  <meta name="description" content="Gitをマスターするための基本コマンド（init, clone, add, commit, push, pull）の役割と具体的な使い方を、初心者向けに分かりやすく解説します。チーム開発や個人開発で必須となるバージョン管理の第一歩を体系的に学び、日々の開発効率を向上させましょう。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="【初心者向け】Git基本コマンドの使い方を徹底解説 | Tech Notebook">
+  <meta property="og:description" content="Gitをマスターするための基本コマンド（init, clone, add, commit, push, pull）の役割と具体的な使い方を、初心者向けに分かりやすく解説します。チーム開発や個人開発で必須となるバージョン管理の第一歩を体系的に学び、日々の開発効率を向上させましょう。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hondasan.github.io/tech_note/notes/git/git-basic-commands-guide.html">
+  <meta property="og:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta property="og:site_name" content="Tech Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="【初心者向け】Git基本コマンドの使い方を徹底解説 | Tech Notebook">
+  <meta name="twitter:description" content="Gitをマスターするための基本コマンド（init, clone, add, commit, push, pull）の役割と具体的な使い方を、初心者向けに分かりやすく解説します。チーム開発や個人開発で必須となるバージョン管理の第一歩を体系的に学び、日々の開発効率を向上させましょう。">
+  <meta name="twitter:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) - TechArticle -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "【初心者向け】Git基本コマンドの使い方を徹底解説",
+    "description": "Gitをマスターするための基本コマンド（init, clone, add, commit, push, pull）の役割と具体的な使い方を、初心者向けに分かりやすく解説します。チーム開発や個人開発で必須となるバージョン管理の第一歩を体系的に学び、日々の開発効率を向上させましょう。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-08",
+    "dateModified": "2026-06-08",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Tech Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hondasan.github.io/tech_note/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Tech Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">git</span>
+          <span class="note-date">2026年06月08日</span>
+        </div>
+        <h1 class="article-title">【初心者向け】Git基本コマンドの使い方を徹底解説</h1>
+      </div>
+
+      <div class="article-content">
+        <h2>Gitの基本概念とワークフロー</h2><p>Gitは、ファイルの変更履歴を管理する分散型バージョン管理システムです。Gitを効率的に使いこなすためには、まず「ワークツリー（作業ディレクトリ）」「ステージングエリア（インデックス）」「ローカルリポジトリ」「リモートリポジトリ」という4つの領域のつながりを理解することが重要です。</p><p>作業スペースで変更したファイルは、まずステージングエリアに登録され、その後ローカルリポジトリに記録（コミット）されます。そして、最終的にその変更を共有サーバー（GitHubなど）のリモートリポジトリへ送信（プッシュ）します。この流れを意識しながら、各コマンドの役割を見ていきましょう。</p><h2>最頻出のGit基本コマンド一覧</h2><h3>1. プロジェクトの開始と複製（init, clone）</h3><p>新しくGitリポジトリを作成する場合や、既存のリモートリポジトリをローカルに複製する場合は以下のコマンドを使用します。</p><pre><code class="language-bash"># 新規リポジトリの初期化
+git init
+
+# リモートリポジトリのクローン（複製）
+git clone &lt;リポジトリのURL&gt;</code></pre><h3>2. 変更の記録（status, add, commit）</h3><p>ファイルの作成や編集を行ったら、その変更をリポジトリに記録します。</p><pre><code class="language-bash"># 現在の変更ステータスを確認する
+git status
+
+# 特定のファイルをステージングエリアに追加する
+git add index.html
+
+# すべての変更ファイルを一括でステージングエリアに追加する
+git add .
+
+# メッセージを付けてコミット（履歴の記録）を行う
+git commit -m "feat: トップページのレイアウトを作成"</code></pre><blockquote><strong>ポイント：</strong>コミットメッセージは「何を変更したか」が第三者にも一目で伝わるよう、簡潔かつ具体的に記述しましょう。</blockquote><h3>3. リモートリポジトリとの同期（push, pull, fetch）</h3><p>複数人で開発を行う際や、バックアップとしてGitHub等にコードをアップロードする際は、リモートリポジトリとの同期を行います。</p><pre><code class="language-bash"># ローカルの変更をリモートリポジトリに送信する
+git push origin main
+
+# リモートリポジトリの最新の変更を取り込んでマージする
+git pull origin main
+
+# リモートリポジトリの最新情報を取得する（ワークツリーには反映しない）
+git fetch origin</code></pre><h3>4. 履歴の確認（log）</h3><p>これまでのコミット履歴を確認したいときは、以下のコマンドを使用します。</p><pre><code class="language-bash"># 過去のコミット履歴を一覧表示する
+git log
+
+# 履歴を1行でシンプルに表示する
+git log --oneline</code></pre><h2>Git操作を安全に行うためのベストプラクティス</h2><ul><li><strong>こまめにコミットする：</strong>一つのコミットには一つの意味（タスク）だけを含めるようにすると、バグが発生した際の切り分けが容易になります。</li><li><strong>作業用ブランチを作成する：</strong>メインのコードベース（main/masterブランチ）で直接作業せず、機能ごとに専用のブランチを作成して開発を行いましょう。</li><li><strong>プッシュ前にプルする：</strong>他の開発者の変更と競合（コンフリクト）するのを防ぐため、プッシュする前には必ずリモートの最新状態を手元にプルして確認する習慣をつけましょう。</li></ul><h2>参考URL</h2><ul><li><a href="https://git-scm.com/" target="_blank" rel="noopener noreferrer">Git 公式サイト (英語)</a></li><li><a href="https://git-scm.com/book/ja/v2" target="_blank" rel="noopener noreferrer">Pro Git ブック (日本語訳)</a></li></ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Tech Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Tech Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+</body>
+</html>
