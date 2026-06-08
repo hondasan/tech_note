@@ -3,6 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('searchInput');
   const filterCategories = document.getElementById('filterCategories');
   const githubLink = document.getElementById('githubLink');
+  const loadMoreContainer = document.getElementById('loadMoreContainer');
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+
+  const ITEMS_PER_PAGE = 2; // 1ページあたりの初期表示件数 (動作確認のため2件に設定。記事が増えたら 12 などに増やしてください)
+  let displayedCount = ITEMS_PER_PAGE;
 
   let allNotes = [];
   let activeCategory = 'all';
@@ -108,8 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
             該当するノートが見つかりませんでした。
           </div>
         `;
+        loadMoreContainer.style.display = 'none';
       } else {
-        filteredNotes.forEach(note => {
+        // 表示件数分だけ切り取る
+        const notesToDisplay = filteredNotes.slice(0, displayedCount);
+
+        notesToDisplay.forEach(note => {
           const card = document.createElement('a');
           card.href = note.path;
           card.className = 'note-card';
@@ -133,6 +142,13 @@ document.addEventListener('DOMContentLoaded', () => {
           `;
           notesGrid.appendChild(card);
         });
+
+        // 「もっと見る」ボタンの表示制御
+        if (filteredNotes.length > displayedCount) {
+          loadMoreContainer.style.display = 'flex';
+        } else {
+          loadMoreContainer.style.display = 'none';
+        }
       }
       
       notesGrid.style.opacity = '1';
@@ -147,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         buttons.forEach(b => b.classList.remove('active'));
         e.target.classList.add('active');
         activeCategory = e.target.getAttribute('data-category');
+        displayedCount = ITEMS_PER_PAGE; // 表示件数をリセット
         renderNotes();
       });
     });
@@ -158,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
       searchQuery = e.target.value;
+      displayedCount = ITEMS_PER_PAGE; // 表示件数をリセット
       renderNotes();
     }, 200);
   });
@@ -185,5 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 初期化処理
   setupGithubLink();
+  
+  // 「もっと見る」ボタンのイベントリスナー
+  loadMoreBtn.addEventListener('click', () => {
+    displayedCount += ITEMS_PER_PAGE;
+    renderNotes();
+  });
+
   fetchNotes();
 });
