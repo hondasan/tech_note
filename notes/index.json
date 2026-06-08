@@ -47,5 +47,12 @@
     "category": "tool",
     "date": "2026-06-08",
     "path": "notes/tool/tech-note-architecture.html"
+  },
+  {
+    "title": "サッカーワールドカップの歴史と最新ルール解説",
+    "excerpt": "世界最大のスポーツ of 祭典であるサッカーワールドカップの歴史を紐解くとともに、近年の大会で導入されたVARや半自動オフサイドなどの最新ルールについて分かりやすく解説します。",
+    "category": "sports",
+    "date": "2026-06-08",
+    "path": "notes/sports/worldcup-history-rules.html"
   }
 ]

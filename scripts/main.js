@@ -87,9 +87,24 @@ document.addEventListener('DOMContentLoaded', () => {
       'node': 'Node.js',
       'ops': 'DevOps / Infra',
       'security': 'Security',
-      'tool': 'Tools'
+      'tool': 'Tools',
+      'news': 'News',
+      'sports': 'Sports',
+      'general': 'General',
+      'science': 'Science',
+      'culture': 'Culture'
     };
-    return mapping[category.toLowerCase()] || category;
+    
+    const key = category.toLowerCase();
+    if (mapping[key]) {
+      return mapping[key];
+    }
+    
+    // 未登録カテゴリの場合：ハイフンをスペースにし、単語の頭文字を大文字にする (例: soccer-worldcup -> Soccer Worldcup)
+    return key
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   };
 
   // 記事カードのレンダリング

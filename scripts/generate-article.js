@@ -18,7 +18,7 @@ async function main() {
 
   // Gemini APIへのプロンプト作成
   const systemPrompt = `
-You are a professional technical writer and software engineer.
+You are a professional writer, researcher, and explanation expert.
 Analyze the given "Theme" and perform a deep dive research.
 Create a highly informative, premium, and SEO-friendly article in Japanese.
 
@@ -27,11 +27,12 @@ DO NOT wrap the response in markdown blocks like \`\`\`json or add any extra tex
 
 JSON Schema:
 {
-  "category": "Category ID in lowercase. Choose the most relevant one from [git, html, js, ts, ai, react, nextjs, node, ops, security, tool]. If none fit, create a new one using only lowercase letters.",
-  "slug": "Article slug. Lowercase letters and hyphens only (e.g., git-cherry-pick).",
+  "category": "Category ID in lowercase. Choose the most relevant one from [news, sports, general, science, culture, git, html, js, ts, ai, react, nextjs, node, ops, security, tool]. If none of these fit, create a new one using only lowercase letters (e.g., soccer, history).",
+  "slug": "Article slug. Lowercase letters and hyphens only (e.g., worldcup-new-rules).",
   "title": "A compelling, search-optimized title in Japanese (around 30 characters).",
   "excerpt": "A short, engaging summary of the article in Japanese (120-160 characters).",
-  "htmlContent": "The main content of the article in semantic HTML. Do not include <h1>, <html>, <head>, or <body> tags. Use <h2> and <h3> for structuring headings. Balance the use of <p>, <ul>, <ol>, <blockquote>, and <strong> for readability. For code blocks, use <pre><code class=\\"language-xxx\\">...</code></pre> with appropriate syntax highlighting class. At the very end of the content, ALWAYS include a '参考URL' (Reference URLs) section with bulleted links pointing to official documentation or primary sources (using target=\\"_blank\\" rel=\\"noopener noreferrer\\")."
+  "articleType": "Choose the most appropriate schema type from [TechArticle, NewsArticle, Article] based on the theme.",
+  "htmlContent": "The main content of the article in semantic HTML. Do not include <h1>, <html>, <head>, or <body> tags. Use <h2> and <h3> for structuring headings. Balance the use of <p>, <ul>, <ol>, <table>, <blockquote>, and <strong> for readability. For code blocks (if applicable), use <pre><code class=\\"language-xxx\\">...</code></pre> with appropriate syntax highlighting class. At the very end of the content, ALWAYS include a '参考URL' (Reference URLs) section with bulleted links pointing to official documentation or primary sources (using target=\\"_blank\\" rel=\\"noopener noreferrer\\")."
 }
 
 Theme: "${issueTitle}"
@@ -115,6 +116,8 @@ Theme: "${issueTitle}"
     let templateContent = fs.readFileSync(templatePath, 'utf-8');
     
     // テンプレートのプレースホルダ置換
+    const articleType = articleData.articleType || 'Article';
+    
     let articleHtml = templateContent
       .replace(/記事のタイトル/g, articleData.title)
       .replace(/記事の簡単な説明文。/g, articleData.excerpt)
@@ -123,6 +126,7 @@ Theme: "${issueTitle}"
       .replace(/YYYY-MM-DD/g, dateStr)
       .replace(/\[category\]/g, articleData.category)
       .replace(/\[slug\]/g, articleData.slug)
+      .replace(/ARTICLE_TYPE/g, articleType)
       .replace(
         /<div class="article-content">[\s\S]*?<\/div>/,
         `<div class="article-content">\n        ${articleData.htmlContent}\n      </div>`
