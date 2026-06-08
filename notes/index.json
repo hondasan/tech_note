@@ -40,5 +40,12 @@
     "category": "ai",
     "date": "2026-06-08",
     "path": "notes/ai/gemini-api-guide-rpm-tpm.html"
+  },
+  {
+    "title": "Tech Notebook のシステム構成と自動化の仕組み",
+    "excerpt": "本プロジェクト「Tech Notebook」の全体像、GitHub ActionsとGemini APIを組み合わせた自動記事生成、SEO対策、キャッシュ回避などのシステム構成について詳しく解説します。",
+    "category": "tool",
+    "date": "2026-06-08",
+    "path": "notes/tool/tech-note-architecture.html"
   }
 ]

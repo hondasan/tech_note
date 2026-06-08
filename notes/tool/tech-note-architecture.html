@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Notebook のシステム構成と自動化の仕組み | Tech Notebook</title>
+  <meta name="description" content="本プロジェクト「Tech Notebook」の全体像、GitHub ActionsとGemini APIを組み合わせた自動記事生成、SEO対策、キャッシュ回避などのシステム構成について詳しく解説します。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="Tech Notebook のシステム構成と自動化の仕組み | Tech Notebook">
+  <meta property="og:description" content="本プロジェクト「Tech Notebook」の全体像、GitHub ActionsとGemini APIを組み合わせた自動記事生成、SEO対策、キャッシュ回避などのシステム構成について詳しく解説します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hondasan.github.io/tech_note/notes/tool/tech-note-architecture.html">
+  <meta property="og:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta property="og:site_name" content="Tech Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tech Notebook のシステム構成と自動化の仕組み | Tech Notebook">
+  <meta name="twitter:description" content="本プロジェクト「Tech Notebook」の全体像、GitHub ActionsとGemini APIを組み合わせた自動記事生成、SEO対策、キャッシュ回避などのシステム構成について詳しく解説します。">
+  <meta name="twitter:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) - TechArticle -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Tech Notebook のシステム構成と自動化の仕組み",
+    "description": "本プロジェクト「Tech Notebook」の全体像、GitHub ActionsとGemini APIを組み合わせた自動記事生成、SEO対策、キャッシュ回避などのシステム構成について詳しく解説します。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-08",
+    "dateModified": "2026-06-08",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Tech Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hondasan.github.io/tech_note/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Tech Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">tool</span>
+          <span class="note-date">2026年06月08日</span>
+        </div>
+        <h1 class="article-title">Tech Notebook のシステム構成と自動化の仕組み</h1>
+      </div>
+
+      <div class="article-content">
+        <p>本プロジェクト<strong>「Tech Notebook」</strong>は、AI（Gemini）と開発者が共同で育てる技術ノートです。スマートフォンやパソコンのブラウザ、または開発チャットから投げる技術的な疑問をAIが自動的に調査・解説記事化し、GitHub Pagesで瞬時に全世界へパブリッシュ（公開）するモダンな自動化システムを採用しています。そのアーキテクチャについて詳しく解説します。</p>
+
+        <h2>1. 全体アーキテクチャ・フロー</h2>
+        <p>Tech Notebookは、パソコンの前にいる時の「チャット（ローカル開発）ルート」と、外出先での「GitHub Issues（サーバーレス）ルート」という2つのアプローチで自動的に記事が蓄積されます。</p>
+
+        <pre><code class="language-text">【1. チャットルート (ローカルPC)】
+[開発チャット] 指示「〇〇について調べて」 ➔ [AIアシスタント] 調査、HTML生成 ➔ 自動コミット・プッシュ
+
+【2. Issuesルート (スマホ/外出先 - サーバーレス)】
+[スマホ] GitHub Issuesで起票 (タイトルにテーマ)
+  ↓
+[GitHub Actions] 起票ユーザー(hondasan)を検知して起動 (Node.js 24)
+  ↓
+[generate-article.js] Gemini 3.5 Flash APIを呼び出し、構造化された記事データを取得
+  ↓
+[generate-article.js] HTMLファイル生成、index.json更新、sitemap.xml更新
+  ↓
+[GitHub Actions] 自動コミット＆GitHubへプッシュ、Issueに完了コメント＆自動クローズ
+  ↓
+[GitHub Actions] Pagesデプロイ (workflow_runによるトリガー) ➔ 本番公開</code></pre>
+
+        <h2>2. 採用された主要な機能と技術的特徴</h2>
+        <p>静的サイトとしてのパフォーマンスを極限まで保ちながら、SEO効果を高め、快適な表示速度を両立するための様々な仕組みが導入されています。</p>
+
+        <h3>① クライアントサイドでの動的カード描画 (main.js)</h3>
+        <p>ポータル（トップページ）は、静的なHTMLを毎回AIが修正するのではなく、記事全体のメタデータを管理する <code>notes/index.json</code> を非同期フェッチ（fetch）し、カード要素を動的に構築します。これにより、デザインの変更や記事データの管理が完全に分離され、リポジトリが破綻しません。</p>
+
+        <h3>② 「もっと見る」ボタン（ページネーション機能）</h3>
+        <p>記事数が多くなった際にページ読み込みが重くならないよう、1ページあたり初期表示を <strong>12件</strong> に制限しています。フィルタリングや検索が行われた際にも動的に計算され、制限を超える記事がある場合のみ「もっと見る」ボタンがアニメーション表示されます。ボタンを押すと12件ずつ段階的にフェードイン描画されます。</p>
+
+        <h3>③ キャッシュバスター（二重キャッシュの完全回避）</h3>
+        <p>静的ホスティングであるGitHub Pages特有の強力なブラウザキャッシュ対策として、以下の仕組みを組み込んでいます。</p>
+        <ul>
+          <li><strong>データキャッシュ回避:</strong> <code>index.json</code> をフェッチする際に、末尾にタイムスタンプ（<code>?t=Date.now()</code>）をクエリパラメータとして動的付与。</li>
+          <li><strong>プログラムキャッシュ回避:</strong> <code>index.html</code> から <code>main.js</code> や <code>site.css</code> をロードする際に、バージョン（<code>?v=1.0.1</code>）を付与し、新しいロジック（キャッシュバスター処理）がブラウザで即座に動作するように強制更新します。</li>
+        </ul>
+
+        <h3>④ 収益化に向けた高度なSEO対策</h3>
+        <ul>
+          <li><strong>構造化データ (JSON-LD) の埋め込み:</strong> 検索エンジン（Google等）が記事構造をより深く解釈できるよう、各HTMLの <code>&lt;head&gt;</code> 内に <strong>`TechArticle` スキーマ</strong> を動的に自動埋め込みしています（投稿日、更新日、著者名 <code>hondasan</code> などがマークアップされます）。</li>
+          <li><strong>クローラー最適化:</strong> 検索エンジンのクローラーを適切に誘導する <code>robots.txt</code> および <code>sitemap.xml</code> を配備し、新しい記事が追加されるたびにAIが自動でXMLサイトマップにURLブロックを追記するフローを構築しています。</li>
+        </ul>
+
+        <h2>3. 競合（コンフリクト）の自動回避</h2>
+        <p>クラウド側（Issueから追加）とローカル側（チャットから追加）でデータが競合し、Gitでエラーになるのを防ぐため、ローカルAI（私）がチャットから記事を作成する際、<strong>「執筆を開始する直前に必ず自動で <code>git pull</code> を実行して同期をとる」</strong>ルールを <code>AGENTS.md</code> に組み込んでいます。これにより、コンフリクトを完全に気にせず、いつでもシームレスに開発と執筆が行えます。</p>
+
+        <h2>4. まとめ</h2>
+        <p>本システムは、最新のAIモデル（Gemini 3.5 Flash）とGitHubの自動化パイプライン（Actions）を組み合わせることで、「疑問の発生」から「学習成果のパブリッシュ」までの時間と手間を限りなくゼロに近づけた、究極の個人向けナレッジ蓄積ツールです。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://github.com/features/actions" target="_blank" rel="noopener noreferrer">GitHub Actions オフィシャルサイト</a></li>
+          <li><a href="https://ai.google.dev/gemini-api/docs" target="_blank" rel="noopener noreferrer">Google Gemini API ドキュメント</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Tech Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Tech Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+</body>
+</html>
