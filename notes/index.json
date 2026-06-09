@@ -173,5 +173,12 @@
     "category": "tool",
     "date": "2026-06-09",
     "path": "notes/tool/claude-code-windows11-setup.html"
+  },
+  {
+    "title": "Windows 11でCodex CLIを導入する最短手順と「できること」・「権限・プライバシー・GitHub連携」の注意点まとめ",
+    "excerpt": "OpenAIの強力なターミナル向けAIコーディングエージェント「Codex CLI」をWindows 11にインストールして使い始めるまでの最新手順を解説します。GitHubアカウントの要否、主な機能、実行権限、データプライバシー・オプトアウト設定まで網羅しています。",
+    "category": "tool",
+    "date": "2026-06-09",
+    "path": "notes/tool/codex-cli-windows11-setup.html"
   }
 ]

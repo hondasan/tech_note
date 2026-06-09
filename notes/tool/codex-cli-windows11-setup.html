@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../../images/favicon.png" type="image/png">
+  <title>Windows 11でCodex CLIを導入する最短手順と「できること」・「権限・プライバシー・GitHub連携」の注意点まとめ | Knowledge Notebook</title>
+  <meta name="description" content="OpenAIの強力なターミナル向けAIコーディングエージェント「Codex CLI」をWindows 11にインストールして使用するまでの最新手順を解説します。GitHubアカウントの要否、主な機能、実行権限、データプライバシー・オプトアウト設定まで網羅しています。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="Windows 11でCodex CLIを導入する最短手順と「できること」・「権限・プライバシー・GitHub連携」の注意点まとめ | Knowledge Notebook">
+  <meta property="og:description" content="OpenAIの強力なターミナル向けAIコーディングエージェント「Codex CLI」をWindows 11にインストールして使用するまでの最新手順を解説します。GitHubアカウントの要否、主な機能、実行権限、データプライバシー・オプトアウト設定まで網羅しています。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hondasan.github.io/tech_note/notes/tool/codex-cli-windows11-setup.html">
+  <meta property="og:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta property="og:site_name" content="Knowledge Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Windows 11でCodex CLIを導入する最短手順と「できること」・「権限・プライバシー・GitHub連携」の注意点まとめ | Knowledge Notebook">
+  <meta name="twitter:description" content="OpenAIの強力なターミナル向けAIコーディングエージェント「Codex CLI」をWindows 11にインストールして使用するまでの最新手順を解説します。GitHubアカウントの要否、主な機能、実行権限、データプライバシー・オプトアウト設定まで網羅しています。">
+  <meta name="twitter:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Windows 11でCodex CLIを導入する最短手順と「できること」・「権限・プライバシー・GitHub連携」の注意点まとめ",
+    "description": "OpenAIの強力なターミナル向けAIコーディングエージェント「Codex CLI」をWindows 11にインストールして使用するまでの最新手順を解説します。GitHubアカウントの要否、主な機能、実行権限、データプライバシー・オプトアウト設定まで網羅しています。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-09",
+    "dateModified": "2026-06-09",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knowledge Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hondasan.github.io/tech_note/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Knowledge Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">tool</span>
+          <span class="note-date">2026年6月9日</span>
+        </div>
+        <h1 class="article-title">Windows 11でCodex CLIを導入する最短手順と「できること」・「権限・プライバシー・GitHub連携」の注意点まとめ</h1>
+      </div>
+
+      <div class="article-content">
+        <p>OpenAIが提供する<strong>「Codex」</strong>は、ターミナル（CLI）上で動作する自律型のAIソフトウェアエンジニアリングエージェントです。Claude Codeなどと同様に、開発プロジェクトのディレクトリ内で起動して指示を出すだけで、ファイルの検索、読み書き、ビルド、テスト実行、さらにはGitコミットまでローカルで自動実行してくれます。</p>
+        <p>本記事では、Windows 11環境でCodex CLIを導入する最新の手順と、できること、およびセキュリティ・プライバシー（権限・モデル学習）に加えて<strong>「GitHubアカウントは必要か？」</strong>という疑問について詳しく解説します。</p>
+
+        <h2>1. Codex CLIで「できること」</h2>
+        <p>Codex CLIは、ターミナル上で以下のような高度な自律タスクを実行します。</p>
+
+        <ul>
+          <li><strong>自律的なコード生成・リファクタリング</strong>: プロジェクト全体を走査し、指示された機能の実装やバグ修正を行います。</li>
+          <li><strong>テストやビルドの自動実行・エラー修復</strong>: ターミナルからテストコードを実行し、出力されたエラーメッセージに基づいてコードを自己修復します。</li>
+          <li><strong>ローカルGit操作</strong>: 差分を確認し、適切なコミットメッセージを自動生成してローカルリポジトリにコミットします。</li>
+          <li><strong>高度な外部アプリ連携 (Computer Use)</strong>: 最新のアップデートにより、必要に応じてWebブラウザやデスクトップアプリを自動で立ち上げて動作確認を行うことも可能です。</li>
+        </ul>
+
+        <h2>2. 重要：GitHubアカウントは必要か？</h2>
+        <p>Codex CLIを使い始めるにあたり、GitHubアカウントの要否は<strong>「どのような機能を使いたいか」</strong>によって異なります。</p>
+
+        <blockquote>
+          <p><strong>① ローカル開発での利用（GitHubアカウント不要）</strong><br>
+          手元のPCのフォルダ内のコードを編集する、ローカルでテストを動かす、ローカルのGitリポジトリにコミットを記録するといった操作のみであれば、<strong>GitHubアカウントは不要</strong>です。OpenAIのアカウント（サブスクリプション）があれば動作します。</p>
+        </blockquote>
+
+        <blockquote>
+          <p><strong>② リモートリポジトリやチーム開発での利用（GitHubアカウント必須）</strong><br>
+          「GitHub上のプライベートリポジトリをクローンして作業を開始する」「作業完了後に自動でGitHub上にプルリクエストを作成・更新する」といったリモート連携機能を使用する場合は、<strong>GitHubアカウントが必要</strong>です。この際、対象リポジトリまたは所属する組織に<strong>「Codex GitHub App」</strong>をインストール・認証連携する必要があります。</p>
+        </blockquote>
+
+        <h2>3. 利用するための前提条件</h2>
+        <ul>
+          <li><strong>OS環境</strong>: Windows 10 (version 1809以降) または Windows 11。</li>
+          <li><strong>アカウントプラン</strong>: Codex CLIの利用には、<strong>ChatGPT Plus、Pro、Team、またはEnterpriseのいずれかのアクティブなサブスクリプションが必要</strong>です（または OpenAI API キーでの設定が必要です）。</li>
+        </ul>
+
+        <h2>4. 【推奨】ネイティブインストーラーでの導入（Node.js不要）</h2>
+        <p>Windows 11環境では、Node.jsを事前に用意しなくても、PowerShellからコマンド一発でインストールできる公式ネイティブインストーラーが推奨されています。</p>
+
+        <p>PowerShellを起動し、以下のコマンドを実行します。</p>
+        <pre><code class="language-powershell">irm https://chatgpt.com/codex/install.ps1 | iex</code></pre>
+
+        <h2>5. 【代替】npm (Node.js) 経由での導入</h2>
+        <p>すでにNode.js環境がある場合は、npm経由でグローバルインストールすることも可能です。ただし、動作には <strong>Node.js バージョン 22 以上</strong> が必須となります。</p>
+
+        <ol>
+          <li>Node.jsのバージョンを確認します。</li>
+          <li>ターミナルで以下のコマンドを実行してインストールします。
+            <pre><code class="language-bash">npm install -g @openai/codex</code></pre>
+            <p>※必ずパッケージ名にスコープ（<code>@openai/</code>）をつけてください。スコープのない無印の <code>codex</code> パッケージはOpenAI公式のツールではなく、無関係なため注意してください。</p>
+          </li>
+        </ol>
+
+        <h2>6. 初回セットアップとアカウント認証の流れ</h2>
+        <ol>
+          <li>ターミナルで開発を行いたいプロジェクトのフォルダに移動します。</li>
+          <li>以下のコマンドを実行してログイン処理を開始します。
+            <pre><code class="language-bash">codex login</code></pre>
+          </li>
+          <li>Webブラウザが起動し、OpenAIアカウント（ChatGPTアカウント）へのログイン画面が表示されます。</li>
+          <li>ブラウザで認証を完了すると、ターミナルでCodex CLIが利用可能になります。</li>
+        </ol>
+
+        <h2>7. 【重要】セキュリティと実行権限（Permissions）の注意点</h2>
+        <p>Codex CLIはローカルPCでコマンドやスクリプトを自動実行するため、安全対策が重要です。</p>
+
+        <ul>
+          <li><strong>明示的な確認ポリシー</strong>: デフォルトでは、Codexがファイルの変更やシェルコマンドの実行を行う前に、必ずターミナル上でユーザーの確認プロンプト（y/n）が表示されます。承認したコマンドのみが実行されます。</li>
+          <li><strong>書き込みフォルダ制限</strong>: デフォルトでは起動したフォルダとその配下（サブフォルダ）のみに書き込みが制限されており、システム上の重要な別フォルダを誤って上書きするのを防いでいます。</li>
+          <li><strong>自動実行フラグの危険性</strong>: 承認プロンプトをすべて無条件でスキップする設定もありますが、悪意あるスクリプトや予期しないデータ削除を防ぐため、通常の開発では必ず手動で承認しながら使用してください。</li>
+        </ul>
+
+        <h2>8. 【重要】データプライバシーとモデル学習のオプトアウト設定</h2>
+        <p>社外秘のソースコードを扱う場合は、送信したデータがAIモデルのトレーニングに使用されないよう設定を確認する必要があります。</p>
+
+        <h3>プラン別のデータ保護ポリシー</h3>
+        <ul>
+          <li><strong>API経由 / Team / Enterpriseプラン</strong>: 送信したデータがAIモデルの学習に使用されることはありません。特別な対応は不要です。</li>
+          <li><strong>個人プラン（ChatGPT Plus / Pro / Free）</strong>: デフォルトで会話データやコーディングセッションがモデル学習（改善）に利用されるポリシーになっています。</li>
+        </ul>
+
+        <h3>オプトアウト設定手順</h3>
+        <ol>
+          <li>ブラウザでChatGPTにログインし、設定画面を開きます。</li>
+          <li><strong>[データコントロール (Data Controls)]</strong> ＞ <strong>[チャット履歴とトレーニング (Chat History & Training)]</strong> の項目を確認します。</li>
+          <li>モデルのトレーニングに関するデータ使用の設定を<strong>オフ（無効）</strong>に変更します。これにより、送信データが学習に利用されるのをオプトアウトできます。</li>
+        </ol>
+
+        <h2>9. まとめ</h2>
+        <p>Windows 11でのCodex CLIのセットアップは、公式のPowerShellインストーラーを使用すれば数分で完了します。ローカルでの自律コーディングだけであればGitHubアカウントは不要なので、まずは手軽にローカル環境で使い始めてみるのがおすすめです。</p>
+        <p>開発の自律化は大きなメリットですが、実行時の権限チェックとモデル学習対策（オプトアウト）の設定を適切に行い、安全でプライベートな開発環境を構築しましょう。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://openai.com/blog" target="_blank" rel="noopener noreferrer">OpenAI Official Blog (英語)</a></li>
+          <li><a href="https://status.openai.com/" target="_blank" rel="noopener noreferrer">OpenAI System Status page (英語)</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Knowledge Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Knowledge Notebook. Powered by Gemini.</div>
+      <div class="footer-disclaimer">Amazonのアソシエイトとして、Knowledge Notebookは適格販売により収入を得ています。</div>
+    </div>
+  </footer>
+</body>
+</html>
