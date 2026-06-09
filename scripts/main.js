@@ -5,12 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadMoreContainer = document.getElementById('loadMoreContainer');
   const loadMoreBtn = document.getElementById('loadMoreBtn');
 
+  // 新しいDOM要素の取得
+  const totalNotesCount = document.getElementById('totalNotesCount');
+  const gridStyleBtn = document.getElementById('gridStyleBtn');
+  const listStyleBtn = document.getElementById('listStyleBtn');
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggleHeader = document.getElementById('sidebarToggleHeader');
+  const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+
   const ITEMS_PER_PAGE = 12; // 1ページあたりの初期表示件数
   let displayedCount = ITEMS_PER_PAGE;
 
   let allNotes = [];
   let activeCategory = 'all';
   let searchQuery = '';
+
+  // ビュー切り替えの状態管理 (デフォルトはgrid、localStorageに保存されていればそれを優先)
+  let currentViewMode = localStorage.getItem('viewMode') || 'grid';
 
   // メタデータ (notes/index.json) の読み込み
   const fetchNotes = async () => {
@@ -45,20 +56,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // カテゴリ一覧の生成と描画
   const renderCategories = () => {
-    // ユニークなカテゴリを抽出
-    const categories = new Set(allNotes.map(note => note.category));
-    
-    // "すべて" ボタン以外の既存カテゴリボタンを削除
-    const allBtn = filterCategories.querySelector('[data-category="all"]');
+    // カテゴリごとの記関数をカウント
+    const categoryCounts = {};
+    allNotes.forEach(note => {
+      const cat = note.category;
+      categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+    });
+
+    // "すべて" ボタンを再構成 (件数バッジ付き)
     filterCategories.innerHTML = '';
+    const allBtn = document.createElement('button');
+    allBtn.className = `filter-btn ${activeCategory === 'all' ? 'active' : ''}`;
+    allBtn.setAttribute('data-category', 'all');
+    allBtn.innerHTML = `すべて <span class="category-count">${allNotes.length}</span>`;
     filterCategories.appendChild(allBtn);
+
+    // ユニークなカテゴリを抽出
+    const categories = Array.from(new Set(allNotes.map(note => note.category)));
 
     categories.forEach(category => {
       if (!category) return;
+      const count = categoryCounts[category] || 0;
       const btn = document.createElement('button');
-      btn.className = 'filter-btn';
+      btn.className = `filter-btn ${activeCategory === category ? 'active' : ''}`;
       btn.setAttribute('data-category', category);
-      btn.textContent = getCategoryLabel(category);
+      btn.innerHTML = `${getCategoryLabel(category)} <span class="category-count">${count}</span>`;
       filterCategories.appendChild(btn);
     });
 
@@ -113,6 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
                               note.category.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
       });
+
+      // 該当件数の更新
+      if (totalNotesCount) {
+        totalNotesCount.textContent = filteredNotes.length;
+      }
 
       if (filteredNotes.length === 0) {
         notesGrid.innerHTML = `
@@ -208,7 +235,38 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/'/g, '&#039;');
   };
 
+  // ビューの初期状態を適用
+  const applyViewMode = (mode) => {
+    currentViewMode = mode;
+    localStorage.setItem('viewMode', mode);
+    
+    if (mode === 'list') {
+      notesGrid.classList.add('list-view');
+      if (gridStyleBtn) gridStyleBtn.classList.remove('active');
+      if (listStyleBtn) listStyleBtn.classList.add('active');
+    } else {
+      notesGrid.classList.remove('list-view');
+      if (gridStyleBtn) gridStyleBtn.classList.add('active');
+      if (listStyleBtn) listStyleBtn.classList.remove('active');
+    }
+  };
+
+  // ビュー切り替えボタンのイベントリスナー
+  if (gridStyleBtn && listStyleBtn) {
+    gridStyleBtn.addEventListener('click', () => applyViewMode('grid'));
+    listStyleBtn.addEventListener('click', () => applyViewMode('list'));
+  }
+
+  // スマホ用アコーディオン開閉
+  if (sidebarToggleHeader && sidebar && sidebarToggleBtn) {
+    sidebarToggleHeader.addEventListener('click', () => {
+      const isOpen = sidebar.classList.toggle('open');
+      sidebarToggleBtn.setAttribute('aria-expanded', isOpen);
+    });
+  }
+
   // 初期化処理
+  applyViewMode(currentViewMode);
   
   // 「もっと見る」ボタンのイベントリスナー
   loadMoreBtn.addEventListener('click', () => {
