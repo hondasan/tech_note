@@ -145,5 +145,12 @@
     "category": "squishy",
     "date": "2026-06-09",
     "path": "notes/squishy/mellojoy-how-to-buy.html"
+  },
+  {
+    "title": "Google AI Plusが月額725円に大幅値下げ！AI Pro/Ultraプランとの違いとできることまとめ",
+    "excerpt": "2026年6月9日、Googleの個人向けAIサブスクリプション「Google AI Plus」が月額725円へと大幅値下げされ、ストレージも400GBに倍増しました。最新の「AI Pro」「AI Ultra」プランとの機能・料金比較や、Plusプランでできること（Gemini 3 Pro、Flow、Nano Banana Pro等）について分かりやすく解説します。",
+    "category": "ai",
+    "date": "2026-06-09",
+    "path": "notes/ai/google-ai-plus-price-drop.html"
   }
 ]
