@@ -184,15 +184,15 @@ main {
 
 /* ヒーローセクション */
 .hero {
-  text-align: center;
-  margin-bottom: 4rem;
+  text-align: left;
+  margin-bottom: 2.5rem;
   animation: fadeIn 0.8s ease-out;
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: 2.5rem; /* 右カラムに収まるように少しサイズ調整 */
   font-weight: 800;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   letter-spacing: -1px;
 }
 
@@ -204,9 +204,9 @@ main {
 
 .hero p {
   color: var(--text-secondary);
-  font-size: 1.15rem;
-  max-width: 600px;
-  margin: 0 auto;
+  font-size: 1.05rem;
+  max-width: 700px;
+  margin: 0;
 }
 
 /* 検索 & フィルター */
@@ -1018,8 +1018,23 @@ footer {
 
 @media (max-width: 768px) {
   .main-layout {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 1.5rem;
+  }
+
+  .hero {
+    order: -1; /* スマホではヒーロー（タイトル）を一番上に配置 */
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    margin: 0 auto;
   }
 
   /* スマホでのサイドバー（折りたたみアコーディオン） */
