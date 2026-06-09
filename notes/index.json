@@ -75,5 +75,12 @@
     "category": "culture",
     "date": "2026-06-09",
     "path": "notes/culture/nashville-culture-guide.html"
+  },
+  {
+    "title": "シャドーAI（Shadow AI）のリスクと企業が取るべきセキュリティ対策",
+    "excerpt": "企業が承認していない生成AIサービスを従業員が無断で利用する「シャドーAI」のリスクと、安全なビジネス活用を両立するための具体的なセキュリティ対策について徹底解説します。",
+    "category": "security",
+    "date": "2026-06-09",
+    "path": "notes/security/what-is-shadow-ai.html"
   }
 ]
