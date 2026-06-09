@@ -117,5 +117,12 @@
     "category": "ops",
     "date": "2026-06-09",
     "path": "notes/ops/server-rack-mounting-guide.html"
+  },
+  {
+    "title": "SQL Server CDC（変更データキャプチャ）導入ガイド：下位互換性・構築難易度・設定手順",
+    "excerpt": "SQL Serverの変更追跡機能であるCDC（変更データキャプチャ）。バージョンやエディションの下位互換性、システム構築における難易度や運用上の注意点、T-SQLによる具体的な設定手順を分かりやすく解説します。",
+    "category": "db",
+    "date": "2026-06-09",
+    "path": "notes/db/sql-server-cdc-guide.html"
   }
 ]

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../../images/favicon.png" type="image/png">
+  <title>SQL Server CDC（変更データキャプチャ）導入ガイド：下位互換性・構築難易度・設定手順 | Knowledge Notebook</title>
+  <meta name="description" content="SQL Serverの変更追跡機能であるCDC（変更データキャプチャ）。バージョンやエディションの下位互換性、システム構築における難易度や運用上の注意点、T-SQLによる具体的な設定手順を分かりやすく解説します。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="SQL Server CDC（変更データキャプチャ）導入ガイド：下位互換性・構築難易度・設定手順 | Knowledge Notebook">
+  <meta property="og:description" content="SQL Serverの変更追跡機能であるCDC（変更データキャプチャ）。バージョンやエディションの下位互換性、システム構築における難易度や運用上の注意点、T-SQLによる具体的な設定手順を分かりやすく解説します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hondasan.github.io/tech_note/notes/db/sql-server-cdc-guide.html">
+  <meta property="og:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta property="og:site_name" content="Knowledge Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SQL Server CDC（変更データキャプチャ）導入ガイド：下位互換性・構築難易度・設定手順 | Knowledge Notebook">
+  <meta name="twitter:description" content="SQL Serverの変更追跡機能であるCDC（変更データキャプチャ）。バージョンやエディションの下位互換性、システム構築における難易度や運用上の注意点、T-SQLによる具体的な設定手順を分かりやすく解説します。">
+  <meta name="twitter:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "SQL Server CDC（変更データキャプチャ）導入ガイド：下位互換性・構築難易度・設定手順",
+    "description": "SQL Serverの変更追跡機能であるCDC（変更データキャプチャ）。バージョンやエディションの下位互換性、システム構築における難易度や運用上の注意点、T-SQLによる具体的な設定手順を分かりやすく解説します。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-09",
+    "dateModified": "2026-06-09",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knowledge Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hondasan.github.io/tech_note/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Knowledge Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">db</span>
+          <span class="note-date">2026年06月09日</span>
+        </div>
+        <h1 class="article-title">SQL Server CDC（変更データキャプチャ）導入ガイド：下位互換性・構築難易度・設定手順</h1>
+      </div>
+
+      <div class="article-content">
+        <p>SQL Serverに用意されている<strong>CDC（変更データキャプチャ：Change Data Capture）</strong>は、テーブルに対するデータの変更（挿入、更新、削除）を追跡し、別のシステムテーブルに記録するための非常に強力な機能です。データの差分を検出してデータウェアハウス（DWH）や外部データベースに同期する「データレプリケーション」や「監査ログ」の仕組みを低負荷で実現することができます。</p>
+        <p>本記事では、CDC機能の下位互換性（エディションやバージョンごとのサポート）、構築難易度、T-SQLを用いた具体的な設定手順、および実運用に向けた注意点について詳しく解説します。</p>
+
+        <h2>1. CDCの下位互換性（エディションとバージョン）</h2>
+        <p>CDC機能を本番環境に導入する前に、現在使用しているSQL Serverのバージョンや将来のアップグレードパスにおける「互換性」を把握しておく必要があります。</p>
+        
+        <h3>① エディション制限の緩和と下位互換</h3>
+        <p>CDCは元々 SQL Server 2008 で導入された機能ですが、当初は高価な <strong>Enterprise Edition 限定</strong>の機能でした。しかし、<strong>SQL Server 2016 Service Pack 1 (SP1) 以降、Standard Edition でも正式にサポート</strong>されるようになりました。これにより、中小規模のデータベースでも追加コストなしで手軽にCDCを導入できるようになりました。</p>
+        <p>※ Express Editionなどではバックグラウンドでのキャプチャ処理に必須である「SQL Server Agent」が利用できないため、実質的に利用不可（またはサードパーティ製スケジューラーを用いた手動スクリプト起動などの工夫が必要）です。</p>
+
+        <h3>② バージョン移行と互換性レベル</h3>
+        <p>古いSQL Server（例：2016）から新しいSQL Server（例：2019や2022）へデータベースを移行（アタッチ、あるいはバックアップ・リストア）する場合、<strong>CDC設定や変更テーブルのデータは原則としてそのまま移行先でも維持</strong>されます。</p>
+        <p>ただし、移行後にデータベースの「互換性レベル」を新しいバージョンに引き上げる際は、一部のメタデータやシステムストアドプロシージャの動作が変わる可能性があります。互換性レベルの引き上げ前に、マイクロソフト公式の移行ツールである <strong>Data Migration Assistant (DMA)</strong> を使用して、競合や廃止される機能の影響がないかを診断することを強く推奨します。</p>
+
+        <h2>2. 構築の難易度：設定は「容易」だが運用設計は「中〜高」</h2>
+        <p>CDCの構築難易度は、設定フェーズと運用フェーズで明確に分かれます。</p>
+        
+        <ul>
+          <li><strong>設定・構築難易度（低）：</strong> SQL Server Management Studio (SSMS) のGUI操作パネルは用意されておらず、T-SQL（システムストアドプロシージャ）を実行して有効化する必要がありますが、記述するコマンド自体は数行程度で非常にシンプルです。</li>
+          <li><strong>運用管理の難易度（中〜高）：</strong> 実運用では以下のリソース特性への考慮が必要なため、監視設計が欠かせません。
+            <ul>
+              <li><strong>SQL Server Agentへの依存：</strong> バックグラウンドでログを読み取る「キャプチャジョブ」と、古いデータを削除する「クリーンアップジョブ」がSQL Server Agent上で常時稼働します。Agentが停止すると変更データが記録されなくなります。</li>
+              <li><strong>トランザクションログの肥大化リスク：</strong> キャプチャ処理が停止している間、トランザクションログの切り捨て（Truncate）が行えなくなります。放置するとログファイルが肥大化し、ディスクフルによるDB停止を引き起こすリスクがあります。</li>
+              <li><strong>ストレージ容量設計：</strong> 変更データはデータベース内のシステムテーブルに蓄積されます。更新が激しいテーブルの場合、保持期間（デフォルトは3日間：4320分）の設定を最適化しないと、ディスク容量を急速に圧迫します。</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h2>3. T-SQLによるCDCの設定手順</h2>
+        <p>実際にCDCを有効化し、データ変更をクエリするまでの具体的な手順です。</p>
+
+        <h3>ステップ①：SQL Server Agentの起動確認</h3>
+        <p>SQL Serverのコントロールパネル、またはWindowsの「サービス」管理画面から、「SQL Server Agent (MSSQLSERVER)」が実行中になっていることを確認します。</p>
+
+        <h3>ステップ②：データベースレベルでの有効化</h3>
+        <p>データベース全体でCDCを有効にします。これには `sysadmin` 権限が必要です。</p>
+        <pre><code class="language-sql">-- CDCの有効状態をデータベース一覧から確認 (is_cdc_enabled = 1 なら有効)
+SELECT name, is_cdc_enabled 
+FROM sys.databases;
+GO
+
+-- 目的のデータベースに切り替えて有効化
+USE YourDatabaseName;
+GO
+
+EXEC sys.sp_cdc_enable_db;
+GO</code></pre>
+
+        <h3>ステップ③：テーブルレベルでの有効化</h3>
+        <p>特定のテーブルを指定してCDCを有効にします。ここでは、変更データを別のファイルグループ（物理ディスク）に置くのがパフォーマンス維持のためのベストプラクティスです。</p>
+        <pre><code class="language-sql">EXEC sys.sp_cdc_enable_table
+    @source_schema = N'dbo',
+    @source_name   = N'Employees',
+    @role_name     = N'cdc_admin',   -- 変更データへのアクセス権を付与するデータベースロール（未指定なら新規作成される）
+    @filegroup_name = N'PRIMARY',    -- パフォーマンス向上のため、本来はソースと別のファイルグループ（ディスク）の指定を推奨
+    @supports_net_changes = 1;       -- 期間内の「最終的な純変更」のみを取得する関数を作成する場合は1を指定
+GO</code></pre>
+        <p>※このプロシージャを実行すると、SQL Server Agent上に自動的に `cdc.YourDatabaseName_capture`（キャプチャ用）と `cdc.YourDatabaseName_cleanup`（自動削除用）の2つのジョブが作成されます。</p>
+
+        <h3>ステップ④：動作確認</h3>
+        <p>実際にデータを変更し、変更データが記録されているか確認します。</p>
+        <pre><code class="language-sql">-- テスト用の挿入・更新
+INSERT INTO dbo.Employees (Name, Department, Salary) VALUES ('山田 太郎', '開発部', 300000);
+UPDATE dbo.Employees SET Salary = 350000 WHERE Name = '山田 太郎';
+
+-- 自動生成されるシステムテーブルを直接クエリして確認
+SELECT * FROM cdc.dbo_Employees_CT;</code></pre>
+        <p>変更テーブル（`_CT`）には、変更のタイプを示す `__$operation` 列（1=削除、2=挿入、3=更新前データ、4=更新後データ）などが自動記録されます。</p>
+
+        <h3>ステップ⑤：変更データの取得（関数経由）</h3>
+        <p>実運用ではシステムテーブルを直接クエリするのではなく、自動生成される値関数を利用してスマートに差分を取得します。</p>
+        <pre><code class="language-sql">DECLARE @begin_time datetime, @end_time datetime, @from_lsn binary(10), @to_lsn binary(10);
+SET @begin_time = DATEADD(day, -1, GETDATE());
+SET @end_time = GETDATE();
+
+-- 時間をLSN（ログシーケンス番号）に変換
+SELECT @from_lsn = sys.fn_cdc_map_time_to_lsn('smallest greater than or equal', @begin_time);
+SELECT @to_lsn = sys.fn_cdc_map_time_to_lsn('largest less than or equal', @end_time);
+
+-- 期間内のすべての変更データを取得
+SELECT * FROM cdc.fn_cdc_get_all_changes_dbo_Employees(@from_lsn, @to_lsn, 'all');</code></pre>
+
+        <h3>ステップ⑥：CDCの無効化</h3>
+        <p>機能が不要になった場合は、テーブルレベル、データベースレベルの順で無効化します。</p>
+        <pre><code class="language-sql">-- テーブル単位の無効化
+EXEC sys.sp_cdc_disable_table
+    @source_schema = N'dbo',
+    @source_name   = N'Employees',
+    @capture_instance = N'dbo_Employees';
+GO
+
+-- データベース全体の無効化
+EXEC sys.sp_cdc_disable_db;
+GO</code></pre>
+
+        <h2>4. まとめとベストプラクティス</h2>
+        <p>SQL ServerのCDCは、2016 SP1以降Standard Editionでも利用可能になったことで極めて身近な機能となりました。コマンド数行で構築できるため構築難易度は低いですが、実用化の際は<strong>「ディスク容量」「SQL Server Agentの常時稼働監視」「トランザクションログの増大防止」</strong>という3つの運用設計をしっかりと行う必要があります。</p>
+        <p>正しく設定・監視されたCDCは、本番環境のデータベースへのI/O負荷を最小限に抑えつつ、ほぼリアルタイムなデータ連携（DWH、分析基盤など）を実現する最高のソリューションとなります。テスト環境でジョブの挙動やログサイズを確認しながら、ぜひ導入を進めてみてください。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://learn.microsoft.com/ja-jp/sql/relational-databases/track-changes/about-change-data-capture-sql-server" target="_blank" rel="noopener noreferrer">変更データキャプチャについて (CDC) - Microsoft Learn</a></li>
+          <li><a href="https://learn.microsoft.com/ja-jp/sql/relational-databases/system-stored-procedures/change-data-capture-stored-procedures-transact-sql" target="_blank" rel="noopener noreferrer">変更データ キャプチャのストアド プロシージャ - Microsoft Learn</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Knowledge Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Knowledge Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+</body>
+</html>
