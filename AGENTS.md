@@ -55,19 +55,24 @@
 - **コードブロック**: ソースコードや設定ファイルを記載する場合は `<pre><code>` で囲み、適切なマークアップを行います。
 - **参考リンク**: 記事の最後には、必ず調査の参考にした一次情報（URL）を「参考URL」としてリンク付き（`target="_blank" rel="noopener noreferrer"`）で記載します。
 - **Amazonリンク（アソシエイト）の挿入**:
-  - ユーザーからAmazonの公式埋め込みコード（`<iframe>`）や、Amazonの商品URL（`https://amzn.to/...` や `https://www.amazon.co.jp/...` などのアソシエイトリンク）が提示された場合は、記事の最後（「参考URL」の直前）にアソシエイト枠を挿入します。
+  - ユーザーからAmazonの商品URL（`https://amzn.to/...` や `https://www.amazon.co.jp/...` などのアソシエイトリンク）が提示された場合は、記事の最後（「参考URL」の直前）に、テキストとボタンで構成されるアソシエイト枠を挿入します。
   - **埋め込みコード（iframeなど）が提示された場合**:
-    `<div class="amazon-embed-container">[提供されたコード]</div>` のように、`amazon-embed-container` クラスを持つ div で囲んで配置してください。
+    Amazon側の仕様変更によりiframeでの画像表示は行わない方針です。もし提供された場合は、そこからリンク先URLを抽出し、下記の「URLのみが提示された場合」と同じテキスト紹介カード形式に変換して配置してください。
   - **URLのみが提示された場合**:
     ```html
     <div class="amazon-embed-container">
-      <a href="[提供されたURL]" class="amazon-text-link-btn" target="_blank" rel="noopener noreferrer">
-        Amazonで詳細を見る
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.25rem;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-      </a>
+      <div class="amazon-text-card-content">
+        <span class="product-badge">紹介書籍</span> <!-- 必要に応じて「おすすめ商品」などに変更可能 -->
+        <h4 class="product-title">[商品タイトル]</h4> <!-- 記事の文脈やURL情報から商品の正式名称等を設定 -->
+        <p class="product-desc">[商品の紹介文]</p> <!-- 本書や商品の簡潔な見どころ・紹介文（1〜2文）をAIが生成して記載 -->
+        <a href="[提供されたURL]" class="amazon-text-link-btn" target="_blank" rel="noopener noreferrer">
+          Amazonで詳細を見る
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.25rem;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        </a>
+      </div>
     </div>
     ```
-    のように、`amazon-text-link-btn` クラスのテキストリンクボタンを `amazon-embed-container` で囲んで配置してください。
+    のように、`amazon-text-card-content` クラスを用いて、商品の解説文および `amazon-text-link-btn` クラスのボタンを囲んで配置してください。
   - **Amazonリンクの提示がない場合**:
     従来通り、アソシエイト枠は一切作成せず、追加のHTMLも記述しないでください。
 - **SEO対策の徹底**:
