@@ -669,3 +669,55 @@ footer {
     border-bottom: 0;
   }
 }
+
+/* Amazonアソシエイト埋め込み用のスタイル */
+.amazon-embed-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem 0;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* Amazonアソシエイトリンクのボタン用スタイル（URLのみが提供された場合のフォールバック用） */
+.amazon-text-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #ff9900, #ffb300);
+  color: #111 !important; /* 暗いテキスト */
+  font-weight: 700;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: 0 4px 12px rgba(255, 153, 0, 0.2);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.amazon-text-link-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(255, 153, 0, 0.4);
+}
+
+.amazon-text-link-btn:active {
+  transform: translateY(0);
+}
+
+.amazon-text-link-btn svg {
+  stroke: #111;
+}
+
+/* 免責事項テキスト */
+.footer-disclaimer {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+

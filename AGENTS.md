@@ -54,6 +54,22 @@
 - **読みやすさ**: `p`, `ul`, `ol`, `table`, `blockquote` をバランスよく使用し、重要な箇所は太字（`<strong>`）にします。
 - **コードブロック**: ソースコードや設定ファイルを記載する場合は `<pre><code>` で囲み、適切なマークアップを行います。
 - **参考リンク**: 記事の最後には、必ず調査の参考にした一次情報（URL）を「参考URL」としてリンク付き（`target="_blank" rel="noopener noreferrer"`）で記載します。
+- **Amazonリンク（アソシエイト）の挿入**:
+  - ユーザーからAmazonの公式埋め込みコード（`<iframe>`）や、Amazonの商品URL（`https://amzn.to/...` や `https://www.amazon.co.jp/...` などのアソシエイトリンク）が提示された場合は、記事の最後（「参考URL」の直前）にアソシエイト枠を挿入します。
+  - **埋め込みコード（iframeなど）が提示された場合**:
+    `<div class="amazon-embed-container">[提供されたコード]</div>` のように、`amazon-embed-container` クラスを持つ div で囲んで配置してください。
+  - **URLのみが提示された場合**:
+    ```html
+    <div class="amazon-embed-container">
+      <a href="[提供されたURL]" class="amazon-text-link-btn" target="_blank" rel="noopener noreferrer">
+        Amazonで詳細を見る
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.25rem;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+      </a>
+    </div>
+    ```
+    のように、`amazon-text-link-btn` クラスのテキストリンクボタンを `amazon-embed-container` で囲んで配置してください。
+  - **Amazonリンクの提示がない場合**:
+    従来通り、アソシエイト枠は一切作成せず、追加のHTMLも記述しないでください。
 - **SEO対策の徹底**:
   - **タイトルタグ & 説明文**: `<title>` に適切な検索キーワードを含め、`<meta name="description">` に120〜160文字程度の魅力的な記事概要を設定します。
   - **OGP設定**: `og:title`, `og:description`, `og:url` 等のメタタグを適切に設定します。`og:url` は公開用URL（例: `https://hondasan.github.io/tech_note/notes/[カテゴリ名]/[記事スラッグ].html`）に置き換えます。
