@@ -103,5 +103,12 @@
     "category": "sports",
     "date": "2026-06-09",
     "path": "notes/sports/worldcup-2026-japan-tv-schedule.html"
+  },
+  {
+    "title": "Antigravityでのモデル使い分けガイド：Gemini 3.5 Flashと3.1 Proの性能比較・使用量コスト・最適ユースケース",
+    "excerpt": "Antigravityに搭載されているGoogleの最新AIモデル『Gemini 3.5 Flash』と『Gemini 3.1 Pro』。速度・コスト・レート制限・推論力の観点からどちらが優れているかを詳細に比較し、タスクの性質に応じた最適なモデル選択を徹底解説します。",
+    "category": "tool",
+    "date": "2026-06-09",
+    "path": "notes/tool/antigravity-model-selection-guide.html"
   }
 ]

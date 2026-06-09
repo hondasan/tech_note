@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../../images/favicon.png" type="image/png">
+  <title>Antigravityでのモデル使い分けガイド：Gemini 3.5 Flashと3.1 Proの性能比較・使用量コスト・最適ユースケース | Knowledge Notebook</title>
+  <meta name="description" content="AIコーディングアシスタント「Antigravity」に搭載されているGoogleの最新AIモデル『Gemini 3.5 Flash』と『Gemini 3.1 Pro』。速度・コスト・レート制限・推論力の観点からどちらが優れているかを詳細に比較し、タスクの性質に応じた最適なモデル選択を徹底解説します。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="Antigravityでのモデル使い分けガイド：Gemini 3.5 Flashと3.1 Proの性能比較・使用量コスト・最適ユースケース | Knowledge Notebook">
+  <meta property="og:description" content="AIコーディングアシスタント「Antigravity」に搭載されているGoogleの最新AIモデル『Gemini 3.5 Flash』と『Gemini 3.1 Pro』。速度・コスト・レート制限・推論力の観点からどちらが優れているかを詳細に比較し、タスクの性質に応じた最適なモデル選択を徹底解説します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hondasan.github.io/tech_note/notes/tool/antigravity-model-selection-guide.html">
+  <meta property="og:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta property="og:site_name" content="Knowledge Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Antigravityでのモデル使い分けガイド：Gemini 3.5 Flashと3.1 Proの性能比較・使用量コスト・最適ユースケース | Knowledge Notebook">
+  <meta name="twitter:description" content="AIコーディングアシスタント「Antigravity」に搭載されているGoogleの最新AIモデル『Gemini 3.5 Flash』と『Gemini 3.1 Pro』。速度・コスト・レート制限・推論力の観点からどちらが優れているかを詳細に比較し、タスクの性質に応じた最適なモデル選択を徹底解説します。">
+  <meta name="twitter:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Antigravityでのモデル使い分けガイド：Gemini 3.5 Flashと3.1 Proの性能比較・使用量コスト・最適ユースケース",
+    "description": "AIコーディングアシスタント「Antigravity」に搭載されているGoogleの最新AIモデル『Gemini 3.5 Flash』と『Gemini 3.1 Pro』。速度・コスト・レート制限・推論力の観点からどちらが優れているかを詳細に比較し、タスクの性質に応じた最適なモデル選択を徹底解説します。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-09",
+    "dateModified": "2026-06-09",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knowledge Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hondasan.github.io/tech_note/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Knowledge Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">tool</span>
+          <span class="note-date">2026年06月09日</span>
+        </div>
+        <h1 class="article-title">Antigravityでのモデル使い分けガイド：Gemini 3.5 Flashと3.1 Proの性能比較・使用量コスト・最適ユースケース</h1>
+      </div>
+
+      <div class="article-content">
+        <p>AIコーディングアシスタントである<strong>「Antigravity」</strong>を最大限に活用する上で、どのモデルを使用するかは開発スピードや精度、そして利用効率に直結します。現在、AntigravityではGoogleの最新モデルである<strong>「Gemini 3.5 Flash」</strong>と<strong>「Gemini 3.1 Pro」</strong>を選択できるようになっています。</p>
+        <p>「高性能なProを選んでおけば常に最適なのか？」「新しい3.5 Flashの実力はどうなのか？」といった疑問を解消するため、両モデルの基本スペック、性能の優劣、使用量・レート制限の違い、そして開発における最適な使い分けについて徹底解説します。</p>
+
+        <h2>1. 2つの最新モデル基本スペック比較</h2>
+        <p>まずは、両モデルの概要と制限値についてテーブルで整理します。</p>
+        
+        <table class="model-comparison-table" style="width: 100%; border-collapse: collapse; margin: 1.5rem 0; border: 1px solid var(--glass-border);">
+          <thead>
+            <tr style="background: rgba(255, 255, 255, 0.05); text-align: left;">
+              <th style="padding: 12px; border: 1px solid var(--glass-border); width: 25%;">比較項目</th>
+              <th style="padding: 12px; border: 1px solid var(--glass-border); width: 37.5%;">Gemini 3.5 Flash (2026年5月発表)</th>
+              <th style="padding: 12px; border: 1px solid var(--glass-border); width: 37.5%;">Gemini 3.1 Pro (2026年2月発表)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px; border: 1px solid var(--glass-border); font-weight: bold;">処理速度</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border); color: #00e676; font-weight: bold;">極めて高速 (Proの約4倍の速度)</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border);">中速〜低速 (複雑な推論を行うため)</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid var(--glass-border); font-weight: bold;">APIコスト / 使用量</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border); color: #00e676; font-weight: bold;">圧倒的に安価 (Proの数分の一以下)</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border);">相対的に高価</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid var(--glass-border); font-weight: bold;">レート制限<br>(RPM / TPM)</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border); color: #00e676; font-weight: bold;">非常に緩い (大量リクエスト・大容量処理が可能)</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border);">厳しめ (エージェント動作時に達しやすい)</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid var(--glass-border); font-weight: bold;">コンテキスト長</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border);">100万トークン</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border);">100万トークン</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid var(--glass-border); font-weight: bold;">主な得意領域</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border);">自律的エージェントタスク、高速コーディング</td>
+              <td style="padding: 12px; border: 1px solid var(--glass-border);">数学的・論理的推論、高度なバグ解析</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>2. 「どっちが優れているか？」分野別の性能比較</h2>
+        <p>「Proの方が常に優れている」というのは過去の話です。3.5世代である <strong>Gemini 3.5 Flash</strong> は、特定の領域において 3.1 Pro を上回る性能を発揮します。</p>
+
+        <h3>① コーディングおよび自律エージェント性能： 3.5 Flash の優位</h3>
+        <p>Antigravityのコア機能である「エージェントモード（自律的にコードファイルを読み込み、コマンドを実行してデバッグする一連のタスク）」では、<strong>Gemini 3.5 Flash の方が高い成功率</strong>を誇るケースが多々あります。</p>
+        <p>これは、3.5 Flashがツール呼び出し（Function Calling）の精度を高めるチューニングが施されているためです。エージェントが「ファイルを読むべきか」「テストを実行すべきか」を正しく判断し、連続したツール操作をスムーズに進める力は最新の3.5 Flashが優れています。</p>
+
+        <h3>② 深い論理推論および数学的アプローチ： 3.1 Pro の優位</h3>
+        <p>一方で、難解なアルゴリズムの設計、数理的な最適化、あるいはエラーメッセージが不親切な未知のバグの調査など、<strong>「じっくりと思考を重ねる深い推論」では Gemini 3.1 Pro の方が優れています</strong>。コンパイルエラーを多角的に分析し、構造的な設計アイデアを出すような複雑なタスクではProの推論モデルとしてのパワーが頼りになります。</p>
+
+        <h3>結論：優劣の評価</h3>
+        <blockquote>
+          <p><strong>【結論】</strong><br>
+          純粋な思考力や学術的推論は **3.1 Pro が上**ですが、実用的なコーディング速度、ツール制御の安定性、そしてエージェントとしての完遂力は最新の **3.5 Flash が上**です。したがって、「一概にどちらかが優れている」わけではなく、作業に応じた適材適所となります。</p>
+        </blockquote>
+
+        <h2>3. 「使用量」とコスト・レート制限の実用的な違い</h2>
+        <p>開発効率を維持する上で、APIの「使用量（クォータ）」やレート制限の違いは非常に大きな要素です。</p>
+
+        <h3>① トークン消費コスト</h3>
+        <p>Gemini 3.5 Flashは3.1 Proに比べて、入力・出力トークンあたりのコストが<strong>数分の一〜十分の一程度</strong>に抑えられています。Antigravityでリポジトリ全体のコンテキスト（数万〜数十万トークン）を何度も読み込ませるような開発スタイルでは、3.5 Flashを使うことで、大幅なコスト削減（あるいは使用枠の温存）が可能です。</p>
+
+        <h3>② レート制限（RPM: リクエスト数/分、TPM: トークン数/分）</h3>
+        <p>Antigravityがバックグラウンドで何段階ものファイル読み書きを繰り返す際、最も直面しやすいのが「レート制限（特にTPM制限：1分あたりの最大トークン数）」です。
+          <ul>
+            <li><strong>Gemini 3.5 Flash：</strong> 制限の上限が非常に高く設定されているため、巨大なコードベースを対象にした検索や修正を連続して行っても、レート制限による中断（エラー）が発生しにくく、ノンストップで開発を進められます。</li>
+            <li><strong>Gemini 3.1 Pro：</strong> レート制限の上限が比較的厳しく、コンテキスト（コード）を繰り返し読み込ませるエージェント処理を走らせると、数ステップで一時的に制限に引っかかり、エージェントの動作が待機（ウェイト）状態になりやすくなります。</li>
+          </ul>
+        </p>
+
+        <h2>4. Antigravityでの推奨使い分けユースケース</h2>
+        <p>実務でAntigravityを使用する際の、おすすめのモデル選択ガイドです。</p>
+
+        <h3>ケースA： 「Gemini 3.5 Flash」を選択するべきケース</h3>
+        <ul>
+          <li><strong>日常的な機能開発・マークアップ：</strong> 新機能のコンポーネント追加や、HTML/CSSのレイアウト修正、基本ロジックの実装。</li>
+          <li><strong>エージェントによる自動調査：</strong> 「`/goal`」コマンドなどを使って、リポジトリ全体から関連コードを探索・書き換えさせる自律タスク。</li>
+          <li><strong>高速なフィードバック：</strong> チャット形式で即座にコードのアイデアを出してほしいとき。</li>
+        </ul>
+
+        <h3>ケースB： 「Gemini 3.1 Pro」を選択するべきケース</h3>
+        <ul>
+          <li><strong>原因不明の深いデバッグ：</strong> ネットワークやデータベースが絡み、エラーログから原因が推測しにくい難解なバグの究明。</li>
+          <li><strong>高度なアルゴリズムの構築：</strong> パフォーマンス最適化、暗号化処理、独自のデータ構造設計など、ロジック自体の複雑度が高いタスク。</li>
+          <li><strong>仕様設計の壁打ち：</strong> 開発の最初期段階で、システムアーキテクチャやドキュメンテーションの整合性をじっくり検証させたいとき。</li>
+        </ul>
+
+        <h2>5. まとめ</h2>
+        <p>Antigravityにおけるモデル選定の鉄則は、<strong>「基本は 3.5 Flash でサクサク開発し、難解なエラーで行き詰まったら 3.1 Pro に切り替える」</strong>という運用です。</p>
+        <p>圧倒的なスピードと低いコスト、緩いレート制限の恩恵を受けられる 3.5 Flash を普段使いにし、Proの高度な論理推論能力を「ここぞという時の切り札」として活用することで、開発効率を最大化することができます。タスクの性質を見極め、モデルの強みを引き出していきましょう。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://blog.google/technology/developers/gemini-models-update-google-io-2026/" target="_blank" rel="noopener noreferrer">Introducing Gemini 3.5: Google I/O 2026 - Google Blog (英語)</a></li>
+          <li><a href="https://ai.google.dev/gemini-api/docs/models/gemini" target="_blank" rel="noopener noreferrer">Gemini API Models Overview - Google Developer Docs</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Knowledge Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Knowledge Notebook. Powered by Gemini.</div>
+    </div>
+  </footer>
+</body>
+</html>
