@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../../images/favicon.png" type="image/png">
+  <title>EVM（アーンドバリュー管理）の仕組みと指標の読み方を徹底解説 | Knowledge Notebook</title>
+  <meta name="description" content="プロジェクトの進捗とコストを予算値で一元管理する「EVM（アーンドバリュー管理）」。基本となるPV、EV、ACの意味から、1以下になったら遅れや予算超過を意味する効率指標（SPI、CPI）の読み方まで、図表を交えて分かりやすく解説します。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="EVM（アーンドバリュー管理）の仕組みと指標の読み方を徹底解説 | Knowledge Notebook">
+  <meta property="og:description" content="プロジェクトの進捗とコストを予算値で一元管理する「EVM（アーンドバリュー管理）」。基本となるPV、EV、ACの意味から、1以下になったら遅れや予算超過を意味する効率指標（SPI、CPI）の読み方まで、図表を交えて分かりやすく解説します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hondasan.github.io/tech_note/notes/ops/evm-earned-value-management.html">
+  <meta property="og:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta property="og:site_name" content="Knowledge Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EVM（アーンドバリュー管理）の仕組みと指標の読み方を徹底解説 | Knowledge Notebook">
+  <meta name="twitter:description" content="プロジェクトの進捗とコストを予算値で一元管理する「EVM（アーンドバリュー管理）」。基本となるPV、EV、ACの意味から、1以下になったら遅れや予算超過を意味する効率指標（SPI、CPI）の読み方まで、図表を交えて分かりやすく解説します。">
+  <meta name="twitter:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) - TechArticle -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "EVM（アーンドバリュー管理）の仕組みと指標の読み方を徹底解説",
+    "description": "プロジェクトの進捗とコストを予算値で一元管理する「EVM（アーンドバリュー管理）」。基本となるPV、EV、ACの意味から、1以下になったら遅れや予算超過を意味する効率指標（SPI、CPI）の読み方まで、図表を交えて分かりやすく解説します。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-09",
+    "dateModified": "2026-06-09",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knowledge Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hondasan.github.io/tech_note/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Knowledge Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">ops</span>
+          <span class="note-date">2026年06月09日</span>
+        </div>
+        <h1 class="article-title">EVM（アーンドバリュー管理）の仕組みと指標の読み方を徹底解説</h1>
+      </div>
+
+      <div class="article-content">
+        <p>プロジェクト管理において、「スケジュール通りに進んでいるか」「予算内に収まっているか」を正確に把握することは極めて重要です。しかし、ガントチャート上のタスク完了率を見るだけでは、本当のコストパフォーマンスや将来の遅れを予兆することは困難です。</p>
+        <p>この問題を解決するために開発されたのが、<strong>EVM（Earned Value Management：アーンドバリュー管理）</strong>です。EVMは、プロジェクトの進捗とコストを「お金（バリュー）」という単一の基準で可視化し、客観的に評価する強力な管理手法です。</p>
+
+        <h2>1. EVMを構成する3つの基本値</h2>
+        <p>EVMによる分析を行うには、まず以下の3つの基本データ（インプット）を測定する必要があります。これらはすべて「金額（日本円や米ドルなど）」で表現されます。</p>
+
+        <ul>
+          <li><strong>PV（Planned Value：計画値）</strong><br>計画時点で、現時点までに完了しているはずの作業に割り当てられた予算（目標コスト）。</li>
+          <li><strong>EV（Earned Value：出来高 / 獲得価値）</strong><br>現時点で実際に完了した作業に対して割り当てられていた予算（成果を金額換算したもの）。</li>
+          <li><strong>AC（Actual Cost：実績コスト）</strong><br>現時点で完了した作業に対して、実際に支払った実コスト（投入コスト）。</li>
+        </ul>
+
+        <blockquote>
+          <p><strong>【具体例で考える基本値】</strong><br>
+          「10日間で、10個のモジュールを計100万円で作る（1個あたり10万円）」というプロジェクトを計画しました。<br>
+          本日が「5日目」だとして、実際の状況が「3つのモジュールが完成し、実際にかかった費用は40万円」だったとします。<br>
+          この場合、基本値は以下のようになります：<br>
+          ・<strong>PV = 50万円</strong> （計画通りなら5個できているはずなので、50万円分の作業量）<br>
+          ・<strong>EV = 30万円</strong> （実際にできたのは3個なので、30万円分の価値を獲得）<br>
+          ・<strong>AC = 40万円</strong> （実際にかかったコストは40万円）
+          </p>
+        </blockquote>
+
+        <h2>2. 「1以下」になったらどうなる？ 効率指標（CPI / SPI）の読み方</h2>
+        <p>EVMで最も重要なのが、プロジェクトの「時間効率」と「コスト効率」を表す以下の2つのインデックス（指標）です。これらは<strong>「1」を基準値（計画通り）</strong>として判断します。</p>
+
+        <h3>① SPI（Schedule Performance Index：スケジュール効率指数）</h3>
+        <p>予定していたスピードに対して、どれくらいの比率で作業が進んでいるかを表す指標です。</p>
+        <pre><code class="language-plaintext">SPI ＝ EV（出来高） ÷ PV（計画値）</code></pre>
+        
+        <table class="evm-table">
+          <thead>
+            <tr>
+              <th>SPIの値</th>
+              <th>状況評価</th>
+              <th>意味する状態</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>SPI &gt; 1</strong></td>
+              <td>予定より<strong>進んでいる</strong></td>
+              <td>計画よりも作業が早く終わっている状態（オン・スケジュール以上）</td>
+            </tr>
+            <tr>
+              <td><strong>SPI ＝ 1</strong></td>
+              <td>予定<strong>通り</strong></td>
+              <td>計画通りのペースで進捗している状態</td>
+            </tr>
+            <tr style="background: hsla(355, 80%, 55%, 0.05);">
+              <td><strong style="color: var(--danger);">SPI &lt; 1（1以下）</strong></td>
+              <td>予定より<strong>遅れている</strong></td>
+              <td>計画に対して進捗が滞っている状態（リスケジュールや対策が必要）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>② CPI（Cost Performance Index：コスト効率指数）</h3>
+        <p>投入した実際のコストに対して、どれくらいの比率で価値を獲得できているかを表す指標です。</p>
+        <pre><code class="language-plaintext">CPI ＝ EV（出来高） ÷ AC（実績コスト）</code></pre>
+
+        <table class="evm-table">
+          <thead>
+            <tr>
+              <th>CPIの値</th>
+              <th>状況評価</th>
+              <th>意味する状態</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CPI &gt; 1</strong></td>
+              <td>予定より<strong>安く済んでいる</strong></td>
+              <td>予算内に収まっており、コストパフォーマンスが良い状態（黒字傾向）</td>
+            </tr>
+            <tr>
+              <td><strong>CPI ＝ 1</strong></td>
+              <td>予算<strong>通り</strong></td>
+              <td>想定通りのコストで作業が進行している状態</td>
+            </tr>
+            <tr style="background: hsla(355, 80%, 55%, 0.05);">
+              <td><strong style="color: var(--danger);">CPI &lt; 1（1以下）</strong></td>
+              <td>予算を<strong>超過している</strong></td>
+              <td>予算を使いすぎている状態。コストオーバーラン（赤字傾向）</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>上記の具体例に当てはめると、<strong>SPI ＝ 30 ÷ 50 ＝ 0.6</strong>（1未満なのでスケジュールが大幅に遅れている）、<strong>CPI ＝ 30 ÷ 40 ＝ 0.75</strong>（1未満なので予算を過剰に消費している）となり、プロジェクトが非常に危険な状態であることが一目でわかります。</p>
+
+        <h2>3. 差異（引き算）で見る分析指標（SV / CV）</h2>
+        <p>割り算で比率を出すCPI/SPIに対して、どれくらいのズレがあるかを金額（差異）で出すための指標もあります。こちらは<strong>「0」を基準値</strong>として判断します。</p>
+
+        <ul>
+          <li><strong>SV（Schedule Variance：スケジュール差異）</strong><br>
+            <code>SV ＝ EV － PV</code><br>
+            ・SVが<strong>プラス（0より大きい）</strong>：予定より進んでいる<br>
+            ・SVが<strong>マイナス（0より小さい）</strong>：予定より遅れている
+          </li>
+          <li><strong>CV（Cost Variance：コスト差異）</strong><br>
+            <code>CV ＝ EV － AC</code><br>
+            ・CVが<strong>プラス（0より大きい）</strong>：予算内に収まっている<br>
+            <td>CVが<strong>マイナス（0より小さい）</strong>：予算を超過している（赤字）
+          </li>
+        </ul>
+
+        <h2>4. EVMによる予測管理とメリット</h2>
+        <p>EVMの最大のメリットは、プロジェクトの初期段階で「1」を下回る異常を検知することで、将来のコストや完了時期の予測ができる点にあります。</p>
+        <p>たとえば、現在のCPI（コスト効率）がこのままプロジェクト終了まで維持されると仮定すると、最終的にかかる総コストを予測する <strong>EAC（Estimate At Completion：完成時総コスト予測）</strong> を計算できます。早い段階で適切な対策（人員追加やスコープ削減など）を打つための意思決定ツールとして機能します。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <!-- Amazonアソシエイト商品紹介カード（代替案1に基づく） -->
+        <div class="amazon-embed-container">
+          <div class="amazon-text-card-content">
+            <span class="product-badge">紹介書籍</span>
+            <h4 class="product-title">【令和8～9年】情報処理教科書 プロジェクトマネージャ 2026～2027年版</h4>
+            <p class="product-desc">プロジェクトマネージャ試験対策のバイブル。試験範囲であるEVM（アーンドバリュー管理）の計算方法や各種指標の意味が非常に体系的かつ実践的に解説されており、試験対策だけでなく実務におけるプロジェクト管理の基礎知識を身に付けるのにも最適です。</p>
+            <a href="https://amzn.to/3RVGmJb" class="amazon-text-link-btn" target="_blank" rel="noopener noreferrer">
+              Amazonで詳細を見る
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.25rem;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://www.ipa.go.jp/shiken/syllabus/gaiyou.html" target="_blank" rel="noopener noreferrer">試験要綱・シラバスなど | IPA 独立行政法人 情報処理推進機構</a></li>
+          <li><a href="https://www.pmi-japan.org/pms/pmbok/" target="_blank" rel="noopener noreferrer">PMBOK®ガイドとは | PMI日本支部</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Knowledge Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Knowledge Notebook. Powered by Gemini.</div>
+      <div class="footer-disclaimer">Amazonのアソシエイトとして、Knowledge Notebookは適格販売により収入を得ています。</div>
+    </div>
+  </footer>
+</body>
+</html>

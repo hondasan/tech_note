@@ -124,5 +124,12 @@
     "category": "db",
     "date": "2026-06-09",
     "path": "notes/db/sql-server-cdc-guide.html"
+  },
+  {
+    "title": "EVM（アーンドバリュー管理）の仕組みと指標の読み方を徹底解説",
+    "excerpt": "プロジェクトの進捗とコストを予算値で一元管理する「EVM（アーンドバリュー管理）」。基本データ（PV, EV, AC）の意味から、1以下になったら遅れや予算超過を意味する効率指標（SPI, CPI）の読み方まで、分かりやすく解説します。",
+    "category": "ops",
+    "date": "2026-06-09",
+    "path": "notes/ops/evm-earned-value-management.html"
   }
 ]
