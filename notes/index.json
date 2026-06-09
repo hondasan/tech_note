@@ -152,5 +152,12 @@
     "category": "ai",
     "date": "2026-06-09",
     "path": "notes/ai/google-ai-plus-price-drop.html"
+  },
+  {
+    "title": "IPA高度情報処理技術者試験の全体像と全9試験区分の役割・対象者まとめ",
+    "excerpt": "IPAが実施する高度情報処理技術者試験の概要と、システムアーキテクト（SA）やプロジェクトマネージャ（PM）を含む全9種類の試験区分がそれぞれ目指す人物像・対象職種についてわかりやすく解説します。",
+    "category": "ipa",
+    "date": "2026-06-09",
+    "path": "notes/ipa/advanced-exams-guide.html"
   }
 ]
