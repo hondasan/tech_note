@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../../images/favicon.png" type="image/png">
+  <title>SQL Serverで上位バージョンから下位バージョンへデータを移行・復元する代替手段まとめ（2022→2016等） | Knowledge Notebook</title>
+  <meta name="description" content="SQL Serverでは、上位バージョン（例：2022）で作成したデータベースのバックアップファイル（.bak）を、下位バージョン（例：2016）に直接復元することはできません。本記事では、上位から下位へのデータ移行を実現する3つの代替手段（スクリプト生成、BACPAC、インポート・エクスポート）と注意点について詳しく解説します。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="SQL Serverで上位バージョンから下位バージョンへデータを移行・復元する代替手段まとめ（2022→2016等） | Knowledge Notebook">
+  <meta property="og:description" content="SQL Serverでは、上位バージョン（例：2022）で作成したデータベースのバックアップファイル（.bak）を、下位バージョン（例：2016）に直接復元することはできません。本記事では、上位から下位へのデータ移行を実現する3つの代替手段（スクリプト生成、BACPAC、インポート・エクスポート）と注意点について詳しく解説します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://hondasan.github.io/tech_note/notes/db/sql-server-downgrade-migration.html">
+  <meta property="og:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta property="og:site_name" content="Knowledge Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SQL Serverで上位バージョンから下位バージョンへデータを移行・復元する代替手段まとめ（2022→2016等） | Knowledge Notebook">
+  <meta name="twitter:description" content="SQL Serverでは、上位バージョン（例：2022）で作成したデータベースのバックアップファイル（.bak）を、下位バージョン（例：2016）に直接復元することはできません。本記事では、上位から下位へのデータ移行を実現する3つの代替手段（スクリプト生成、BACPAC、インポート・エクスポート）と注意点について詳しく解説します。">
+  <meta name="twitter:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "SQL Serverで上位バージョンから下位バージョンへデータを移行・復元する代替手段まとめ（2022→2016等）",
+    "description": "SQL Serverでは、上位バージョン（例：2022）で作成したデータベースのバックアップファイル（.bak）を、下位バージョン（例：2016）に直接復元することはできません。本記事では、上位から下位へのデータ移行を実現する3つの代替手段（スクリプト生成、BACPAC、インポート・エクスポート）と注意点について詳しく解説します。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-09",
+    "dateModified": "2026-06-09",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knowledge Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://hondasan.github.io/tech_note/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Knowledge Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">db</span>
+          <span class="note-date">2026年6月9日</span>
+        </div>
+        <h1 class="article-title">SQL Serverで上位バージョンから下位バージョンへデータを移行・復元する代替手段まとめ（2022→2016等）</h1>
+      </div>
+
+      <div class="article-content">
+        <p>SQL Serverの運用において、「開発環境や移行先のSQL Serverのバージョンが古い（例：SQL Server 2016）」一方で、「本番環境や手元の環境のバージョンが新しい（例：SQL Server 2022）」というケースは珍しくありません。しかし、SQL Serverでは上位互換性はサポートされておらず、<strong>上位バージョンのバックアップ（.bak）を下位バージョンに直接復元することはできません。</strong></p>
+        <p>本記事では、この制限が発生する理由と、それを乗り越えてデータをダウングレード移行・復元するための<strong>3つの代表的な代替手段</strong>を解説します。</p>
+
+        <h2>1. バックアップ (.bak) ファイルのリストアが失敗する理由</h2>
+        <p>SQL Serverは<strong>下位互換性</strong>を重視して設計されています。例えば、SQL Server 2016で作成したバックアップファイルをSQL Server 2022へ復元することは標準でサポートされています。しかし、逆の<strong>上位互換性</strong>（新しいバージョンから古いバージョンへ）は物理構造の違いからサポートされていません。</p>
+        
+        <p>SQL Serverのデータベースには内部バージョン番号（内部データベースバージョン）が存在します。</p>
+        <ul>
+          <li>SQL Server 2022：内部バージョン <strong>957</strong></li>
+          <li>SQL Server 2016：内部バージョン <strong>852</strong></li>
+        </ul>
+        <p>SQL Server 2016 (852) は、自分より新しい内部バージョン 957 のデータベースファイルの構造を解釈できないため、バックアップファイルをリストアしようとしたり、MDF/LDFファイルを直接アタッチしようとしたりすると、以下のようなエラーが発生して失敗します。</p>
+        <blockquote>
+          <p><strong>エラーメッセージの例:</strong><br>
+          データベース 'DatabaseName' はバージョン 957 ですが、このサーバーはバージョン 852 以前をサポートしています。このデータベースは復元またはアタッチできません。</p>
+        </blockquote>
+        
+        <p>※データベースの「互換性レベル」を「130（SQL Server 2016）」に下げていても、物理ファイルの内部バージョン自体は移行元の 957 のままになるため、やはりバックアップ復元はできません。</p>
+
+        <h2>2. 代替手段①：SSMS「スクリプトの生成」ウィザード</h2>
+        <p>最も手軽で標準的な手段は、SQL Server Management Studio (SSMS) を使用して、テーブル構造（スキーマ）と格納されているデータをインサート文のスクリプトとして出力し、移行先で実行する方法です。小〜中規模（数十万レコード程度まで）のデータベースに最適です。</p>
+
+        <h3>実行手順</h3>
+        <ol>
+          <li>移行元（2022）のデータベースを右クリックし、<strong>[タスク] ＞ [スクリプトの生成]</strong> を選択します。</li>
+          <li>スクリプトを作成するオブジェクト（通常はデータベース全体、または特定のテーブル）を選択します。</li>
+          <li>「スクリプトの保存または公開」画面で <strong>[詳細設定]</strong> ボタンをクリックします。</li>
+          <li>詳細設定の中で、以下の2項目を必ず変更します。
+            <ul>
+              <li><strong>データベースエンジンの種類に対するスクリプト</strong>: 移行先のバージョン（例: <code>SQL Server 2016</code>）に設定</li>
+              <li><strong>スクリプトを作成するデータの種類</strong>: <code>スキーマとデータ</code> に設定</li>
+            </ul>
+          </li>
+          <li>出力されたSQLファイルを、移行先（2016）のSSMSで接続して実行します。</li>
+        </ol>
+
+        <h3>メリット・デメリット</h3>
+        <ul>
+          <li><strong>メリット</strong>: SSMSだけで完結し、トリガーやインデックス、外部キーなどの関連情報も自動でスクリプト化されます。</li>
+          <li><strong>デメリット</strong>: データ量が大きい（数GB以上）場合、生成されるSQLファイルのサイズが極端に巨大化し、移行先で開こうとした際にSSMSがメモリ不足（Out of Memory）でフリーズする原因になります（この場合は <code>sqlcmd</code> コマンドラインツールで実行するか、別の手段を取る必要があります）。</li>
+        </ul>
+
+        <h2>3. 代替手段②：BACPAC（データ層アプリケーション）のインポート/エクスポート</h2>
+        <p>BACPACは、スキーマ定義（XML形式）とデータ（BACPAC形式）をパッケージ化した1つのファイル（.bacpac）として出力・移行する機能です。Azure SQL Databaseへの移行などで広く使われますが、オンプレミス間での移行でも有効です。</p>
+
+        <h3>実行手順</h3>
+        <ol>
+          <li>移行元（2022）のデータベースを右クリックし、<strong>[タスク] ＞ [データ層アプリケーションのエクスポート]</strong> を選択します。</li>
+          <li>出力先（.bacpacファイル）を指定して実行します。</li>
+          <li>移行先（2016）のオブジェクトエクスプローラーで [データベース] フォルダを右クリックし、<strong>[データ層アプリケーションのインポート]</strong> を選択します。</li>
+          <li>作成した.bacpacファイルを指定し、インポートを実行します。</li>
+        </ol>
+
+        <h3>注意点</h3>
+        <ul>
+          <li>エクスポート時にスキーマチェックが厳密に行われるため、2022でしか使えないスキーマや構文（新しい計算列など）が存在する場合、エクスポート処理そのものがエラーで停止します。この場合は、移行元のスキーマをあらかじめクリーンアップする必要があります。</li>
+        </ul>
+
+        <h2>4. 代替手段③：インポートおよびエクスポート ウィザード (SSIS)</h2>
+        <p>データ量が非常に大きい（数百万レコード以上）場合には、データ転送のパフォーマンスが高い「インポートおよびエクスポートウィザード」が推奨されます。</p>
+
+        <h3>実行手順</h3>
+        <ol>
+          <li>あらかじめ移行先（2016）に<strong>テーブルの構造（スキーマのみ）</strong>を作成しておきます。（上記「スクリプトの生成」で「スキーマのみ」を出力して実行しておくと簡単です）。</li>
+          <li>移行元（2022）のデータベースを右クリックし、<strong>[タスク] ＞ [データのエクスポート]</strong> を選択します。</li>
+          <li>データソースに「移行元のSQL Server」を設定し、変換先に「移行先（2016）のSQL Server」を設定します。</li>
+          <li>コピーするテーブルを選択し、必要に応じてマッピング情報を調整した上で、データコピーを実行します。</li>
+        </ol>
+
+        <h3>メリット</h3>
+        <ul>
+          <li>データ転送速度が非常に速く、メモリ制限にかかりにくいため、大規模なデータ移行に向いています。また、外部キー制約やトリガーなどの依存関係を一時的に考慮せずにデータだけを流し込むことができるため、順序依存のエラーが防げます。</li>
+        </ul>
+
+        <h2>5. SQL Server 2022から2016への移行時の注意点</h2>
+        <p>上位から下位への移行においては、下位バージョンでサポートされていない機能が移行元で使われている場合にエラーが発生します。特に 2022 から 2016 への移行では以下の点に注意してください。</p>
+
+        <ul>
+          <li><strong>新機能や関数の使用制限</strong>: SQL Server 2022で追加された新しいT-SQL関数（例: <code>GREATEST</code>, <code>LEAST</code>, <code>STRING_SPLIT</code> の第3引数など）を使用しているストアドプロシージャやビュー、計算列が存在する場合、2016で実行すると「オブジェクト名が無効」または構文エラーになります。</li>
+          <li><strong>JSONサポート</strong>: SQL Server 2016でもJSONの基本機能（<code>JSON_VALUE</code> など）は利用できますが、2022で追加された新しいJSON関数（<code>JSON_OBJECT</code>, <code>JSON_ARRAY</code> など）は使えません。</li>
+          <li><strong>ページ・行圧縮機能</strong>: SQL Server 2016では、圧縮機能（Page/Row Compression）がEnterpriseエディション専用でしたが、2016 SP1以降であればStandardエディションでも利用可能になっています。移行先サーバーのService Pack適用状況に注意してください。</li>
+        </ul>
+
+        <h2>6. まとめ</h2>
+        <p>SQL Serverの上位から下位への移行では、データ規模や移行環境に合わせて最適な方法を選ぶことが重要です。</p>
+        <ul>
+          <li><strong>数万〜数十万行程度（小〜中規模）</strong>: 簡単な <strong>[スクリプトの生成（スキーマとデータ）]</strong> を選択。</li>
+          <li><strong>クラウドや複数DBへの展開がある場合</strong>: 標準化された <strong>[BACPACのエクスポート/インポート]</strong> を選択。</li>
+          <li><strong>数百万行以上（大規模）</strong>: 空のスキーマを作成した後に <strong>[インポートおよびエクスポートウィザード（エクスポート）]</strong> を選択。</li>
+        </ul>
+        <p>移行先のバージョンで非推奨となった機能やサポート外の構文がないか、移行前にスキーマを念入りにチェックしましょう。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://learn.microsoft.com/ja-jp/sql/relational-databases/data-tier-applications/export-a-data-tier-application" target="_blank" rel="noopener noreferrer">Microsoft Learn: データ層アプリケーション (BACPAC) のエクスポート</a></li>
+          <li><a href="https://learn.microsoft.com/ja-jp/sql/integration-services/import-export-data/start-the-sql-server-import-and-export-wizard" target="_blank" rel="noopener noreferrer">Microsoft Learn: SQL Server インポートおよびエクスポート ウィザードの開始</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Knowledge Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Knowledge Notebook. Powered by Gemini.</div>
+      <div class="footer-disclaimer">Amazonのアソシエイトとして、Knowledge Notebookは適格販売により収入を得ています。</div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -159,5 +159,12 @@
     "category": "ipa",
     "date": "2026-06-09",
     "path": "notes/ipa/advanced-exams-guide.html"
+  },
+  {
+    "title": "SQL Serverで上位バージョンから下位バージョンへデータを移行・復元する代替手段まとめ（2022→2016等）",
+    "excerpt": "SQL Serverでは、上位バージョン（例：2022）で作成したデータベースのバックアップファイル（.bak）を、下位バージョン（例：2016）に直接復元することはできません。本記事では、上位から下位へのデータ移行を実現する3つの代替手段（スクリプト生成、BACPAC、インポート・エクスポート）と注意点について詳しく解説します。",
+    "category": "db",
+    "date": "2026-06-09",
+    "path": "notes/db/sql-server-downgrade-migration.html"
   }
 ]
