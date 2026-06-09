@@ -82,5 +82,12 @@
     "category": "security",
     "date": "2026-06-09",
     "path": "notes/security/what-is-shadow-ai.html"
+  },
+  {
+    "title": "最新フラッグシップAI「Claude Opus 4.8」の進化点と新機能の徹底解説",
+    "excerpt": "2026年5月にリリースされたAnthropic社の最新モデル『Claude Opus 4.8』。推論や自律的エージェントタスクでの性能向上、「Effort（努力度）」パラメータの導入、ハルシネーション抑制 of 仕組みなど、前モデルからの進化点を徹底検証します。",
+    "category": "ai",
+    "date": "2026-06-09",
+    "path": "notes/ai/claude-4-8-opus-overview.html"
   }
 ]
