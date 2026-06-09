@@ -775,6 +775,9 @@ footer {
 .sidebar {
   position: sticky;
   top: 100px; /* ヘッダーの高さ＋余白 */
+  max-height: calc(100vh - 140px); /* 画面内に収まるように最大高さを制限 */
+  overflow-y: auto; /* サイドバー内のみで独立してスクロール可能に */
+  scrollbar-width: thin; /* Firefox用：スクロールバーを細くする */
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
@@ -784,6 +787,18 @@ footer {
   flex-direction: column;
   gap: 1.5rem;
   z-index: 10;
+}
+
+/* Webkit系（Chrome/Safari）用スクロールバーの微調整 */
+.sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: var(--radius-sm);
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
 }
 
 .sidebar-toggle-header {
@@ -1011,7 +1026,8 @@ footer {
   .sidebar {
     position: static;
     padding: 0;
-    overflow: hidden;
+    max-height: none; /* PC用の高さ制限を解除 */
+    overflow: hidden; /* アコーディオンのアニメーション用 */
   }
 
   .sidebar-toggle-header {
