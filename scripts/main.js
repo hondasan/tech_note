@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const notesGrid = document.getElementById('notesGrid');
   const searchInput = document.getElementById('searchInput');
   const filterCategories = document.getElementById('filterCategories');
-  const githubLink = document.getElementById('githubLink');
   const loadMoreContainer = document.getElementById('loadMoreContainer');
   const loadMoreBtn = document.getElementById('loadMoreBtn');
 
@@ -12,19 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let allNotes = [];
   let activeCategory = 'all';
   let searchQuery = '';
-
-  // GitHubリポジトリへのリンクを動的に設定 (GitHub Pages環境の場合)
-  const setupGithubLink = () => {
-    const hostname = window.location.hostname;
-    if (hostname.includes('github.io')) {
-      const pathParts = window.location.pathname.split('/');
-      const repoName = pathParts[1] || '';
-      const username = hostname.split('.')[0];
-      if (username && repoName) {
-        githubLink.href = `https://github.com/${username}/${repoName}`;
-      }
-    }
-  };
 
   // メタデータ (notes/index.json) の読み込み
   const fetchNotes = async () => {
@@ -223,7 +209,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // 初期化処理
-  setupGithubLink();
   
   // 「もっと見る」ボタンのイベントリスナー
   loadMoreBtn.addEventListener('click', () => {
