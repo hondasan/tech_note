@@ -31,7 +31,7 @@
     "description": "2026年6月現在の最新情報に基づき、ターミナルで動作する自律型AIコーディングエージェントの2大巨頭「Claude Code」と「OpenAI Codex CLI」を徹底比較。機能（できること）、料金プラン、5時間制限やトークン枠の仕組み、用途別の最適な選び方を分かりやすく解説します。",
     "inLanguage": "ja",
     "datePublished": "2026-06-09",
-    "dateModified": "2026-06-09",
+    "dateModified": "2026-06-10",
     "author": {
       "@type": "Person",
       "name": "hondasan"
@@ -79,7 +79,7 @@
       <div class="article-header">
         <div class="article-meta">
           <span class="note-category">tool</span>
-          <span class="note-date">2026年6月9日</span>
+          <span class="note-date">2026年6月10日（更新）</span>
         </div>
         <h1 class="article-title">【2026年最新】Claude Code vs Codex CLIを徹底比較！特徴・料金・制限枠とおすすめの選び方</h1>
       </div>
@@ -103,7 +103,7 @@
             <tr style="border-bottom: 1px solid var(--glass-border);">
               <td style="padding: 10px;"><strong>開発元 / ベースモデル</strong></td>
               <td style="padding: 10px;">Anthropic / Claude 3.7 Sonnet</td>
-              <td style="padding: 10px;">OpenAI / GPT-5 (または最新モデル)</td>
+              <td style="padding: 10px;">OpenAI / GPT-5.x-Codex シリーズ</td>
             </tr>
             <tr style="border-bottom: 1px solid var(--glass-border);">
               <td style="padding: 10px;"><strong>最大の特徴・強み</strong></td>
@@ -117,7 +117,7 @@
             </tr>
             <tr style="border-bottom: 1px solid var(--glass-border);">
               <td style="padding: 10px;"><strong>使用量制限</strong></td>
-              <td style="padding: 10px;">5時間のローリング制限（速度制限）と週間の処理時間（Compute Hours）のハードキャップ。</td>
+              <td style="padding: 10px;">【対話】5時間制限（2倍に緩和）<br>【自動化】月額の「Agent SDK クレジット（$20〜$200/月）」を消費するクレジット制（2026年6月15日導入）。</td>
               <td style="padding: 10px;">5時間の使用トークンベースの制限（Plusと最上位Proプランで制限枠に約6倍の差あり）。</td>
             </tr>
             <tr style="border-bottom: 1px solid var(--glass-border);">
@@ -134,12 +134,16 @@
         <p>また、自律デバッグ能力が非常に高く、テストコードを実行してエラーが起きると、ログから根本原因を論理的に特定し、自動で正しい修正コードを生成します。</p>
 
         <h3>料金プランと制限枠の仕組み</h3>
-        <p>Claude Codeは、<strong>「Claude Pro ($20/月)」「Claude Max ($100〜$200/月)」「Claude Team ($25/ユーザー/月)」</strong>などの有料アカウントプランに紐づいて提供されます。利用制限は「5時間のローリングウィンドウ」に基づき、使用頻度が高いと一時的に速度制限がかかります。また週間の最大処理時間（Compute Hours）にも上限があります。</p>
-        <p>制限に達した場合の回避策として、自身のAPIキー（<code>ANTHROPIC_API_KEY</code>）を設定すれば、制限のない従量課金方式（Pay-as-you-go）としてシームレスに利用を継続できます。</p>
+        <p>Claude Codeは、<strong>「Claude Pro ($20/月)」「Claude Max ($100〜$200/月)」「Claude Team ($25/ユーザー/月)」</strong>などの有料アカウントプランに加入することで利用可能です。2026年6月15日からの新体系により、利用制限は「対話（Interactive）モード」と「自動化（Automated）モード」で切り離されました。</p>
+        <ul>
+          <li><strong>対話型（ターミナルでの開発）:</strong> 5時間のローリング制限が適用されます。最近のアップデートにより、レート制限が従来の2倍に拡張され、ピーク時のスロットリングも廃止されて快適になりました。</li>
+          <li><strong>自動化・非対話型（Agent SDK / <code>claude -p</code>）:</strong> 標準サブスクリプション枠から切り離され、月々の<strong>「Agent SDK クレジット」</strong>から消費されるクレジット制へ移行しました。各プランに毎月一定のクレジット（Pro: $20、Max 5x: $100、Max 20x: $200など）が自動付与されます。</li>
+        </ul>
+        <p>これらのクレジットや制限枠を超過した場合、または制限なしで利用したい場合は、自身のAPIキー（<code>ANTHROPIC_API_KEY</code>）を設定することで、従量課金方式（Pay-as-you-go）としてシームレスに利用を継続できます。</p>
 
         <h2>3. OpenAI Codex CLIの特徴・できることと料金</h2>
         <h3>圧倒的なスピードと「Computer Use（外部連携）」</h3>
-        <p>Codex CLIは、OpenAIの最新フラッグシップモデルをバックエンドにしており、コード生成のスピードにおいて非常に優れています。関数の実装やテンプレートコードの高速立ち上げなど、手数の多さが求められるタスクに最適です。</p>
+        <p>Codex CLIは、OpenAIの最新ソフトウェアエンジニアリング特化型モデルである<strong>「GPT-5.x-Codex シリーズ」</strong>をバックエンドにしており、推論能力とコード生成スピードにおいて非常に優れています。関数の実装やテンプレートコードの高速立ち上げなど、手数の多さが求められるタスクに最適です。</p>
         <p>また、最新機能として「ブラウザ操作やシステムGUIの自律操作（Computer Use）」に対応しており、CLI内で指示を出すだけで、ローカルのChromeブラウザを起動して実装したWeb画面が正しく動作するかをAIが目で確認し、E2Eテストを実行するような自動化フローが強みです。</p>
 
         <h3>料金プランと制限枠の仕組み</h3>
