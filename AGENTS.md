@@ -42,7 +42,7 @@
    - ルートにある `sitemap.xml` の `</urlset>` の直前に、新しく追加した記事のURLブロックを追記します。
      ```xml
      <url>
-       <loc>https://hondasan.github.io/tech_note/notes/[カテゴリ名]/[記事スラッグ].html</loc>
+       <loc>https://tech-note.pages.dev/notes/[カテゴリ名]/[記事スラッグ].html</loc>
        <lastmod>YYYY-MM-DD</lastmod>
        <changefreq>monthly</changefreq>
        <priority>0.8</priority>
@@ -82,7 +82,7 @@
     従来通り、アソシエイト枠は一切作成せず、追加のHTMLも記述しないでください。
 - **SEO対策の徹底**:
   - **タイトルタグ & 説明文**: `<title>` に適切な検索キーワードを含め、`<meta name="description">` に120〜160文字程度の魅力的な記事概要を設定します。
-  - **OGP設定**: `og:title`, `og:description`, `og:url` 等のメタタグを適切に設定します。`og:url` は公開用URL（例: `https://hondasan.github.io/tech_note/notes/[カテゴリ名]/[記事スラッグ].html`）に置き換えます。
+  - **OGP設定**: `og:title`, `og:description`, `og:url` 等のメタタグを適切に設定します。`og:url` は公開用URL（例: `https://tech-note.pages.dev/notes/[カテゴリ名]/[記事スラッグ].html`）に置き換えます。
   - **構造化データ (JSON-LD)**: 検索エンジンに記事構造を伝えるため、`<head>` 内に適切なスキーマのJSON-LDを必ず埋め込みます。
     - **スキーマの選択**: 技術解説は `TechArticle`、ニュース記事は `NewsArticle`、それ以外（一般トピック、スポーツのルール、雑学など）は `Article` を指定します。
     - `headline` (タイトル), `description` (概要), `datePublished` (作成日), `dateModified` (更新日) は実際の値で埋め、`author.name` は `hondasan` に設定します。

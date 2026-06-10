@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <script>
+    if (window.location.hostname === 'hondasan.github.io') {
+      const newBase = "https://tech-note.pages.dev";
+      const newPath = window.location.pathname.replace(/^\/tech_note/, '');
+      window.location.replace(newBase + newPath + window.location.search + window.location.hash);
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="images/favicon.png" type="image/png">
@@ -12,16 +19,16 @@
   <meta property="og:title" content="Knowledge Notebook | AIと育てる何でも解説ノート">
   <meta property="og:description" content="AI（Gemini）と育てる日々の知識解説ノート。技術情報からスポーツルール、最新ニュース、雑学まで、あらゆる疑問をナレッジ資産として蓄積・公開しています。">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://hondasan.github.io/tech_note/">
+  <meta property="og:url" content="https://tech-note.pages.dev/">
   <meta property="og:site_name" content="Knowledge Notebook">
-  <meta property="og:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta property="og:image" content="https://tech-note.pages.dev/images/ogp-default.png">
   <meta property="og:locale" content="ja_JP">
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Knowledge Notebook | AIと育てる何でも解説ノート">
   <meta name="twitter:description" content="AI（Gemini）と育てる日々の知識解説ノート。技術情報からスポーツルール、最新ニュース、雑学まで、あらゆる疑問をナレッジ資産として蓄積・公開しています。">
-  <meta name="twitter:image" content="https://hondasan.github.io/tech_note/images/ogp-default.png">
+  <meta name="twitter:image" content="https://tech-note.pages.dev/images/ogp-default.png">
 
   <!-- 構造化データ (JSON-LD) - WebSite -->
   <script type="application/ld+json">
@@ -29,7 +36,7 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Knowledge Notebook",
-    "url": "https://hondasan.github.io/tech_note/",
+    "url": "https://tech-note.pages.dev/",
     "description": "AIと育てる日々の知識解説ノート。技術情報からスポーツルール、最新ニュース、雑学まで、あらゆる疑問をナレッジ資産として蓄積・公開しています。"
   }
   </script>
