@@ -294,8 +294,8 @@ main {
 /* カードグリッド */
 .notes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
   opacity: 1;
   transition: opacity 0.3s ease;
 }
@@ -766,8 +766,8 @@ footer {
 /* 2カラムレイアウトレイアウト */
 .main-layout {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 2.5rem;
+  grid-template-columns: 220px 1fr;
+  gap: 1.5rem;
   align-items: start;
 }
 
@@ -781,11 +781,11 @@ footer {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.25rem;
   z-index: 10;
 }
 
