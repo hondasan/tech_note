@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
   const currentPath = window.location.pathname;
   
-  // URLパスから "notes/カテゴリ/スラッグ.html" の部分を抽出
-  const match = currentPath.match(/notes\/[^\/]+\/[^\/]+\.html$/);
+  // URLパスから "notes/カテゴリ/スラッグ(.html)" の部分を抽出 (拡張子なしにも対応)
+  const match = currentPath.match(/notes\/([^\/]+)\/([^\/\.]+)/);
   if (!match) return;
-  const relativePath = match[0];
+  const category = match[1];
+  const slug = match[2];
+  const normalizedPath = `notes/${category}/${slug}.html`;
 
   // キャッシュを回避するためにタイムスタンプをクエリパラメータとして付与して index.json を取得
   fetch(`../../notes/index.json?t=${Date.now()}`)
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       // 現在表示している記事のインデックスを探す
-      const currentIndex = notesWithIndex.findIndex(note => note.path === relativePath);
+      const currentIndex = notesWithIndex.findIndex(note => note.path === normalizedPath);
       if (currentIndex === -1) return;
 
       const currentNote = notesWithIndex[currentIndex];
@@ -38,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 関連記事 (同じカテゴリの最新記事、自分を除く、最大3件)
       const relatedNotes = notesWithIndex
-        .filter(note => note.category === currentNote.category && note.path !== relativePath)
+        .filter(note => note.category === currentNote.category && note.path !== normalizedPath)
         .slice(0, 3);
 
       renderNavigation(prevNote, nextNote, relatedNotes);
