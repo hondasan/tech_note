@@ -112,7 +112,8 @@ header {
 }
 
 .header-container {
-  max-width: 1200px;
+  width: 90%;
+  max-width: 1600px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -176,8 +177,8 @@ header {
 /* メインコンテンツ */
 main {
   flex: 1;
-  max-width: 1200px;
-  width: 100%;
+  width: 90%;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 3rem 2rem;
 }
@@ -530,7 +531,8 @@ footer {
 }
 
 .footer-container {
-  max-width: 1200px;
+  width: 90%;
+  max-width: 1600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -599,6 +601,11 @@ footer {
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.25rem;
+  }
+  .header-container,
+  main,
+  .footer-container {
+    width: 100%;
   }
   main {
     padding: 2rem 1.25rem;
