@@ -222,5 +222,12 @@
     "category": "ops",
     "date": "2026-06-10",
     "path": "notes/ops/github-pages-to-cloudflare-pages-migration.html"
+  },
+  {
+    "title": "ナフサ（粗製ガソリン）とは？原油との関係、主な用途、不足時の影響を解説",
+    "excerpt": "石油化学産業の心臓部と呼ばれる「ナフサ（粗製ガソリン）」について、原油精製プロセスでの位置付け、主要な用途（プラスチックや繊維、ゴム等の原料）、そして不足時の影響や流通の『目詰まり』の仕組みをわかりやすく解説します。",
+    "category": "general",
+    "date": "2026-06-10",
+    "path": "notes/general/what-is-naphtha.html"
   }
 ]
