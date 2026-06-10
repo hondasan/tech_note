@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../../images/favicon.png" type="image/png">
+  <title>生成AIを最大限に活かす！プロンプト作成のコツと実践ユースケース | Knowledge Notebook</title>
+  <meta name="description" content="生成AIから期待通りの回答を引き出すためのプロンプト作成の基本原則（明確さ、役割設定、出力フォーマットなど）や応用テクニック、実践的なユースケースを分かりやすく解説します。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="生成AIを最大限に活かす！プロンプト作成のコツと実践ユースケース | Knowledge Notebook">
+  <meta property="og:description" content="生成AIから期待通りの回答を引き出すためのプロンプト作成の基本原則（明確さ、役割設定、出力フォーマットなど）や応用テクニック、実践的なユースケースを分かりやすく解説します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://tech-note.pages.dev/notes/ai/prompt-tips-and-usecases.html">
+  <meta property="og:image" content="https://tech-note.pages.dev/images/ogp-default.png">
+  <meta property="og:site_name" content="Knowledge Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="生成AIを最大限に活かす！プロンプト作成のコツと実践ユースケース | Knowledge Notebook">
+  <meta name="twitter:description" content="生成AIから期待通りの回答を引き出すためのプロンプト作成の基本原則（明確さ、役割設定、出力フォーマットなど）や応用テクニック、実践的なユースケースを分かりやすく解説します。">
+  <meta name="twitter:image" content="https://tech-note.pages.dev/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "生成AIを最大限に活かす！プロンプト作成のコツと実践ユースケース",
+    "description": "生成AIから期待通りの回答を引き出すためのプロンプト作成の基本原則（明確さ、役割設定、出力フォーマットなど）や応用テクニック、実践的なユースケースを分かりやすく解説します。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-10",
+    "dateModified": "2026-06-10",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knowledge Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tech-note.pages.dev/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css?v=1.0.2">
+  <script src="../../scripts/article.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Knowledge Notebook</span>
+      </a>
+      <nav class="nav-links">
+         <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">ai</span>
+          <span class="note-date">2026年6月10日</span>
+        </div>
+        <h1 class="article-title">生成AIを最大限に活かす！プロンプト作成のコツと実践ユースケース</h1>
+      </div>
+
+      <div class="article-content">
+        <p>生成AI（Gemini, Claude, ChatGPTなど）は、日常的な業務からプログラム開発、クリエイティブなブレストまで多岐にわたるタスクで強力なパートナーとなります。しかし、<strong>「指示の出し方（プロンプト）」ひとつで回答の質は劇的に変わります。</strong></p>
+        <p>本記事では、AIから期待通りの高品質な回答を引き出すためのプロンプト作成の基本原則、応用テクニック、そして具体的なユースケースと実践的なプロンプト例を解説します。</p>
+
+        <h2>1. プロンプト作成の5つの基本原則</h2>
+        <p>優れたプロンプトを作成するために、まず押さえておきたい基本原則が以下の5つです。</p>
+
+        <h3>① 明確かつ具体的に指示する (Clarity & Specificity)</h3>
+        <p>曖昧な言葉遣いを避け、AIに求める行動を具体的に記述します。「〜について教えて」よりも、「〜のメリットとデメリットをそれぞれ3つ、専門知識のない一般ユーザー向けに分かりやすく解説して」のように対象や範囲を絞り込むことが大切です。</p>
+
+        <h3>② 文脈（コンテキスト）を設定する (Context Setting)</h3>
+        <p>なぜその回答が必要なのか、背景や前提条件をAIに共有します。文脈を与えることで、AIはよりターゲットに即した実用的な回答を出力できるようになります。</p>
+
+        <h3>③ 役割（ロール）を定義する (Role Play)</h3>
+        <p>AIに特定の立場や役職になりきってもらいます。「あなたは経験豊富なWeb開発者です」「あなたはプロのコピーライターです」といった一文を入れることで、回答のトーンや専門レベルがその役割に合わせて最適化されます。</p>
+
+        <h3>④ 出力フォーマットを指定する (Output Formatting)</h3>
+        <p>回答の形を明確に指示します。「箇条書きで」「マークダウンの表形式で」「JSON形式で」「ステップバイステップの手順書として」などの指定をすることで、その後の処理や編集がスムーズになります。</p>
+
+        <h3>⑤ 例（Few-shot）を与える (Few-shot Prompting)</h3>
+        <p>指示だけでは伝わりにくい複雑なタスクでは、「入力と期待される出力」の組み合わせを1〜数例プロンプト内に含めます。AIはそのパターンを学習し、同様の形式やロジックで回答を出力してくれます。</p>
+
+        <h2>2. 表現力・精度を高める応用テクニック</h2>
+        <p>基本原則に加えて、以下のテクニックを組み合わせることでプロンプトの精度をより引き上げることができます。</p>
+
+        <h3>段階的に思考させる (Chain of Thought - CoT)</h3>
+        <p>論理的な思考や計算が必要な問題では、プロンプトの最後に<strong>「ステップバイステップで順を追って考えてください」</strong>と一言加えます。AIが結論を出すまでの思考プロセスを出力させることで、論理の破綻や計算ミスを防ぎやすくなります。</p>
+
+        <h3>デリミタ（区切り文字）の活用</h3>
+        <p>指示（インストラクション）と、処理対象となるテキスト（データ）を明確に区別するために、区切り文字を使います。具体的には <code>"""</code>（トリプルクォート）や、XMLタグ（<code>&lt;text&gt;&lt;/text&gt;</code>）などが有効です。これにより、AIが「指示」と「データ」を混同するのを防げます。</p>
+
+        <h3>制約条件を明記する</h3>
+        <p>やってほしいことだけでなく、<strong>「やってほしくないこと（制約）」</strong>も明文化します。「専門用語は使わず、中学生にもわかる言葉で説明する」「外部ライブラリは使用せず、標準機能だけで実装する」「回答は日本語のみで行い、英語の翻訳は添えない」といった条件を加えます。</p>
+
+        <h2>3. 実践ユースケースとプロンプト例</h2>
+        <p>ここでは、日常的によく使われる4つのユースケースと、すぐに使えるプロンプトのテンプレートを紹介します。</p>
+
+        <h3>ユースケースA：ビジネスメール・文章の推敲とトーン変更</h3>
+        <p>作成した文章を、相手や状況にふさわしい丁寧さやトーンに推敲させます。</p>
+        <pre><code class="language-markdown"># 役割
+あなたは優秀なビジネスエグゼクティブのアシスタントです。
+
+# 指示
+以下の &lt;draft&gt; にある文章を、取引先の役員に向けて送る「丁寧で礼儀正しく、かつ簡潔なビジネスメール」に書き換えてください。
+
+# 制約条件
+- 件名と本文を作成すること
+- 返信が必要な期限（来週金曜日まで）を明確に伝えること
+- 必要以上にへりくだりすぎず、プロフェッショナルなトーンを保つこと
+
+# 入力データ
+&lt;draft&gt;
+お疲れ様です。昨日話した資料の件だけど、確認してフィードバックをください。遅くとも来週金曜までには欲しいです。よろしく。
+&lt;/draft&gt;</code></pre>
+
+        <h3>ユースケースB：コード生成とリファクタリング</h3>
+        <p>仕様に基づいたプログラムコードを生成させたり、既存のコードを改善させたりします。</p>
+        <pre><code class="language-markdown"># 役割
+あなたはセキュリティ意識の高いシニアソフトウェアエンジニアです。
+
+# 指示
+以下の JavaScript コードをリファクタリングしてください。
+
+# 制約条件
+- 可読性を向上させ、モダンな書き方（ES6+）にすること
+- エラーハンドリング（try-catchなど）を適切に追加すること
+- 元のコードの機能・挙動は維持すること
+- 変更点の理由を箇条書きで簡潔に説明すること
+
+# 対象コード
+```javascript
+function getUserData(userId) {
+  var url = 'https://api.example.com/users/' + userId;
+  fetch(url)
+    .then(function(res) {
+      return res.json();
+    })
+    .then(function(data) {
+      console.log(data);
+      document.getElementById('user-name').innerText = data.name;
+    });
+}
+```</code></pre>
+
+        <h3>ユースケースC：ブレインストーミング・アイデア出し</h3>
+        <p>新規企画やアプローチについてのブレスト相手になってもらいます。制約としてアイデアの視点をばらすように指示するのがポイントです。</p>
+        <pre><code class="language-markdown"># 指示
+地域密着型のカフェが、平日のアイドルタイム（14:00〜17:00）の集客を増やすためのマーケティングアイデアを10個提案してください。
+
+# 制約条件
+- アイデアは「割引キャンペーン」「体験イベント」「他業種コラボ」「新メニュー開発」「デジタル施策」の5つの観点に分散させること
+- 各アイデアには、想定されるコスト（低・中・高）と、実現可能性の難易度（易・普通・難）を記載すること
+- 回答はマークダウンの表形式で出力すること</code></pre>
+
+        <h3>ユースケースD：長文ニュースやドキュメントの構造化要約</h3>
+        <p>長いドキュメントを、要点を外さずに素早く把握するための要約を作成させます。</p>
+        <pre><code class="language-markdown"># 指示
+以下のXMLタグ &lt;document&gt; 内の文章を読み、以下のフォーマットに従って要約してください。
+
+# 出力フォーマット
+- **結論（1文）**: 全体で最も重要なメッセージ
+- **主要なポイント（3つの箇条書き）**: 詳細なポイント
+- **背景や原因（1〜2文）**: なぜこの状況になったのか
+
+# 対象ドキュメント
+&lt;document&gt;
+（ここに要約したい長文テキストを貼り付ける）
+&lt;/document&gt;</code></pre>
+
+        <h2>4. まとめ</h2>
+        <p>プロンプト作成のコツは、<strong>「AIに対する指示を曖昧にせず、コンテキストと明確なルールを与えること」</strong>に集約されます。また、一度のプロンプトで完璧な回答を得ようとするのではなく、得られた回答に対して「もう少し具体的に」「表形式にして」と重ねて指示（マルチターン対話）を行い、求めている回答へとチューニングしていくプロセスも非常に有効です。</p>
+        <p>今回紹介した基本原則とユースケースをテンプレートとして活用し、AIとのやり取りをよりスムーズでクリエイティブなものにしていきましょう。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://cloud.google.com/vertex-ai/docs/generative-ai/learn/introduction-prompt-design" target="_blank" rel="noopener noreferrer">Prompt design introduction | Generative AI on Vertex AI | Google Cloud</a></li>
+          <li><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering" target="_blank" rel="noopener noreferrer">Prompt engineering - Claude API Docs | Anthropic</a></li>
+          <li><a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" rel="noopener noreferrer">Prompt engineering guide - OpenAI API Docs</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Knowledge Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Knowledge Notebook. Powered by Gemini.</div>
+      <div class="footer-links" style="margin: 0.5rem 0;"><a href="../../privacy-policy.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">プライバシーポリシー</a></div>
+      <div class="footer-disclaimer">Amazonのアソシエイトとして、Knowledge Notebookは適格販売により収入を得ています。</div>
+    </div>
+  </footer>
+</body>
+</html>
