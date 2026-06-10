@@ -215,5 +215,12 @@
     "category": "sports",
     "date": "2026-06-10",
     "path": "notes/sports/worldcup-2026-regulation.html"
+  },
+  {
+    "title": "GitHub PagesからCloudflare Pagesへの移行手順とリダイレクト設定",
+    "excerpt": "GitHub Pagesでホストしていた静的サイトを、容量制限対策やパフォーマンス向上のためにCloudflare Pagesへ移行する具体的な手順。URL変更によるアクセス影響を防ぐための、JavaScriptを用いた自動リダイレクト（転送）設定方法も詳しく解説します。",
+    "category": "ops",
+    "date": "2026-06-10",
+    "path": "notes/ops/github-pages-to-cloudflare-pages-migration.html"
   }
 ]
