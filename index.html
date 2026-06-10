@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <script>
-    if (window.location.hostname === 'hondasan.github.io') {
+    if (window.location.hostname.endsWith('github.io')) {
       const newBase = "https://tech-note.pages.dev";
       const newPath = window.location.pathname.replace(/^\/tech_note/, '');
       window.location.replace(newBase + newPath + window.location.search + window.location.hash);

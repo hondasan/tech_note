@@ -114,7 +114,7 @@
         <h3>トップページ (index.html) の設定</h3>
         <p><code>index.html</code> の <code>&lt;head&gt;</code> タグ内の最上部に以下のJavaScriptを挿入します。</p>
         <pre><code class="language-html">&lt;script&gt;
-  if (window.location.hostname === 'hondasan.github.io') {
+  if (window.location.hostname.endsWith('github.io')) {
     const newBase = "https://tech-note.pages.dev";
     // サブディレクトリ（/tech_note）部分を削って新ドメインに結合
     const newPath = window.location.pathname.replace(/^\/tech_note/, '');
@@ -124,12 +124,12 @@
 
         <h3>過去の個別記事ページへの直接アクセス対策 (404.html)</h3>
         <p>GitHub Pagesは、存在しないURLへのアクセスを検出した際、リポジトリのルートにある <code>404.html</code> を表示してくれます。これを利用して、ルートディレクトリに新規で <code>404.html</code> を作成し、同様のスクリプトを記述します。</p>
-        <p>これにより、旧ドメインの個別記事（例: <code>https://hondasan.github.io/tech_note/notes/git/...</code>）にアクセスした人が、自動的に新ドメインの対応する記事ページに自動転送されるようになります。</p>
+        <p>これにより、旧ドメインの個別記事（例: <code>https://[ユーザー名].github.io/tech_note/notes/git/...</code>）にアクセスした人が、自動的に新ドメインの対応する記事ページに自動転送されるようになります。</p>
 
         <h2>4. 内部URLの書き換えとSEO（検索エンジン）設定</h2>
         <p>ホスティング先の切り替えに伴い、サイト全体のメタデータを更新します。</p>
         <ul>
-          <li><strong>ファイルのURL置換</strong>: <code>sitemap.xml</code> や各HTML内のOGPタグ（<code>og:url</code>）、構造化データ（JSON-LD）に記載されている絶対URL（<code>https://hondasan.github.io/tech_note</code>）を、新しいドメイン名（<code>https://tech-note.pages.dev</code>）へ一括置換します。</li>
+          <li><strong>ファイルのURL置換</strong>: <code>sitemap.xml</code> や各HTML内のOGPタグ（<code>og:url</code>）、構造化データ（JSON-LD）に記載されている絶対URL（<code>https://[ユーザー名].github.io/tech_note</code>）を、新しいドメイン名（<code>https://tech-note.pages.dev</code>）へ一括置換します。</li>
           <li><strong>Amazonアソシエイトの更新</strong>: Amazonアソシエイトの管理画面（「ウェブサイトとモバイルアプリの変更」）を開き、新ドメインを追加登録します（未登録サイトからの購入は紹介料対象外となるリスクがあるため必須です）。</li>
           <li><strong>Google Search Consoleへの再登録</strong>: 新しいURLでプロパティを作成し、所有権確認のためのメタタグを <code>index.html</code> に追加します。その後、新しい <code>sitemap.xml</code> を登録します。</li>
         </ul>
