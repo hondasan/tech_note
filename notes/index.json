@@ -236,5 +236,12 @@
     "category": "ai",
     "date": "2026-06-10",
     "path": "notes/ai/prompt-tips-and-usecases.html"
+  },
+  {
+    "title": "GPU・CPU・TPUの違いと役割をわかりやすく解説 - AI時代を支える計算基盤の仕組み",
+    "excerpt": "GPUが必要な理由やCPUとの違い、GoogleのTPU、さらには2026年最新のNVIDIA「Rubin」やGoogle「第8世代TPU」の動向まで、AI時代を支える計算用プロセッサの仕組みと特徴をわかりやすく解説します。",
+    "category": "ai",
+    "date": "2026-06-11",
+    "path": "notes/ai/understanding-gpu-cpu-tpu.html"
   }
 ]

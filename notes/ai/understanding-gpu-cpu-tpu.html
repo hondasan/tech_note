@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../../images/favicon.png" type="image/png">
+  <title>GPU・CPU・TPUの違いと役割をわかりやすく解説 | Knowledge Notebook</title>
+  <meta name="description" content="GPUが必要な理由やCPUとの違い、GoogleのTPU、さらには2026年最新のNVIDIA「Rubin」やGoogle「第8世代TPU」の動向まで、AI時代を支える計算用プロセッサの仕組みと特徴をわかりやすく解説します。">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="GPU・CPU・TPUの違いと役割をわかりやすく解説 | Knowledge Notebook">
+  <meta property="og:description" content="GPUが必要な理由やCPUとの違い、GoogleのTPU、さらには2026年最新のNVIDIA「Rubin」やGoogle「第8世代TPU」の動向まで、AI時代を支える計算用プロセッサの仕組みと特徴をわかりやすく解説します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://tech-note.pages.dev/notes/ai/understanding-gpu-cpu-tpu.html">
+  <meta property="og:image" content="https://tech-note.pages.dev/images/ogp-default.png">
+  <meta property="og:site_name" content="Knowledge Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GPU・CPU・TPUの違いと役割をわかりやすく解説 | Knowledge Notebook">
+  <meta name="twitter:description" content="GPUが必要な理由やCPUとの違い、GoogleのTPU、さらには2026年最新のNVIDIA「Rubin」やGoogle「第8世代TPU」の動向まで、AI時代を支える計算用プロセッサの仕組みと特徴をわかりやすく解説します。">
+  <meta name="twitter:image" content="https://tech-note.pages.dev/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "GPU・CPU・TPUの違いと役割をわかりやすく解説",
+    "description": "GPUが必要な理由やCPUとの違い、GoogleのTPU、さらには2026年最新のNVIDIA「Rubin」やGoogle「第8世代TPU」の動向まで、AI時代を支える計算用プロセッサの仕組みと特徴をわかりやすく解説します。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-11",
+    "dateModified": "2026-06-11",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knowledge Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tech-note.pages.dev/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css?v=1.0.2">
+  <script src="../../scripts/article.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Knowledge Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">ai</span>
+          <span class="note-date">2026年06-11日</span>
+        </div>
+        <h1 class="article-title">GPU・CPU・TPUの違いと役割をわかりやすく解説</h1>
+      </div>
+
+      <div class="article-content">
+        <p>生成AI（人工知能）の急速な発展や3Dグラフィックス技術の進化に伴い、ニュースや技術記事で<strong>「GPU」</strong>や<strong>「TPU」</strong>という言葉を目にする機会が爆発的に増えました。本記事では、なぜ現代のコンピューティングにおいてGPUが必要とされているのか、従来の「CPU」と何が異なるのか、そしてAI開発を加速させる「TPU」とはどのような存在なのかについて、仕組みから2026年現在の最新トレンドまで分かりやすく解説します。</p>
+
+        <h2>1. GPUとは？なぜ必要なのか</h2>
+        <p><strong>GPU（Graphics Processing Unit：画像処理装置）</strong>は、もともとパソコンやゲーム機において、3Dグラフィックスなどの複雑な映像を滑らかに画面へ描画するための専用パーツとして開発されました。</p>
+        
+        <p>映像を表示するためには、ディスプレイ上の何百万もの画素（ピクセル）それぞれの色や明るさといった計算を一瞬で、かつ同時に処理する必要があります。このような<strong>「単純だけど膨大な計算を一度に並列で実行する」</strong>ために設計されたのがGPUです。</p>
+        
+        <h3>AI（ディープラーニング）における需要の爆発</h3>
+        <p>近年、GPUは画像処理の枠を超え、AI・ディープラーニング（深層学習）の主役に躍り出ました。その理由は、ディープラーニングで行われる学習や推論の処理が、本質的に<strong>膨大な行列演算（掛け算と足し算の繰り返し）の塊</strong>だからです。</p>
+        <p>この行列計算は、3Dグラフィックスをレンダリングする際の計算と数学的な構造が非常によく似ています。大量のデータを同時に処理する並列計算が求められるため、並列処理を得意とするGPUがAI開発に不可欠な存在となりました。</p>
+
+        <h2>2. CPUとGPUの違い</h2>
+        <p><strong>CPU（Central Processing Unit：中央演算処理装置）</strong>とGPUの最大の違いは、その<strong>「設計思想」</strong>と<strong>「得意な処理のスタイル」</strong>にあります。</p>
+
+        <blockquote>
+          <p><strong>分かりやすい比喩：</strong><br>
+          ・<strong>CPUは「万能な司令塔（天才的な博士）」</strong>：難しい問題を1つずつ順番に、極めてハイスピードで考えて解決します。<br>
+          ・<strong>GPUは「単純作業を大量にこなす職人集団（大規模な工場）」</strong>：簡単な計算であれば、数千人が手を取り合って一斉に同時に片付けます。</p>
+        </blockquote>
+
+        <p>CPUは、コンピューター全体の制御やOS（WindowsやMacなど）の動作、複雑なプログラムの実行など、<strong>「状況に応じて次々と異なる指示を出す（逐次処理）」</strong>のが得意です。コアの数は数個から数十個と少なめですが、1つ1つのコアが極めて高性能で多機能です。</p>
+        <p>一方のGPUは、数千から数万もの「小さなコア」で構成されており、<strong>「同じ計算パターンを大量のデータに一斉に適用する（並列処理）」</strong>のが得意です。</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>機能・特徴</th>
+              <th>CPU (中央演算処理装置)</th>
+              <th>GPU (画像処理装置)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>得意な処理</strong></td>
+              <td>複雑なロジック・逐次処理（順番に解く）</td>
+              <td>単純な行列計算・大規模な並列処理（同時に解く）</td>
+            </tr>
+            <tr>
+              <td><strong>コアの数</strong></td>
+              <td>少数（一般的に4〜64基程度）だが超高性能</td>
+              <td>多数（数千〜数万基）の小型軽量コア</td>
+            </tr>
+            <tr>
+              <td><strong>処理のスタイル</strong></td>
+              <td>低遅延（シングルタスクを最速で終わらせる）</td>
+              <td>高スループット（大量のタスクを一度に片付ける）</td>
+            </tr>
+            <tr>
+              <td><strong>主な用途</strong></td>
+              <td>OSの稼働、オフィスソフト、Web閲覧、システムの制御</td>
+              <td>3Dゲーム、動画編集、AI学習・推論、科学シミュレーション</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>3. TPU（Tensor Processing Unit）とは</h2>
+        <p><strong>TPU（Tensor Processing Unit）</strong>は、Googleがディープラーニング（機械学習）の処理をさらに高速化・低消費電力化するために独自に開発した<strong>機械学習専用のプロセッサ（ASIC：特定用途向け専用IC）</strong>です。</p>
+
+        <p>GPUは画像処理や並列計算全般に使える汎用性を持っていますが、TPUはディープラーニングの核となる「テンソル演算（行列演算）」に特化し、それ以外の不要な機能を極限まで削ぎ落としています。</p>
+
+        <h3>シストリックアレイ（Systolic Array）による超高速化</h3>
+        <p>TPUの最大の特徴は、<strong>「シストリックアレイ」</strong>と呼ばれるアーキテクチャにあります。通常のプロセッサは「メモリからデータを読み出し、計算して、メモリに書き戻す」という手順を繰り返すため、メモリとの通信速度がボトルネックになります。</p>
+        <p>TPUのシストリックアレイは、演算器が網の目のように接続されており、データがまるで血管を流れる血液（Systole：心臓の収縮）のように演算器の間を次々と流れていきます。これにより、メモリへの読み書きを最小限に抑え、行列演算を驚異的なスピードかつ低電力で実行できます。</p>
+
+        <h3>Googleによる最新TPU（2026年動向）</h3>
+        <p>GoogleはTPUの進化を重ねており、<strong>2026年4月には「第8世代TPU」を発表しました</strong>。この世代では、大規模モデルのトレーニング（学習）に特化した<strong>「TPU 8t」</strong>と、AIの実行（推論）に最適化された<strong>「TPU 8i」</strong>の2種類が用意され、前世代と比較してワットあたりの処理性能が2倍に向上しています。これらのTPUはGoogle Cloudを通じて提供され、Geminiなどの最先端AIモデルの基盤として利用されています。</p>
+
+        <h2>4. 最新のAIアクセラレータトレンド</h2>
+        <p>AI向けハードウェアの進化は凄まじく、2026年現在も新しいアーキテクチャが次々と登場しています。</p>
+
+        <h3>NVIDIAの次世代プラットフォーム「Rubin（ルービン）」</h3>
+        <p>GPU市場で圧倒的なシェアを誇るNVIDIAは、大ヒットしたBlackwellアーキテクチャの後継として、<strong>2026年1月に次世代プラットフォーム「NVIDIA Rubin」を正式発表しました</strong>（2026年後半より順次展開予定）。</p>
+        <p>Rubinは、次世代の超高速メモリである「HBM4」を搭載し、Blackwell世代と比較してAI推論性能が最大5倍、学習性能が最大3.5倍に向上。推論時のトークンあたりのコストを最大10分の1に削減するとされています。単なるGPUにとどまらず、Vera CPUやNVLink 6スイッチなどが高度に連携するシステムとして設計されています。</p>
+
+        <h3>その他のプロセッサ（LPUやDPU）</h3>
+        <ul>
+          <li><strong>LPU（Language Processing Unit）</strong>：大規模言語モデル（LLM）のテキスト出力（推論）に特化したプロセッサです。Groq社などが開発しており、GPUのボトルネックであるメモリ帯域問題をSRAMの活用によって克服し、圧倒的なトークン生成速度を実現して注目されています。</li>
+          <li><strong>DPU（Data Processing Unit）</strong>：データセンターにおいて、データ転送やネットワーク処理、暗号化などをCPUやGPUに代わって引き受けるプロセッサです。AI処理の高速化に伴い、データ転送の効率化を目的に導入が進んでいます。</li>
+        </ul>
+
+        <h2>5. まとめ</h2>
+        <p>CPU、GPU、TPUはそれぞれ異なる目的と設計思想を持っています。現代のAIシステムでは、これらを適切に分担・連携させることで、複雑なモデルの高速な動作を実現しています。</p>
+        <ul>
+          <li><strong>CPU</strong>：システム全体を柔軟にコントロールする「指揮官」</li>
+          <li><strong>GPU</strong>：強力な並列計算能力で学習からグラフィックスまで汎用にこなす「主戦力」</li>
+          <li><strong>TPU</strong>：ディープラーニングの行列演算を極限まで効率化するGoogleの「専用兵器」</li>
+        </ul>
+        <p>2026年現在は、NVIDIAの次世代「Rubin」やGoogleの「第8世代TPU」、さらにLLM特化の「LPU」などが競い合っており、ハードウェアの進化がAIの限界を押し広げ続けています。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://www.nvidia.com/ja-jp/" target="_blank" rel="noopener noreferrer">NVIDIA 公式サイト</a></li>
+          <li><a href="https://cloud.google.com/tpu?hl=ja" target="_blank" rel="noopener noreferrer">Google Cloud TPU 公式ドキュメント</a></li>
+          <li><a href="https://pc.watch.impress.co.jp/" target="_blank" rel="noopener noreferrer">PC Watch (最新ハードウェア技術ニュース)</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Knowledge Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Knowledge Notebook. Powered by Gemini.</div>
+      <div class="footer-links" style="margin: 0.5rem 0;"><a href="../../privacy-policy.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">プライバシーポリシー</a></div>
+      <div class="footer-disclaimer">Amazonのアソシエイトとして、Knowledge Notebookは適格販売により収入を得ています。</div>
+    </div>
+  </footer>
+</body>
+</html>
