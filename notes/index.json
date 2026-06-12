@@ -243,5 +243,12 @@
     "category": "ai",
     "date": "2026-06-11",
     "path": "notes/ai/understanding-gpu-cpu-tpu.html"
+  },
+  {
+    "title": "プロンプトインジェクションの仕組みと実例、RAG時代に必要なセキュリティ対策",
+    "excerpt": "LLMのセキュリティ脅威である「プロンプトインジェクション」について、直接型・間接型の違いや具体的な攻撃実例、OWASP Top 10 for LLM 2025における動向、および開発者が取るべき効果的なセキュリティ対策をわかりやすく解説します。",
+    "category": "security",
+    "date": "2026-06-12",
+    "path": "notes/security/prompt-injection-attacks-and-defenses.html"
   }
 ]
