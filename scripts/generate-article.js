@@ -163,7 +163,7 @@ Theme: "${issueTitle}"
     // 4. sitemap.xml の更新
     if (fs.existsSync(sitemapPath)) {
       let sitemapContent = fs.readFileSync(sitemapPath, 'utf-8');
-      const locUrl = `https://hondasan.github.io/tech_note/${relativePath}`;
+      const locUrl = `https://tech-note.pages.dev/${relativePath}`;
       
       // すでに登録されているかチェック
       if (!sitemapContent.includes(locUrl)) {

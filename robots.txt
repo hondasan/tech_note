@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hondasan.github.io/tech_note/sitemap.xml
+Sitemap: https://tech-note.pages.dev/sitemap.xml
