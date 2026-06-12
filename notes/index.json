@@ -257,5 +257,12 @@
     "category": "ai",
     "date": "2026-06-12",
     "path": "notes/ai/understanding-ai-agents.html"
+  },
+  {
+    "title": "Claude Codeの「Wizarding」や「Vibing」とは？ステータスメッセージの意味とユーモアを徹底解説",
+    "excerpt": "Claude Codeの実行中にターミナルに表示される「Wizarding」「Sleuthing」「Vibing」などの面白いステータスメッセージの意味や、込められたユーモアを英語が苦手な方向けにわかりやすく解説します。",
+    "category": "tool",
+    "date": "2026-06-12",
+    "path": "notes/tool/claude-code-status-messages.html"
   }
 ]
