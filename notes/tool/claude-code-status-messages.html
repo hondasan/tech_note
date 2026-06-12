@@ -94,50 +94,159 @@
         <p>Claude Codeが実行する「ファイルの読み書き」「テストコマンドの実行」「エラー分析」といった処理には数秒〜数十秒の待ち時間が発生します。この間、無味乾燥なロード中アイコン（くるくる回るスピナーなど）を表示する代わりに、<strong>「いまClaudeがどんな気分やアクションで仕事をしているか」</strong>を表現するテキストが表示されます。</p>
         <p>これらは、AIの内部処理が完全に停止していないことを伝える安心感と、AIを「一緒に働く親しみやすいパートナー」として感じてもらうための遊び心から設計されています。</p>
 
-        <h2>2. 主要なステータスメッセージの直訳とニュアンス</h2>
-        <p>ターミナルによく登場する、代表的なメッセージを解説します（いずれも動作を表す「〜ing」の形になっています）。</p>
+        <h2>2. ステータスメッセージの分類と意味</h2>
+        <p>Claude Codeで表示されるメッセージは、そのニュアンスから大きく3つのタイプに分けられます。それぞれの意味と背景を解説します（いずれも現在進行形「〜ing」の形になっています）。</p>
 
-        <dl style="margin-top: 1.5rem;">
-          <dt style="font-weight: bold; font-size: 1.15rem; color: var(--text-highlight); margin-top: 1rem;">● Wizarding...</dt>
-          <dd style="margin-left: 1.5rem; margin-bottom: 1rem;">
-            <strong>直訳</strong>：魔法をかけている最中...<br>
-            <strong>解説</strong>：まるでファンタジー小説の魔法使い（Wizard）が呪文を唱えるように、複雑なソースコードを劇的に書き換えるプランを組み立てている最中であることを示します。開発プロセスを「魔法」に例えるIT業界定番のユーモアです。
+        <h3>① ユーモア・ハッカーカルチャー系（遊び心あふれる表現）</h3>
+        <dl style="margin-top: 1rem;">
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Wizarding... / Conjuring...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：魔法をかけている最中... / 魔術を唱えている...<br>
+            <strong>解説</strong>：まるでファンタジー小説の魔法使いが呪文を唱えるように、複雑なソースコードを劇的に書き換えるプランを組み立てている最中であることを示します。開発プロセスを「魔法（Wizardry）」に例えるIT業界定番のユーモアです。
           </dd>
 
-          <dt style="font-weight: bold; font-size: 1.15rem; color: var(--text-highlight); margin-top: 1rem;">● Sleuthing...</dt>
-          <dd style="margin-left: 1.5rem; margin-bottom: 1rem;">
-            <strong>直訳</strong>：探偵のように捜査（調査）中...<br>
-            <strong>解説</strong>：Sleuth（スロース）は「探偵」や「犯人を追跡する」という意味を持つ言葉です。シャーロック・ホームズや名探偵のように、コードの奥深くに隠されたバグの原因や原因箇所を探し回っている状態を表しています。
-          </dd>
-
-          <dt style="font-weight: bold; font-size: 1.15rem; color: var(--text-highlight); margin-top: 1rem;">● Vibing...</dt>
-          <dd style="margin-left: 1.5rem; margin-bottom: 1rem;">
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Vibing...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
             <strong>直訳</strong>：バイブスを感じている... / いい感じにやっている...<br>
-            <strong>解説</strong>：英語のネットスラングで、「リラックスして周囲と調和している」「のんびり心地よい雰囲気に浸っている」というニュアンスです。AIが深刻になりすぎず、「肩の力を抜いて、いい波長で作業を進めてるから心配しないで」という緩いユーモアが込められています。
+            <strong>解説</strong>：若者言葉やネットスラングで、「リラックスして周囲と調和している」「のんびり心地よい雰囲気に浸っている」というニュアンスです。AIが深刻になりすぎず、「肩の力を抜いて、いい波長で作業を進めてるから心配しないで」という緩いユーモアが込められています。
           </dd>
 
-          <dt style="font-weight: bold; font-size: 1.15rem; color: var(--text-highlight); margin-top: 1rem;">● Spelunking...</dt>
-          <dd style="margin-left: 1.5rem; margin-bottom: 1rem;">
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Grokking...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：本質を深く理解中...<br>
+            <strong>解説</strong>：「Grok（グロック）」は、SF小説『異星の客』に由来するハッカー・ギーク文化の専門用語で、「直感的に、本質を完全に理解する」という意味です。単にコードを読むだけでなく、その意図や構造を完全に自分のものにしようと「脳内へ浸透させている」状態を指します。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Spitting bars...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：ラップの歌詞（バース）を吐き出し中...<br>
+            <strong>解説</strong>：ヒップホップ文化のジョークです。ラッパーが巧みなライム（韻）とフローで高速に歌詞をラップするように、AIが鮮やかで洗練されたコードを高速に紡ぎ出している様子を例えています。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Cooking...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：調理中 / 料理中...<br>
+            <strong>解説</strong>：インターネットミーム「Let him cook（彼に料理させろ ➔ 邪魔をせず彼に素晴らしいアイデアを実行させろ）」に基づいています。AIが素晴らしいアウトプット（料理）を裏でコトコトと仕込んでいる最中です。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Reticulating splines...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：スプラインを細分化中...（格子状に調整中）<br>
+            <strong>解説</strong>：シミュレーションゲーム『シムシティ』や『シムズ』のローディング画面に登場する、有名な「意味のないそれっぽい技術用語（テクノバブル）」のオマージュです。IT・ゲーム業界では「今なんか難しい処理をしてるフリをしているよ」というお茶目なジョークとして広く使われます。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Brewing...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：醸造中... / コーヒーやお茶を淹れている最中...<br>
+            <strong>解説</strong>：ビールやコーヒーをじっくり時間をかけて抽出するように、アイデアやプログラムのロジックを煮詰めている状態を表します。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Summoning...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：召喚中...<br>
+            <strong>解説</strong>：こちらも魔法関連の言葉で、外部のテストランナーやコマンド、あるいは追加のLLMコンテキストなどを、魔法の召喚術のように「呼び出している」最中であることを表現しています。
+          </dd>
+        </dl>
+
+        <h3>② 知的・思考系表現（考える動作をお洒落に例えたもの）</h3>
+        <dl style="margin-top: 1rem;">
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Sleuthing...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：探偵のように捜査（調査）中...<br>
+            <strong>解説</strong>：Sleuth（スロース）は「探偵」や「犯人を追跡する」という意味を持つ言葉です。シャーロック・ホームズのように、コードの奥深くに隠されたバグの原因や手がかりを探し回っている状態を表しています。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Spelunking...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
             <strong>直訳</strong>：洞窟探検（ケイビング）中...<br>
             <strong>解説</strong>：本格的な洞窟探検を指す言葉です。何千行もある入り組んだソースコードや、構造が複雑な古いファイル群の「暗闇の奥深く」へライトを照らしながら、必死に探検して中身を読み進めている様子を例えています。
           </dd>
 
-          <dt style="font-weight: bold; font-size: 1.15rem; color: var(--text-highlight); margin-top: 1rem;">● Cerebrating...</dt>
-          <dd style="margin-left: 1.5rem; margin-bottom: 1rem;">
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Cerebrating...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
             <strong>直訳</strong>：大脳をフル回転させて思索中...<br>
-            <strong>解説</strong>：「お祝いする（Celebrate）」とスペルが似ていますが、こちらは「脳（Cerebrum）」から派生した言葉です。「頭脳を使って深く考えている」という少し知的に聞こえる単語をあえて使うことで、「いま脳みそに汗をかきながら一生懸命プランを練っています」と伝えています。
+            <strong>解説</strong>：「お祝いする（Celebrate）」と発音がそっくりですが、こちらは「脳（Cerebrum）」から派生した言葉です。「頭脳を使って深く考えている」という少し知的に聞こえる単語をあえて使うことで、「いま脳みそに汗をかきながら一生懸命プランを練っています」と伝えています。
           </dd>
 
-          <dt style="font-weight: bold; font-size: 1.15rem; color: var(--text-highlight); margin-top: 1rem;">● Summoning...</dt>
-          <dd style="margin-left: 1.5rem; margin-bottom: 1rem;">
-            <strong>直訳</strong>：召喚中...<br>
-            <strong>解説</strong>：こちらも魔法関連の言葉で、外部のプログラムツール、テストランナー、あるいは追加のLLMコンテキストなどを「儀式のように呼び出している」最中であることを表現しています。
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Pondering...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：熟考中 / あれこれと考えを巡らせている...<br>
+            <strong>解説</strong>：次の行動プランや、どのファイルに手を加えるべきかの「意思決定」を、慎重にじっくり検討している状態です。
           </dd>
 
-          <dt style="font-weight: bold; font-size: 1.15rem; color: var(--text-highlight); margin-top: 1rem;">● Polishing...</dt>
-          <dd style="margin-left: 1.5rem; margin-bottom: 1rem;">
-            <strong>直訳</strong>：磨き上げ中...<br>
-            <strong>解説</strong>：書いたコードのインデントを整えたり、無駄な記述をリファクタリングして綺麗にしたりして、最終成果物をピカピカに磨き上げている段階です。これが表示されると、作業完了はもう目の前です。
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Deciphering...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：解読中...<br>
+            <strong>解説</strong>：暗号を読み解く（Decipher）のように、難解なエラーメッセージや複雑に入り組んだロジックの「真意」を解き明かそうとしている様子です。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Synthesizing...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>直訳</strong>：合成中 / 統合中...<br>
+            <strong>解説</strong>：読み込んだ複数のコードファイルや要件、ドキュメントなどの「情報パーツ」を頭の中で組み立てて、一つの解決策に統合しているプロセスです。
+          </dd>
+        </dl>
+
+        <h3>③ 実用・技術系表現（真面目な実行状態）</h3>
+        <dl style="margin-top: 1rem;">
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Thinking...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：思考中<br>
+            <strong>解説</strong>：LLM（AI）が次の出力内容や実行方針を頭の中で推論・計算している、最も基本的かつ一般的な待機状態です。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Reading...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：読み込み中<br>
+            <strong>解説</strong>：プロジェクト内の指定されたファイルや、コマンドの実行結果などのテキストをロードして中身を分析している状態です。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Writing...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：書き込み中<br>
+            <strong>解説</strong>：作成したソースコードや設定ファイルを、実際のローカルファイルシステムに新規保存、または上書き保存している状態です。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Running...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：実行中<br>
+            <strong>解説</strong>：テストスイート（npm testなど）やビルドコマンド、その他のシェルコマンドをターミナルで実際に動かしている最中であることを示します。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Analyzing...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：分析中 / 解析中<br>
+            <strong>解説</strong>：プログラムのエラーログや、ファイルの依存関係、コードの構造を構文解析し、どこに問題があるかをエンジニアリング観点で調べている状態です。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Searching...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：検索中<br>
+            <strong>解説</strong>：特定の関数名やファイルを探すために、コードベース全体を grep 検索したりディレクトリ構造を走査している状態です。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Indexing...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：インデックス作成中<br>
+            <strong>解説</strong>：コードベース全体のファイルをスキャンし、高速に検索・読み込みができるようにローカルデータベースを構築している状態です。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Compiling...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：ビルド・コンパイル中<br>
+            <strong>解説</strong>：プログラムを動かせる状態にするためにビルド処理（TypeScriptのトランスパイルなど）を実行している最中を示します。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Testing...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：テストスイート実行中<br>
+            <strong>解説</strong>：変更を加えた部分が既存のシステムを壊していないか、あるいは新規に書いたテストがパスするかを検証している最中であることを示します。
+          </dd>
+
+          <dt style="font-weight: bold; font-size: 1.1rem; color: var(--text-highlight); margin-top: 0.8rem;">● Polishing...</dt>
+          <dd style="margin-left: 1.5rem; margin-bottom: 0.8rem;">
+            <strong>意味</strong>：磨き上げ中（微調整中）<br>
+            <strong>解説</strong>：コードのインデントを整えたり、不要なコメントを整理したり、成果物を美しくクリーンアップしている最後の段階です。
           </dd>
         </dl>
 
@@ -185,7 +294,7 @@
       <div class="footer-logo">Knowledge Notebook</div>
       <div class="footer-copyright">&copy; 2026 Knowledge Notebook. Powered by Gemini.</div>
       <div class="footer-links" style="margin: 0.5rem 0;"><a href="../../privacy-policy.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">プライバシーポリシー</a></div>
-      <div class="footer-disclaimer">Amazonのアソシエイトとして、Knowledge Notebookは適格販売により収入を得ています。</div>
+      <div class="footer-disclaimer">Amazonのアソシエイトとして,Knowledge Notebookは適格販売により収入を得ています。</div>
     </div>
   </footer>
 </body>
