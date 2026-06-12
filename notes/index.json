@@ -1,5 +1,12 @@
 [
   {
+    "title": "【チームズ？クロード？】意外と読み間違いやすいITサービス・アプリ・技術名10選",
+    "excerpt": "Microsoft TeamsやClaude、ASUSなど、普段よく使われているのに意外と読み間違いやすいITサービス、アプリ、技術用語の正しい読み方とその由来・歴史をわかりやすく解説します。",
+    "category": "tool",
+    "date": "2026-06-12",
+    "path": "notes/tool/commonly-mispronounced-it-names.html"
+  },
+  {
     "title": "git cherry-pick の使い方と競合回避策",
     "excerpt": "他のブランチの特定のコミットを取り込む git cherry-pick コマンドの基本的な使い方と、競合が発生した際の解決・回避方法について解説します。",
     "category": "git",
