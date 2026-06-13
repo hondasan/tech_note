@@ -1,5 +1,12 @@
 [
   {
+    "title": "GPT Image 2とNano Bananaで思い通りの画像を生成するコツ",
+    "excerpt": "最新の画像生成AIであるChatGPTのGPT Image 2とGeminiのNano Banana（Nano Banana Pro / Nano Banana 2）を用いて、理想の画像を生成するためのプロンプトの書き方や、手足の崩れ・文字入れ・アスペクト比変更などのトラブルシューティング方法を詳しく解説します。",
+    "category": "ai",
+    "date": "2026-06-14",
+    "path": "notes/ai/image-generation-tips.html"
+  },
+  {
     "title": "2026年サッカーW杯：日本代表戦のキックオフ日時（日本時間）とテレビ放送・ネット配信スケジュール",
     "excerpt": "2026年FIFAワールドカップにおける日本代表のグループステージ全3試合の日程（日本時間）と、地上波テレビ中継（NHK・日本テレビ等）、ネット配信（DAZN等）の放送・配信スケジュールを網羅して分かりやすく解説します。",
     "category": "sports",
