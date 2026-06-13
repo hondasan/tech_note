@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../../images/favicon.png" type="image/png">
+  <title>Claude Codeの「Skills」とは？仕組み・作り方・ユースケースからCodex/Antigravityとの違いまで解説 | Knowledge Notebook</title>
+  <meta name="description" content="AIコーディングエージェント（Claude Code、Codex CLI、Antigravity）における「Skills（スキル）」機能の概念や作成手順、トークンを節約しながら自律ワークフローを自動化するメリットを詳しく解説します。">
+  <link rel="canonical" href="https://tech-note.pages.dev/notes/tool/claude-code-skills.html">
+  
+  <!-- OGP 設定 -->
+  <meta property="og:title" content="Claude Codeの「Skills」とは？仕組み・作り方・ユースケースからCodex/Antigravityとの違いまで解説 | Knowledge Notebook">
+  <meta property="og:description" content="AIコーディングエージェント（Claude Code、Codex CLI、Antigravity）における「Skills（スキル）」機能の概念や作成手順、トークンを節約しながら自律ワークフローを自動化するメリットを詳しく解説します。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://tech-note.pages.dev/notes/tool/claude-code-skills.html">
+  <meta property="og:image" content="https://tech-note.pages.dev/images/ogp-default.png">
+  <meta property="og:site_name" content="Knowledge Notebook">
+  <meta property="og:locale" content="ja_JP">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Claude Codeの「Skills」とは？仕組み・作り方・ユースケースからCodex/Antigravityとの違いまで解説 | Knowledge Notebook">
+  <meta name="twitter:description" content="AIコーディングエージェント（Claude Code、Codex CLI、Antigravity）における「Skills（スキル）」機能の概念や作成手順、トークンを節約しながら自律ワークフローを自動化するメリットを詳しく解説します。">
+  <meta name="twitter:image" content="https://tech-note.pages.dev/images/ogp-default.png">
+
+  <!-- 構造化データ (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Claude Codeの「Skills」とは？仕組み・作り方・ユースケースからCodex/Antigravityとの違いまで解説",
+    "description": "AIコーディングエージェント（Claude Code、Codex CLI、Antigravity）における「Skills（スキル）」機能の概念や作成手順、トークンを節約しながら自律ワークフローを自動化するメリットを詳しく解説します。",
+    "inLanguage": "ja",
+    "datePublished": "2026-06-14",
+    "dateModified": "2026-06-14",
+    "author": {
+      "@type": "Person",
+      "name": "hondasan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knowledge Notebook",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tech-note.pages.dev/images/ogp-default.png"
+      }
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="../../styles/site.css?v=2.0.0">
+  <script src="../../scripts/article.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <a href="../../index.html" class="logo-link">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 2H6c-1.207 0-2 .793-2 2v16c0 1.207.793 2 2 2h13c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-6 16H7v-2h6v2zm3-4H7v-2h9v2zm0-4H7V8h9v2z"/>
+          </svg>
+        </div>
+        <span class="logo-text">Knowledge Notebook</span>
+      </a>
+      <nav class="nav-links">
+        <a href="../../index.html" class="nav-link">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article class="article-container">
+      <a href="../../index.html" class="article-back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        一覧に戻る
+      </a>
+
+      <div class="article-header">
+        <div class="article-meta">
+          <span class="note-category">tool</span>
+          <span class="note-date">2026年06月14日</span>
+        </div>
+        <h1 class="article-title">Claude Codeの「Skills」とは？仕組み・作り方・ユースケースからCodex/Antigravityとの違いまで解説</h1>
+      </div>
+
+      <div class="article-content">
+        <p>自律型のAIコーディングエージェントを使いこなす上で、繰り返し行う複雑な作業をどのように自動化するかは重要なテーマです。Anthropicが提供するCLIツール「Claude Code」には、こうした要件を満たすための<strong>「Skills（カスタムスキル）」</strong>という仕組みが備わっています。この記事では、Skillsの概念や具体的な作成方法、実践的なユースケースに加えて、他の主要なコーディングエージェント（Codex CLIやAntigravity）における対応状況を解説します。</p>
+
+        <h2>1. Skillsとは？なぜ必要なのか</h2>
+        <p>Claude Codeにおける「Skills」とは、AIエージェントにプロジェクト独自の開発手順や繰り返しのワークフローを指示するための、<strong>パッケージ化された指示セット（フォルダおよびMarkdownファイル）</strong>です。特定の処理をさせたいときに呼び出して実行させることができます。</p>
+        <p>プロジェクト全体の基本ルールを規定する <code>CLAUDE.md</code> と比較すると、Skillsには以下のような明確な役割とメリットがあります。</p>
+
+        <h3>コンテキスト（トークン）の節約</h3>
+        <p><code>CLAUDE.md</code> に記載されたルールは、AIとチャットするたびに毎回すべてのコンテキストとして読み込まれます。そのため、大量の指示を書き込むとコンテキストが肥大化し、APIのトークン消費量と実行コストが増加します。一方、Skillsは<strong>そのスキルが呼び出されたときだけ一時的に指示をロードする</strong>ため、必要なときにだけコンテキストを消費して効率的に動作します。</p>
+
+        <h3>モジュール化による責務の整理</h3>
+        <p>「コードのレビュー」「テストデータの生成」「ドキュメントの作成」といった個別のタスクごとに指示をフォルダ単位で分離して管理できます。これにより、指示のバグや競合を防ぎ、メンテナンスしやすくなります。</p>
+
+        <h2>2. Claude Codeでのカスタムスキルの作り方</h2>
+        <p>カスタムスキルを作成する方法には、対話的なアプローチと手動でのファイル作成の2通りがあります。</p>
+
+        <h3>方法①：組み込みの `/skill-creator` を利用する</h3>
+        <p>最も簡単なのは、CLI内で対話型作成ツールを利用する方法です。以下のコマンドを実行します。</p>
+        <pre><code class="language-bash">/skill-creator</code></pre>
+        <p>実行すると、AIが「どのような自動化ワークフローを作りたいか」をインタビュー形式で質問してきます。質問に答えていくことで、AIが必要なファイル群と指示書をバックグラウンドで自動的に組み立ててくれます。</p>
+
+        <h3>方法②：手動でフォルダと `SKILL.md` を作成する</h3>
+        <p>自身で詳細な指示を定義したい場合は、プロジェクトのルートディレクトリに手動で配置します。</p>
+        <ul>
+          <li><strong>ディレクトリ配置</strong>：プロジェクト内に <code>.claude/skills/[任意のスキル名]/</code> というフォルダを作成します。</li>
+          <li><strong>ファイルの作成</strong>：そのフォルダ内に <code>SKILL.md</code> というファイルを配置します。</li>
+        </ul>
+        <p><code>SKILL.md</code> の中身は、冒頭にYAML形式のメタデータ（フロントマター）を記述し、その後に具体的な実行指示を書き込みます。</p>
+        <pre><code class="language-markdown">---
+name: "code-reviewer"
+description: "PRのコードスタイルとセキュリティリスクを検証する"
+---
+
+# 指示内容
+コミットされた差分を読み込み、以下の項目を検証してください。
+- セキュリティ脆弱性の有無
+- 関数の命名規則がプロジェクトの規約に沿っているか
+- パフォーマンスのボトルネックになり得る箇所の指摘</code></pre>
+
+        <p>作成したスキルは、ローカルから追加することができます。たとえば、以下のコマンドを実行することで、任意のディレクトリにあるスキルをインストールできます。</p>
+        <pre><code class="language-bash">/plugin add /path/to/skill-directory</code></pre>
+
+        <h2>3. 実践的なユースケース</h2>
+        <p>Skillsは以下のような定型的でありながら複雑な処理を自動化するのに適しています。</p>
+        <ul>
+          <li><strong>差分ベースのチェンジログ生成</strong>：Gitの差分（diff）を解析し、特定のフォーマットで <code>CHANGELOG.md</code> を自動更新する。</li>
+          <li><strong>テストデータの自動構築</strong>：スキーマ定義ファイルをインプットとして、テスト用のダミーデータ（JSONなど）を生成する。</li>
+          <li><strong>依存ライブラリのアップデート確認</strong>：パッケージ管理ファイル（<code>package.json</code>など）をスキャンし、推奨される更新内容をまとめる。</li>
+        </ul>
+
+        <h2>4. Codex CLIやAntigravityにおけるスキルの扱い</h2>
+        <p>同様の自律型コーディングエージェントにおいても、名前やアプローチは異なりますが、同様の自動化機能が提供されています。</p>
+
+        <h3>OpenAI Codex CLIでの対応</h3>
+        <p>以前のCodex CLIでは、<code>~/.codex/prompts/</code> に配置したテキストファイルを読み込む「Custom Prompts」という機能が使われていました。現在は、同様のタスク指向の自動化機能として<strong>「Skills」システム</strong>に順次移行しています。これにより、繰り返しのタスク定義が容易になっています。また、非対話型で処理を回したい場合は、<code>codex exec "タスクの記述"</code> をシェルスクリプトやCI/CDに組み込む手法が推奨されています。</p>
+
+        <h3>Antigravity（本エージェント）での対応</h3>
+        <p>本コーディングアシスタント「Antigravity」では、ファイルを閲覧・読み込みするツール（<code>view_file</code> など）に <code>IsSkillFile</code> という専用のパラメータが用意されています。これは、<strong>実行手順が記載されたMarkdownファイル等を一時的に「スキル指示書」としてロードし、その指示内容に準拠してタスクを実行する</strong>ための仕組みです。これにより、特定のプロジェクトの複雑な更新ルールをオンデマンドで読み込み、忠実に再現することができます。</p>
+
+        <h2>5. まとめ</h2>
+        <p>Claude Codeの「Skills」は、ただ指示を増やすだけでなく、「使いたいときに、使いたい分だけ」AIの行動をコントロールできる強力な仕組みです。チーム開発におけるコードスタイルの統一や、泥臭い定型タスクの自動化に向けて、まずはシンプルなカスタムスキルの作成から試してみることをおすすめします。</p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 2rem 0;">
+
+        <h3>参考URL</h3>
+        <ul>
+          <li><a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code" target="_blank" rel="noopener noreferrer">Anthropic: Claude Code ドキュメント (英語)</a></li>
+          <li><a href="https://chatgpt.com/codex" target="_blank" rel="noopener noreferrer">OpenAI: Codex Platform (英語)</a></li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logo">Knowledge Notebook</div>
+      <div class="footer-copyright">&copy; 2026 Knowledge Notebook. Powered by Gemini.</div>
+      <div class="footer-links" style="margin: 0.5rem 0;"><a href="../../privacy-policy.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.85rem;">プライバシーポリシー</a></div>
+      <div class="footer-disclaimer">Amazonのアソシエイトとして、Knowledge Notebookは適格販売により収入を得ています。</div>
+    </div>
+  </footer>
+</body>
+</html>

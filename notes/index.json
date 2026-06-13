@@ -1,5 +1,12 @@
 [
   {
+    "title": "Claude Codeの「Skills」とは？仕組み・作り方・ユースケースからCodex/Antigravityとの違いまで解説",
+    "excerpt": "AIコーディングエージェント（Claude Code、Codex CLI、Antigravity）における「Skills（スキル）」機能の概念や作成手順、トークンを節約しながら自律ワークフローを自動化するメリットを詳しく解説します。",
+    "category": "tool",
+    "date": "2026-06-14",
+    "path": "notes/tool/claude-code-skills.html"
+  },
+  {
     "title": "GPT Image 2とNano Bananaで思い通りの画像を生成するコツ",
     "excerpt": "最新の画像生成AIであるChatGPTのGPT Image 2とGeminiのNano Banana（Nano Banana Pro / Nano Banana 2）を用いて、理想の画像を生成するためのプロンプトの書き方や、手足の崩れ・文字入れ・アスペクト比変更などのトラブルシューティング方法を詳しく解説します。",
     "category": "ai",
