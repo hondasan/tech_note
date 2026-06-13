@@ -48,7 +48,7 @@
   }
   </script>
 
-  <link rel="stylesheet" href="../../styles/site.css?v=1.0.2">
+  <link rel="stylesheet" href="../../styles/site.css?v=2.0.0">
   <script src="../../scripts/article.js" defer></script>
 </head>
 <body>
@@ -113,7 +113,7 @@ fetch(`notes/index.json?t=${timestamp}`)
         <h3>方法 B: クエリパラメータにバージョン番号を付与する（静的制御）</h3>
         <p>HTMLに直接書き込むCSSやJavaScriptリンクでよく使われます。リリースごとに <code>?v=[バージョン番号]</code> を手動またはビルド時に付加します。</p>
         <pre><code class="language-html">&lt;!-- バージョンが変わった時だけブラウザは再読み込みする --&gt;
-&lt;link rel="stylesheet" href="styles/site.css?v=1.0.2"&gt;
+&lt;link rel="stylesheet" href="styles/site.css?v=2.0.0"&gt;
 &lt;script src="scripts/main.js?v=1.0.2"&gt;&lt;/script&gt;</code></pre>
 
         <h3>方法 C: ファイル名にハッシュ値を埋め込む（モダン開発）</h3>
